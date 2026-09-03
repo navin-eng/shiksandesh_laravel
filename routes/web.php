@@ -21,6 +21,7 @@ use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CollegeMessageController;
+use App\Http\Controllers\NavbarMenuController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -186,6 +187,15 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/banner/status/{id}', [BannerController::class, 'status'])->name('banner.status');
     Route::get('/admin/dashboard/banner/edit/{id}', [BannerController::class, 'edit'])->name('banner.edit');
     Route::post('/admin/dashboard/banner/edit/update/{id}', [BannerController::class, 'update'])->name('banner.update');
+
+    // Navbar Menu Routes
+    Route::get('/admin/dashboard/navbar-menu/add', [NavbarMenuController::class, 'create'])->name('navbar_menu.add');
+    Route::get('/admin/dashboard/navbar-menu/table', [NavbarMenuController::class, 'index'])->name('navbar_menu.table');
+    Route::post('/admin/dashboard/navbar-menu/store', [NavbarMenuController::class, 'store'])->name('navbar_menu.store');
+    Route::get('/admin/dashboard/navbar-menu/delete/{id}', [NavbarMenuController::class, 'destroy'])->name('navbar_menu.destroy');
+    Route::get('/admin/dashboard/navbar-menu/status/{id}', [NavbarMenuController::class, 'status'])->name('navbar_menu.status');
+    Route::get('/admin/dashboard/navbar-menu/edit/{id}', [NavbarMenuController::class, 'edit'])->name('navbar_menu.edit');
+    Route::post('/admin/dashboard/navbar-menu/edit/update/{id}', [NavbarMenuController::class, 'update'])->name('navbar_menu.update');
 
     // Custom Pages (HTML content) Routes
     Route::get('/admin/dashboard/page/add', [PageController::class, 'create'])->name('page.add');

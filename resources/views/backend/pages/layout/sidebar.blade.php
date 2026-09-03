@@ -170,6 +170,22 @@
           </ul>
         </div>
       </li>
+      
+      <li class="sb-item">
+        <a class="sb-link {{ request()->is('admin/dashboard/navbar-menu*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbNavbarMenu"
+           aria-expanded="{{ request()->is('admin/dashboard/navbar-menu*') ? 'true' : 'false' }}" title="Navbar Menu">
+          <i class="bi bi-menu-button-wide-fill"></i>
+          <span class="sb-text">Navbar Menu</span>
+          <i class="bi bi-chevron-right sb-arrow"></i>
+        </a>
+        <div class="collapse {{ request()->is('admin/dashboard/navbar-menu*') ? 'show' : '' }}" id="sbNavbarMenu">
+          <ul class="sb-submenu">
+            <li class="sb-item"><a href="{{ route('navbar_menu.add') }}"   class="sb-link {{ request()->routeIs('navbar_menu.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Link</span></a></li>
+            <li class="sb-item"><a href="{{ route('navbar_menu.table') }}" class="sb-link {{ request()->routeIs('navbar_menu.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Links</span></a></li>
+          </ul>
+        </div>
+      </li>
 
       <li class="sb-item">
         <a class="sb-link {{ request()->is('admin/dashboard/college-message*') ? 'active' : '' }}"

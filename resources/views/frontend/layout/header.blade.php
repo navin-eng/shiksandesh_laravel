@@ -1,6 +1,11 @@
 @php
     $siteSettings = \App\Models\SiteSetting::current();
     $navCourses = \App\Models\Course::where('status', 1)->get();
+    
+    // Fetch dynamic navbar menus, fallback if table doesn't exist yet
+    $navbarMenus = \Illuminate\Support\Facades\Schema::hasTable('navbar_menus') 
+        ? \App\Models\NavbarMenu::where('status', 1)->orderBy('order', 'asc')->get() 
+        : collect([]);
 @endphp
 {{-- ===== TOP BAR ===== --}}
 @if($siteSettings->show_topbar ?? true)
@@ -49,40 +54,39 @@
             {{-- Navigation --}}
             <nav class="gplc-nav" id="gplcNav">
                 <ul>
-                    <li>
-                        <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('about.us') }}" class="{{ request()->routeIs('about.us') ? 'active' : '' }}">About Us</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="{{ request()->segment(1)=='course' ? 'active' : '' }}">
-                            Academics <i class="fas fa-chevron-down" style="font-size:9px;margin-left:3px;"></i>
-                        </a>
-                        <ul class="dropdown-menu-gplc">
-                            @forelse($navCourses as $nc)
-                                <li>
-                                    <a href="{{ url('course/' . $nc->slug) }}">
-                                        <i class="fas fa-graduation-cap"></i> {{ $nc->name }}
-                                    </a>
-                                </li>
-                            @empty
-                                <li><a href="#">No courses yet</a></li>
-                            @endforelse
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="{{ route('member') }}" class="{{ request()->routeIs('member') ? 'active' : '' }}">Faculties</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('calendar') }}" class="{{ request()->routeIs('calendar') ? 'active' : '' }}">Calendar</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
-                    </li>
+                    @forelse($navbarMenus as $menu)
+                        @if($menu->type == 'course_dropdown')
+                            <li class="dropdown">
+                                <a href="#" class="{{ request()->segment(1)=='course' ? 'active' : '' }}">
+                                    {{ $menu->name }} <i class="fas fa-chevron-down" style="font-size:9px;margin-left:3px;"></i>
+                                </a>
+                                <ul class="dropdown-menu-gplc">
+                                    @forelse($navCourses as $nc)
+                                        <li>
+                                            <a href="{{ url('course/' . $nc->slug) }}">
+                                                <i class="fas fa-graduation-cap"></i> {{ $nc->name }}
+                                            </a>
+                                        </li>
+                                    @empty
+                                        <li><a href="#">No courses yet</a></li>
+                                    @endforelse
+                                </ul>
+                            </li>
+                        @else
+                            @php 
+                                $isActive = request()->is(ltrim($menu->url, '/')) || (request()->path() == '/' && $menu->url == '/');
+                            @endphp
+                            <li>
+                                <a href="{{ url($menu->url) }}" class="{{ $isActive ? 'active' : '' }}">
+                                    {{ $menu->name }}
+                                </a>
+                            </li>
+                        @endif
+                    @empty
+                        {{-- Fallback if table is empty or migration not run yet --}}
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('about.us') }}">About Us</a></li>
+                    @endforelse
                     <li>
                         <a href="{{ route('contact') }}" class="nav-apply">
                             <i class="fas fa-paper-plane"></i> Apply Now
