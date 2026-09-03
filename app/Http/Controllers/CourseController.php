@@ -52,11 +52,12 @@ class CourseController extends Controller
         $course->duration = $request->duration;
         $course->semester = $request->semester;
         $course->requirement = $request->requirement;
-        $course->starting_time = $request->starting_time ? Carbon::parse($request->starting_time)->format('g:i A') : null;
-        $course->closing_time = $request->closing_time ? Carbon::parse($request->closing_time)->format('g:i A') : null;
+        $course->starting_time = $request->starting_time ? Carbon::parse($request->starting_time)->format('g:i A') : '';
+        $course->closing_time = $request->closing_time ? Carbon::parse($request->closing_time)->format('g:i A') : '';
         $course->description = $request->description;
-        $course->fulldescription = $request->fulldescription ?: null;
+        $course->fulldescription = $request->fulldescription ?: '';
         $course->status = 1;
+        $course->gallery = '[]';
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -127,12 +128,16 @@ class CourseController extends Controller
         $course->requirement = $request->requirement;
         if($request->starting_time != null) {
             $course->starting_time = Carbon::parse($request->starting_time)->format('g:i A');
+        } else {
+            $course->starting_time = '';
         }
         if($request->closing_time != null) {
             $course->closing_time = Carbon::parse($request->closing_time)->format('g:i A');
+        } else {
+            $course->closing_time = '';
         }
         $course->description = $request->description;
-        $course->fulldescription = $request->fulldescription ?: null;
+        $course->fulldescription = $request->fulldescription ?: '';
         $course->status = 1;
 
         if ($request->hasFile('image')) {
