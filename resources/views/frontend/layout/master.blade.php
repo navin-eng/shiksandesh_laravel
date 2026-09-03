@@ -11,6 +11,7 @@
         }
     @endphp
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }} — Quality education from Playgroup to Secondary in {{ $siteSettings->contact_address ?? 'Belbari-2, Morang, Nepal' }}.">
     <meta name="keywords" content="{{ $siteSettings->site_short_name ?? 'SSES' }}, {{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }}, Belbari, Morang, Nepal, School in Belbari">
     <title>{{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }} | {{ $siteSettings->site_tagline ?? 'Belbari, Morang' }}</title>
