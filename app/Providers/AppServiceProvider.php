@@ -38,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('frontend.pages.home.hero_banner', function ($view) {
             $view->with('banners', \App\Models\Banner::where('status', 1)->get());
+        });
+        View::composer('frontend.pages.home.notice_ticker', function ($view) {
             $view->with('marqueeNotice', \App\Models\Notice::where('show_in', 'm')->latest()->first());
         });
         View::composer('frontend.pages.home.courses', function ($view) {
