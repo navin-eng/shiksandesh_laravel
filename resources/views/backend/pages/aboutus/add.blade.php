@@ -404,40 +404,29 @@
 @push('scripts')
     <script>
         const initialAboutHtml = @json(old('desc', $aboutus->desc ?? ''));
-        const starterTemplate = `<section class="gplc-about-block">
+        const starterTemplate = `<section class="sses-about-block">
   <style>
-    .gplc-about-block {font-family: Arial, sans-serif; color: #17324d; line-height: 1.8;}
-    .gplc-about-hero {padding: 28px; border-radius: 20px; background: linear-gradient(135deg, #eefbf3 0%, #f4f8ff 100%); margin-bottom: 24px;}
-    .gplc-about-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin: 24px 0;}
-    .gplc-about-card {padding: 18px; border-radius: 16px; background: #ffffff; border: 1px solid #e6edf5; box-shadow: 0 10px 24px rgba(19, 34, 56, 0.06);}
-    .gplc-about-highlight {margin-top: 14px; padding-left: 18px;}
+    .sses-about-block {font-family: var(--font-body, Arial, sans-serif); color: #1f2937; line-height: 1.7;}
+    .sses-about-hero {padding: 30px; border-radius: 12px; background: #f3f4f6; margin-bottom: 30px; border-left: 4px solid var(--primary);}
+    .sses-about-hero h3 {margin-top: 0; color: #111827;}
+    .sses-about-content {font-size: 1.05rem;}
+    .sses-about-content ul {margin-top: 15px; padding-left: 20px;}
+    .sses-about-content li {margin-bottom: 10px;}
   </style>
-  <div class="gplc-about-hero">
-    <h2>Welcome to Green Peace Lincoln College</h2>
-    <p>Introduce the college with a clear and trustworthy overview. Explain what makes the institution valuable for students, guardians, and future applicants.</p>
+  <div class="sses-about-hero">
+    <h3>Welcome to Shiksha Sandesh English School</h3>
+    <p>Established in 1993 A.D. (2050 B.S.), Shiksha Sandesh English School is a premier educational institution located in Belbari, Morang. We are dedicated to providing value-based, quality education that nurtures the academic, physical, and moral growth of our students.</p>
   </div>
-  <div class="gplc-about-grid">
-    <div class="gplc-about-card">
-      <h3>Our Mission</h3>
-      <p>Write how the college supports academic excellence, practical learning, and student growth.</p>
-    </div>
-    <div class="gplc-about-card">
-      <h3>Why Students Choose Us</h3>
-      <p>Describe facilities, teaching quality, affiliation, scholarships, industry exposure, and support systems.</p>
-    </div>
-    <div class="gplc-about-card">
-      <h3>Student Support</h3>
-      <p>Explain admission guidance, counseling, library access, labs, career help, internships, and extracurricular opportunities.</p>
-    </div>
+  <div class="sses-about-content">
+    <h4>Why Choose Us?</h4>
+    <ul>
+      <li><strong>Experienced Faculty:</strong> Learn from highly qualified and dedicated teachers.</li>
+      <li><strong>Modern Facilities:</strong> Well-equipped science and computer labs, and a resourceful library.</li>
+      <li><strong>Holistic Development:</strong> Strong focus on extracurricular activities and sports.</li>
+      <li><strong>Affiliation:</strong> Proudly affiliated with the National Examination Board (NEB) Nepal.</li>
+    </ul>
+    <p>Join us in shaping tomorrow's leaders through excellence in education.</p>
   </div>
-  <h3>What Students Usually Want to Know</h3>
-  <ul class="gplc-about-highlight">
-    <li>Affiliation and program recognition</li>
-    <li>Admission requirements and process</li>
-    <li>Facilities, labs, transportation, and hostel details</li>
-    <li>Scholarship opportunities and fee support</li>
-    <li>Career pathways and further study options</li>
-  </ul>
 </section>`;
 
         $('#summernote').summernote({
