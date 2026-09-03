@@ -186,4 +186,5 @@
     </script>
 @endpush
 
+    @include('frontend.layout.sections', ['page' => 'calendar'])
 @endsection

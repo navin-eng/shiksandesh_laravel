@@ -145,4 +145,5 @@
     </div>
 </section>
 
+    @include('frontend.layout.sections', ['page' => 'member'])
 @endsection

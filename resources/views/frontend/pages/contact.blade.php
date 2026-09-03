@@ -119,4 +119,5 @@
     </div>
 </section>
 
+    @include('frontend.layout.sections', ['page' => 'contact'])
 @endsection

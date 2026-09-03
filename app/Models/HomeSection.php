@@ -14,5 +14,10 @@ class HomeSection extends Model
         'label',
         'is_visible',
         'sort_order',
+        'visible_pages',
+    ];
+
+    protected $casts = [
+        'visible_pages' => 'array',
     ];
 }

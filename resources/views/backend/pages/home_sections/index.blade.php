@@ -13,7 +13,7 @@
             border-radius: 18px;
             padding: 18px;
             display: grid;
-            grid-template-columns: 56px 1fr auto auto;
+            grid-template-columns: 56px 1fr auto auto 150px;
             gap: 16px;
             align-items: center;
             box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
@@ -45,7 +45,8 @@
                 grid-template-columns: 48px 1fr;
             }
             .layout-order,
-            .layout-visibility {
+            .layout-visibility,
+            .layout-pages {
                 grid-column: 2 / -1;
             }
         }
@@ -53,8 +54,8 @@
 
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
-            <h3 class="mb-1">Homepage Layout</h3>
-            <p class="text-muted mb-0">Choose which sections appear on the index page and drag them into the order you want.</p>
+            <h3 class="mb-1">Section Visibility Manager</h3>
+            <p class="text-muted mb-0">Choose which sections appear on which pages and drag them into the order you want.</p>
         </div>
     </div>
 
@@ -62,6 +63,9 @@
         @csrf
         <div class="home-layout-list" id="homeLayoutList">
             @foreach ($sections as $index => $section)
+                @php
+                    $visiblePages = $section->visible_pages ?? ['/'];
+                @endphp
                 <div class="home-layout-item" data-index="{{ $index }}">
                     <div class="drag-handle">
                         <i class="bi bi-grip-vertical"></i>
@@ -72,13 +76,26 @@
                         <input type="text" class="form-control" name="sections[{{ $index }}][label]" value="{{ $section->label }}" required>
                         <code>{{ $section->key }}</code>
                     </div>
+                    <div class="layout-pages">
+                        <small class="d-block text-muted mb-1">Visible On</small>
+                        <select name="sections[{{ $index }}][visible_pages][]" class="form-select form-select-sm" multiple style="height: 60px;">
+                            <option value="/" {{ in_array('/', $visiblePages) ? 'selected' : '' }}>Home Page</option>
+                            <option value="aboutus" {{ in_array('aboutus', $visiblePages) ? 'selected' : '' }}>About Us</option>
+                            <option value="contact" {{ in_array('contact', $visiblePages) ? 'selected' : '' }}>Contact</option>
+                            <option value="gallery" {{ in_array('gallery', $visiblePages) ? 'selected' : '' }}>Gallery</option>
+                            <option value="member" {{ in_array('member', $visiblePages) ? 'selected' : '' }}>Faculties</option>
+                            @foreach($customPages as $cp)
+                                <option value="custom:{{ $cp->id }}" {{ in_array('custom:'.$cp->id, $visiblePages) ? 'selected' : '' }}>{{ $cp->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="layout-order text-muted">
                         Order: <strong class="sort-order-label">{{ $section->sort_order }}</strong>
                     </div>
                     <div class="layout-visibility">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" name="sections[{{ $index }}][is_visible]" value="1" {{ $section->is_visible ? 'checked' : '' }}>
-                            <label class="form-check-label">Visible</label>
+                            <label class="form-check-label">Enabled</label>
                         </div>
                     </div>
                 </div>

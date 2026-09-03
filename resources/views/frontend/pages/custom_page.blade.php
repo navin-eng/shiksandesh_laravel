@@ -92,4 +92,5 @@
     {!! $page->content !!}
 </div>
 
+    @include('frontend.layout.sections', ['page' => 'custom:'.$page->id])
 @endsection

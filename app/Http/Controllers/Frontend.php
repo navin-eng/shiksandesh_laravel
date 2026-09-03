@@ -29,14 +29,6 @@ class Frontend extends Controller
         return view('frontend.pages.index', [
             'homeSections' => $homeSections,
             'orderedSectionKeys' => $orderedSectionKeys,
-            'popupNotice' => Notice::where('show_in', 'p')->latest()->first(),
-            'banners' => Banner::where('status', 1)->get(),
-            'marqueeNotice' => Notice::where('show_in', 'm')->latest()->first(),
-            'courses' => Course::where('status', 1)->get(),
-            'counter' => Counter::first(),
-            'messages' => CollegeMessage::where('status', 1)->orderBy('order')->get(),
-            'events' => Event::where('status', 1)->get(),
-            'testimonials' => Testimonial::all(),
         ]);
     }
 

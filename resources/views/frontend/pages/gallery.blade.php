@@ -56,4 +56,5 @@
     </div>
 </section>
 
+    @include('frontend.layout.sections', ['page' => 'gallery'])
 @endsection
