@@ -9,7 +9,7 @@
     <meta name="description" content="Green Peace Lincoln College — Affiliated with Lincoln University Malaysia. Quality higher education in Itahari, Nepal.">
     <meta name="keywords" content="GPLC, Green Peace Lincoln College, Lincoln University, Itahari, Nepal, BBS, BCA, BBA">
     <title>Green Peace Lincoln College | Affiliated with Lincoln University Malaysia</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('backend/images/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ $siteSettings->site_favicon ? asset($siteSettings->site_favicon) : asset('backend/images/favicon.ico') }}">
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">

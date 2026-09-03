@@ -39,7 +39,7 @@
 
             {{-- Logo --}}
             <a href="{{ route('home') }}" class="gplc-logo">
-                <img src="{{ asset('backend/images/logo.png') }}" alt="GPLC Logo">
+                <img src="{{ $siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png') }}" alt="{{ $siteSettings->site_name }} Logo">
                 <div class="gplc-logo-text">
                     <span class="college-name">{{ $siteSettings->site_name }}</span>
                     <span class="affiliation">{{ $siteSettings->site_tagline }}</span>

@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <form action="{{ route('site.settings.update') }}" method="POST">
+    <form action="{{ route('site.settings.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row g-4">
             <div class="col-lg-6">
@@ -24,9 +24,75 @@
                             <label class="form-label">Short Name</label>
                             <input type="text" name="site_short_name" class="form-control" value="{{ old('site_short_name', $settings->site_short_name) }}" required>
                         </div>
-                        <div class="mb-0">
+                        <div class="mb-3">
                             <label class="form-label">Tagline / Logo Subtitle</label>
                             <input type="text" name="site_tagline" class="form-control" value="{{ old('site_tagline', $settings->site_tagline) }}" required>
+                        </div>
+
+                        <hr class="my-3 text-muted">
+
+                        {{-- Site Logo --}}
+                        <div class="mb-3">
+                            <label class="form-label d-flex justify-content-between align-items-center">
+                                <span>Site Logo</span>
+                                @if($settings->site_logo)
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">Custom Logo Active</span>
+                                @else
+                                    <span class="badge bg-light text-muted border">Default Logo</span>
+                                @endif
+                            </label>
+                            <div class="d-flex align-items-center gap-3 p-2 border rounded bg-light mb-2">
+                                <div class="bg-white border rounded p-2 d-flex align-items-center justify-content-center" style="min-width: 90px; height: 60px;">
+                                    <img src="{{ $settings->site_logo ? asset($settings->site_logo) : asset('backend/images/logo.png') }}" 
+                                         alt="Current Logo" 
+                                         id="logoPreview"
+                                         style="max-height: 44px; max-width: 80px; object-fit: contain;">
+                                </div>
+                                <div class="small text-muted flex-grow-1">
+                                    Recommended: PNG or SVG with transparent background (Max 2MB).
+                                </div>
+                            </div>
+                            <input type="file" name="site_logo" id="siteLogoInput" class="form-control" accept="image/*">
+                            @if($settings->site_logo)
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="remove_logo" value="1" id="removeLogoCheck">
+                                    <label class="form-check-label text-danger small" for="removeLogoCheck">
+                                        Reset to default logo
+                                    </label>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Site Favicon --}}
+                        <div class="mb-0">
+                            <label class="form-label d-flex justify-content-between align-items-center">
+                                <span>Browser Favicon</span>
+                                @if($settings->site_favicon)
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle">Custom Favicon</span>
+                                @else
+                                    <span class="badge bg-light text-muted border">Default Favicon</span>
+                                @endif
+                            </label>
+                            <div class="d-flex align-items-center gap-3 p-2 border rounded bg-light mb-2">
+                                <div class="bg-white border rounded p-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                    <img src="{{ $settings->site_favicon ? asset($settings->site_favicon) : asset('backend/images/favicon.ico') }}" 
+                                         alt="Current Favicon" 
+                                         id="faviconPreview"
+                                         style="width: 32px; height: 32px; object-fit: contain;">
+                                </div>
+                                <div class="small text-muted flex-grow-1">
+                                    Recommended: 32x32px or 64x64px ICO or PNG.
+                                </div>
+                            </div>
+                            <input type="file" name="site_favicon" id="siteFaviconInput" class="form-control" accept=".ico,.png,.jpg,.svg,.webp">
+                            @if($settings->site_favicon)
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="remove_favicon" value="1" id="removeFaviconCheck">
+                                    <label class="form-check-label text-danger small" for="removeFaviconCheck">
+                                        Reset to default favicon
+                                    </label>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -230,3 +296,37 @@
         </div>
     </form>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const logoInput = document.getElementById('siteLogoInput');
+        const logoPreview = document.getElementById('logoPreview');
+        if (logoInput && logoPreview) {
+            logoInput.addEventListener('change', function (e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        logoPreview.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        }
+
+        const favInput = document.getElementById('siteFaviconInput');
+        const favPreview = document.getElementById('faviconPreview');
+        if (favInput && favPreview) {
+            favInput.addEventListener('change', function (e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (ev) {
+                        favPreview.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        }
+    });
+</script>
+@endpush

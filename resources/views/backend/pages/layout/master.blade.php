@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  @php($siteSettings = \App\Models\SiteSetting::current())
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@stack('b-title') — GPLC Admin</title>
-  <link rel="icon" type="image/x-icon" href="{{ asset('backend/images/favicon.ico') }}">
+  <title>@stack('b-title') — {{ $siteSettings->site_short_name ?? 'GPLC' }} Admin</title>
+  <link rel="icon" type="image/x-icon" href="{{ $siteSettings->site_favicon ? asset($siteSettings->site_favicon) : asset('backend/images/favicon.ico') }}">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

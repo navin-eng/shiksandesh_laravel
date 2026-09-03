@@ -80,7 +80,7 @@
             {{-- Brand --}}
             <div class="col-lg-3 col-md-6">
                 <div class="gplc-footer-brand">
-                    <img src="{{ asset('backend/images/logo.png') }}" width="110" alt="GPLC Logo">
+                    <img src="{{ $siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png') }}" width="110" alt="{{ $siteSettings->site_name }} Logo">
                     <p>{{ $siteSettings->site_name }}, providing quality education and shaping future leaders in {{ $siteSettings->contact_address }}.</p>
                     <div class="gplc-footer-social">
                         <a href="{{ $siteSettings->facebook_url }}" target="_blank"><i class="fab fa-facebook-f"></i></a>

@@ -7,6 +7,7 @@ use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SiteSettingController extends Controller
@@ -25,6 +26,8 @@ class SiteSettingController extends Controller
             'site_name' => 'required|string|max:255',
             'site_short_name' => 'required|string|max:100',
             'site_tagline' => 'required|string|max:255',
+            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'site_favicon' => 'nullable|mimes:ico,png,jpg,svg,webp|max:1024',
             'primary_color' => 'required|string|max:20',
             'primary_dark' => 'required|string|max:20',
             'primary_light' => 'required|string|max:20',
@@ -51,14 +54,62 @@ class SiteSettingController extends Controller
             'sticky_notice_mobile_collapsed' => 'nullable|boolean',
         ]);
 
+        $settings = SiteSetting::first();
+
+        // Handle Site Logo Upload
+        if ($request->hasFile('site_logo')) {
+            $logo = $request->file('site_logo');
+            $ext = $logo->getClientOriginalExtension();
+            $logoName = 'logo_' . time() . '_' . Str::random(8) . '.' . $ext;
+            $destination = public_path('backend/images/settings');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+            $logo->move($destination, $logoName);
+            $data['site_logo'] = 'backend/images/settings/' . $logoName;
+
+            if ($settings && $settings->site_logo && file_exists(public_path($settings->site_logo))) {
+                @unlink(public_path($settings->site_logo));
+            }
+        } elseif ($request->boolean('remove_logo')) {
+            if ($settings && $settings->site_logo && file_exists(public_path($settings->site_logo))) {
+                @unlink(public_path($settings->site_logo));
+            }
+            $data['site_logo'] = null;
+        } else {
+            unset($data['site_logo']);
+        }
+
+        // Handle Site Favicon Upload
+        if ($request->hasFile('site_favicon')) {
+            $favicon = $request->file('site_favicon');
+            $ext = $favicon->getClientOriginalExtension();
+            $favName = 'favicon_' . time() . '_' . Str::random(8) . '.' . $ext;
+            $destination = public_path('backend/images/settings');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+            $favicon->move($destination, $favName);
+            $data['site_favicon'] = 'backend/images/settings/' . $favName;
+
+            if ($settings && $settings->site_favicon && file_exists(public_path($settings->site_favicon))) {
+                @unlink(public_path($settings->site_favicon));
+            }
+        } elseif ($request->boolean('remove_favicon')) {
+            if ($settings && $settings->site_favicon && file_exists(public_path($settings->site_favicon))) {
+                @unlink(public_path($settings->site_favicon));
+            }
+            $data['site_favicon'] = null;
+        } else {
+            unset($data['site_favicon']);
+        }
+
         $data['show_sticky_notice'] = $request->boolean('show_sticky_notice');
         $data['show_topbar'] = $request->boolean('show_topbar');
         $data['show_whatsapp_button'] = $request->boolean('show_whatsapp_button');
         $data['show_back_to_top'] = $request->boolean('show_back_to_top');
         $data['sticky_notice_desktop_collapsed'] = $request->boolean('sticky_notice_desktop_collapsed');
         $data['sticky_notice_mobile_collapsed'] = $request->boolean('sticky_notice_mobile_collapsed');
-
-        $settings = SiteSetting::first();
 
         $original = $settings ? $settings->toArray() : [];
 

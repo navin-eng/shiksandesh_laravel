@@ -9,7 +9,7 @@
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="{{ $siteSettings->site_favicon ? asset($siteSettings->site_favicon) : asset('backend/images/favicon.ico') }}">
 
     <!-- App css -->
     <link href="{{ asset('backend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -168,7 +168,7 @@
                         <!-- Logo -->
                         <div class="card-header pt-4 pb-4 text-center">
                             <a href="{{ route('home') }}">
-                                <span><img src="{{ asset('backend/images/logo.png') }}" alt="" height="68"></span>
+                                <span><img src="{{ $siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png') }}" alt="{{ $siteSettings->site_name }}" height="68"></span>
                             </a>
                         </div>
                         @yield('backend-auth-content')
