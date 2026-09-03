@@ -227,6 +227,14 @@
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
                         <h5 class="mb-3">Public Display Controls</h5>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-primary">System Calendar Format</label>
+                            <select name="calendar_format" class="form-select border-primary bg-primary-subtle">
+                                <option value="ad" {{ old('calendar_format', $settings->calendar_format ?? 'ad') === 'ad' ? 'selected' : '' }}>English (A.D.)</option>
+                                <option value="bs" {{ old('calendar_format', $settings->calendar_format ?? 'ad') === 'bs' ? 'selected' : '' }}>Nepali (B.S.)</option>
+                            </select>
+                            <small class="text-muted d-block mt-1">This will change how dates are displayed across the entire public website.</small>
+                        </div>
                         <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" role="switch" id="showTopbar" name="show_topbar" value="1" {{ old('show_topbar', $settings->show_topbar ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="showTopbar">Show top information bar</label>

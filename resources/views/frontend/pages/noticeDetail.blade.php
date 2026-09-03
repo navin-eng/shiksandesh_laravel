@@ -14,7 +14,7 @@
                 <div class="d-flex flex-wrap gap-4 mt-4 text-white" style="opacity: 0.9;">
                     <div class="d-flex align-items-center gap-2">
                         <i class="fa-regular fa-clock fa-lg text-warning"></i>
-                        <span class="fs-5">Published: {{ $notice->created_at->format('d M, Y') }}</span>
+                        <span class="fs-5">Published: {{ format_system_date($notice->created_at) }}</span>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                                     <div class="notice-icon"><i class="fa-solid fa-thumbtack"></i></div>
                                     <div class="notice-content">
                                         <h6>{{ Str::limit($on->title, 55) }}</h6>
-                                        <span>{{ $on->created_at->format('d M, Y') }}</span>
+                                        <span>{{ format_system_date($on->created_at) }}</span>
                                     </div>
                                 </a>
                             @endforeach

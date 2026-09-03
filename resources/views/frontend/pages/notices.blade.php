@@ -67,7 +67,7 @@
                                         {{ $notice->show_in === 'p' ? 'Popup' : 'Marquee' }}
                                     </span>
                                 </td>
-                                <td>{{ optional($notice->created_at)->format('d M Y') }}</td>
+                                <td>{{ format_system_date($notice->created_at) }}</td>
                                 <td>
                                     <a href="{{ url('notice/detail/' . $notice->id) }}" class="btn btn-sm btn-outline-success">Open</a>
                                 </td>

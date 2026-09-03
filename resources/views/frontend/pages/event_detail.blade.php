@@ -14,7 +14,7 @@
                 <div class="d-flex flex-wrap gap-4 mt-4 text-white" style="opacity: 0.9;">
                     <div class="d-flex align-items-center gap-2">
                         <i class="fa-regular fa-calendar fa-lg text-warning"></i>
-                        <span class="fs-5">{{ $event->visit_date }}</span>
+                        <span class="fs-5">{{ format_system_date($event->visit_date) }}</span>
                     </div>
                     @if($event->venue)
                     <div class="d-flex align-items-center gap-2">
@@ -73,7 +73,7 @@
                                 <div class="icon-box"><i class="fa-regular fa-calendar-check"></i></div>
                                 <div class="meta-content">
                                     <span>Date</span>
-                                    <strong>{{ $event->visit_date }}</strong>
+                                    <strong>{{ format_system_date($event->visit_date) }}</strong>
                                 </div>
                             </li>
                             <li>
@@ -114,7 +114,7 @@
                                     <img src="{{ asset($oe->image) }}" alt="{{ $oe->name }}">
                                     <div class="other-event-content">
                                         <h5>{{ Str::limit($oe->name, 45) }}</h5>
-                                        <span><i class="fa-regular fa-calendar me-1"></i> {{ $oe->visit_date }}</span>
+                                        <span><i class="fa-regular fa-calendar me-1"></i> {{ format_system_date($oe->visit_date) }}</span>
                                     </div>
                                 </a>
                             @endforeach

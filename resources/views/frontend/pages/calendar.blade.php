@@ -74,9 +74,9 @@
                                 <h6 style="font-weight: 700; color: var(--dark); margin: 5px 0;">{{ $entry->title }}</h6>
                                 <p class="mb-0" style="font-size: 13px; color: #6b7280; font-weight: 600;">
                                     <i class="fa-regular fa-calendar me-1"></i>
-                                    {{ \Illuminate\Support\Carbon::parse($entry->start_date)->format('d M Y') }}
+                                    {{ format_system_date($entry->start_date) }}
                                     @if($entry->end_date && $entry->end_date !== $entry->start_date)
-                                        - {{ \Illuminate\Support\Carbon::parse($entry->end_date)->format('d M Y') }}
+                                        - {{ format_system_date($entry->end_date) }}
                                     @endif
                                 </p>
                             </div>

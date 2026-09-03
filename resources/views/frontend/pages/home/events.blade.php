@@ -23,11 +23,8 @@
                             <div class="event-image-wrapper">
                                 <img src="{{ asset($event->image) }}" alt="{{ $event->name }}" class="event-img">
                                 <div class="event-date-badge">
-                                    @php
-                                        $dateObj = \Carbon\Carbon::parse($event->visit_date);
-                                    @endphp
-                                    <span class="day">{{ $dateObj->format('d') }}</span>
-                                    <span class="month">{{ $dateObj->format('M') }}</span>
+                                    <span class="day">{{ format_system_date($event->visit_date, 'd') }}</span>
+                                    <span class="month">{{ format_system_date($event->visit_date, 'M') }}</span>
                                 </div>
                                 <div class="event-type-badge">
                                     {{ $event->event_type_label ?? 'Campus Event' }}

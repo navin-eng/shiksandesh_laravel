@@ -24,7 +24,11 @@
 <div class="gplc-topbar">
     <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div class="topbar-info d-flex align-items-center gap-3">
-            <span><i class="fas fa-phone-alt"></i> {{ $siteSettings->contact_phone }}</span>
+            <div class="nepali-date-widget" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 50px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);">
+                <i class="fas fa-calendar-day" style="color: #fcd34d;"></i>
+                <span class="text-white">{{ get_today_nepali_date() }}</span>
+            </div>
+            <span class="d-none d-md-flex"><i class="fas fa-phone-alt"></i> {{ $siteSettings->contact_phone }}</span>
             <span class="d-none d-md-flex"><i class="fas fa-envelope"></i> {{ $siteSettings->contact_email }}</span>
             <span class="d-none d-lg-flex"><i class="fas fa-map-marker-alt"></i> {{ $siteSettings->contact_address }}</span>
         </div>

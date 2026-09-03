@@ -52,6 +52,7 @@ class SiteSettingController extends Controller
             'show_back_to_top' => 'nullable|boolean',
             'sticky_notice_desktop_collapsed' => 'nullable|boolean',
             'sticky_notice_mobile_collapsed' => 'nullable|boolean',
+            'calendar_format' => 'required|in:ad,bs',
         ]);
 
         $settings = SiteSetting::first();
