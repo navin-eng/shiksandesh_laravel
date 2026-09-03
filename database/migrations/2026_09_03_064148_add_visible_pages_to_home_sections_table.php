@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('home_sections', function (Blueprint $table) {
-            $table->text('visible_pages')->nullable()->after('status');
+            $table->text('visible_pages')->nullable()->after('is_visible');
         });
     }
 
