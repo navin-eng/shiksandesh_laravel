@@ -1,4 +1,4 @@
-@if($marqueeNotice)
+@if(!empty($marqueeNotice))
     <div class="gplc-ticker">
         <div class="gplc-ticker-label">
             <i class="fa-solid fa-bell"></i> Latest Notice

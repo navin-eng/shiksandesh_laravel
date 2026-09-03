@@ -1,4 +1,4 @@
-@if($popupNotice && !session()->has('popupClosed'))
+@if(!empty($popupNotice) && !session()->has('popupClosed'))
     <div class="gplc-popup-wrap" id="gplcPopup">
         <div class="gplc-popup">
             <a href="{{ route('popup.close') }}" class="gplc-popup-close" title="Close">&times;</a>
