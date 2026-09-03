@@ -187,30 +187,57 @@ a:hover { color: var(--primary-dark); }
 .nav-apply:hover { background: var(--primary-dark) !important; transform: translateY(-2px); }
 
 /* ── Dropdown ── */
+.gplc-nav .dropdown {
+    position: relative;
+}
 .dropdown-menu-gplc {
-    display: none;
+    display: none !important;
     position: absolute;
     top: 100%;
     left: 0;
     background: #fff;
-    min-width: 240px;
+    min-width: 230px;
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-hover);
-    padding: 12px;
+    box-shadow: 0 10px 30px rgba(14, 45, 84, 0.12);
+    padding: 8px;
     border: 1px solid var(--border-color);
-    animation: slideUp 0.3s ease;
+    z-index: 1050;
+    margin: 0;
+    list-style: none;
 }
-@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.dropdown:hover .dropdown-menu-gplc { display: block; }
-.dropdown-menu-gplc li { margin-bottom: 4px; }
+.gplc-nav .dropdown:hover > .dropdown-menu-gplc,
+.dropdown:hover > .dropdown-menu-gplc {
+    display: block !important;
+    animation: slideUp 0.22s ease forwards;
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.dropdown-menu-gplc li {
+    margin-bottom: 3px;
+    width: 100%;
+}
 .dropdown-menu-gplc a {
-    padding: 10px 16px;
+    padding: 9px 14px;
     border-radius: var(--radius-sm);
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: var(--text-main);
+    font-size: 0.92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: var(--transition);
 }
-.dropdown-menu-gplc a:hover { background: var(--bg-body); color: var(--primary); padding-left: 20px; }
-.dropdown-menu-gplc a::after { display: none !important; }
+.dropdown-menu-gplc a:hover {
+    background: var(--bg-body);
+    color: var(--primary);
+    padding-left: 18px;
+}
+.dropdown-menu-gplc a::after {
+    display: none !important;
+}
 
 /* ── Hero Banner ───────────────────────────────────────── */
 .gplc-hero-slide { height: 75vh; min-height: 600px; position: relative; }

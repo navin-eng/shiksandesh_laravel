@@ -56,22 +56,28 @@
                 <ul>
                     @forelse($navbarMenus as $menu)
                         @if($menu->type == 'course_dropdown')
-                            <li class="dropdown">
-                                <a href="#" class="{{ request()->segment(1)=='course' ? 'active' : '' }}">
-                                    {{ $menu->name }} <i class="fas fa-chevron-down" style="font-size:9px;margin-left:3px;"></i>
-                                </a>
-                                <ul class="dropdown-menu-gplc">
-                                    @forelse($navCourses as $nc)
-                                        <li>
-                                            <a href="{{ url('course/' . $nc->slug) }}">
-                                                <i class="fas fa-graduation-cap"></i> {{ $nc->name }}
-                                            </a>
-                                        </li>
-                                    @empty
-                                        <li><a href="#">No courses yet</a></li>
-                                    @endforelse
-                                </ul>
-                            </li>
+                            @if($navCourses->count() > 0)
+                                <li class="dropdown">
+                                    <a href="{{ url('course') }}" class="{{ request()->segment(1)=='course' ? 'active' : '' }}">
+                                        {{ $menu->name }} <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;"></i>
+                                    </a>
+                                    <ul class="dropdown-menu-gplc">
+                                        @foreach($navCourses as $nc)
+                                            <li>
+                                                <a href="{{ url('course/' . $nc->slug) }}">
+                                                    <i class="fas fa-graduation-cap"></i> {{ $nc->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ url('course') }}" class="{{ request()->segment(1)=='course' ? 'active' : '' }}">
+                                        {{ $menu->name }}
+                                    </a>
+                                </li>
+                            @endif
                         @else
                             @php 
                                 $isActive = request()->is(ltrim($menu->url, '/')) || (request()->path() == '/' && $menu->url == '/');
