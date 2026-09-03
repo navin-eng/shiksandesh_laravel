@@ -53,9 +53,12 @@
           <i class="bi bi-person-circle"></i> My Profile
         </a>
         <div class="ud-divider"></div>
-        <a href="{{ route('admin.logout') }}" class="ud-danger">
-          <i class="bi bi-box-arrow-right"></i> Sign Out
-        </a>
+        <form method="POST" action="{{ route('admin.logout') }}" style="display:inline;">
+            @csrf
+            <button type="submit" class="ud-danger" style="background:none;border:none;cursor:pointer;padding:0;width:100%;text-align:left;">
+              <i class="bi bi-box-arrow-right"></i> Sign Out
+            </button>
+        </form>
       </div>
     </div>
     @endauth

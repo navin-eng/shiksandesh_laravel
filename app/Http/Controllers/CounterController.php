@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Counter;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 
 
 class CounterController extends Controller
@@ -73,6 +74,9 @@ class CounterController extends Controller
 
         if ($save) {
 
+                        Cache::forget('home.counter');
+
+
             Alert::success('Saved', 'counter saved successfully');
             return back();
         } else {
@@ -88,6 +92,9 @@ class CounterController extends Controller
         $save = $counter->update($this->payload($request));
 
         if ($save) {
+
+                        Cache::forget('home.counter');
+
 
             Alert::success('Saved', 'counter updated successfully');
             return back();

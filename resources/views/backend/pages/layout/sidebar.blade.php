@@ -227,9 +227,12 @@
 
   {{-- Sidebar footer --}}
   <div class="sb-footer">
-    <a href="{{ url('admin/dashboard/logout') }}" class="sb-link" title="Sign Out">
-      <i class="bi bi-box-arrow-left"></i><span class="sb-text">Sign Out</span>
-    </a>
+    <form method="POST" action="{{ route('admin.logout') }}">
+      @csrf
+      <button type="submit" class="sb-link" title="Sign Out" style="background:none;border:none;cursor:pointer;width:100%;text-align:left;">
+        <i class="bi bi-box-arrow-left"></i><span class="sb-text">Sign Out</span>
+      </button>
+    </form>
   </div>
 
 </aside>

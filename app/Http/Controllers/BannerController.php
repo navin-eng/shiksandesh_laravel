@@ -6,6 +6,7 @@ use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 
 
 class BannerController extends Controller
@@ -40,6 +41,9 @@ class BannerController extends Controller
         $save = $banner->save();
         if ($save == true) {
 
+                        Cache::forget('home.banners');
+
+
             Alert::success('Saved', 'banner saved successfully');
             return back();
         } else {
@@ -68,11 +72,15 @@ class BannerController extends Controller
             if ($banner->status == 0) {
                 $banner->status = 1;
                 $banner->update();
+                                Cache::forget('home.banners');
+
                 Alert::success('Updated', 'status activated');
                 return back();
             } else {
                 $banner->status = 0;
                 $banner->update();
+                                Cache::forget('home.banners');
+
                 Alert::success('Updated', 'status deactivated');
                 return back();
             }
@@ -99,6 +107,9 @@ class BannerController extends Controller
         $save = $banner->update();
         if ($save == true) {
 
+                        Cache::forget('home.banners');
+
+
             Alert::success('Saved', 'banner update successfully');
             return redirect()->route('banner.table');
         } else {
@@ -110,6 +121,8 @@ class BannerController extends Controller
     {
         $banner = Banner::find($id);
         $banner->delete();
+                Cache::forget('home.banners');
+
         Alert::success('Deleted', 'banner deleted');
         return redirect()->route('banner.table');
     }

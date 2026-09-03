@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CampusCalendarController;
 use App\Http\Controllers\TeacherController;
@@ -216,21 +217,35 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/college-message/status/{id}', [CollegeMessageController::class, 'status'])->name('college_message.status');
     Route::get('/admin/dashboard/college-message/edit/{id}', [CollegeMessageController::class, 'edit'])->name('college_message.edit');
     Route::post('/admin/dashboard/college-message/edit/update/{id}', [CollegeMessageController::class, 'update'])->name('college_message.update');
+    // SECURITY FIX: Register routes moved inside webGuard so only a logged-in super admin can create new users.
+    Route::get('/admin/dashboard/register', [Admin::class, 'register'])->name('admin.register');
+    Route::post('/admin/dashboard/admin/register', [Admin::class, 'registerAdmin'])->name('admin.store');
+
+    // SECURITY FIX: Logout is now POST to prevent CSRF-based forced logout attacks.
+    Route::post('/admin/dashboard/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect()->route('home')->with('success', 'Logged out successfully.');
+    })->name('admin.logout');
 });
-// Backend Routes login and register
+
+// Backend Routes — public (unauthenticated) auth pages
 Route::get('/admin/dashboard/login', [Admin::class, 'login'])->name('admin.login');
-Route::get('/admin/dashboard/register', [Admin::class, 'register'])->name('admin.register');
-Route::post('/admin/dashboard/admin/register', [Admin::class, 'registerAdmin'])->name('admin.store');
-Route::post('/admin/dashboard/admin/check', [Admin::class, 'adminCheck'])->name('admin.check');
+
+// SECURITY FIX: Throttle login attempts to 5 per minute to prevent brute force.
+Route::post('/admin/dashboard/admin/check', [Admin::class, 'adminCheck'])
+    ->middleware('throttle:5,1')
+    ->name('admin.check');
+
 Route::get('/admin/dashboard/forgot/password', [Admin::class, 'forgotPassword'])->name('forgot.password');
-Route::post('/admin/dashboard/email/check', [Admin::class, 'emailCheck'])->name('email.check');
+
+// SECURITY FIX: Throttle OTP email requests to 3 per minute.
+Route::post('/admin/dashboard/email/check', [Admin::class, 'emailCheck'])
+    ->middleware('throttle:3,1')
+    ->name('email.check');
+
 Route::get('/admin/dashboard/reset/password', function () {
     return view('backend.auth.resetpassword');
 });
 Route::post('/admin/dashboard/reset/password', [Admin::class, 'resetPassword'])->name('resetPassword');
-Route::get('/admin/dashboard/logout', function () {
-    $user = Auth::user()->password;
-    Auth::logout();
-    Auth::logoutOtherDevices($user);
-    return redirect()->route('home')->with('success', 'Logout');
-})->name('admin.logout');

@@ -6,6 +6,7 @@ use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 
 
 
@@ -42,6 +43,10 @@ class NoticeController extends Controller
         $save = $notice->save();
         if ($save == true) {
 
+                        Cache::forget('home.popup_notice');
+            Cache::forget('home.marquee_notice');
+
+
             Alert::success('Saved', 'notice saved successfully');
             return back();
         } else {
@@ -70,11 +75,17 @@ class NoticeController extends Controller
             if ($notice->show_in == 'p') {
                 $notice->show_in = 'm';
                 $notice->update();
+                                Cache::forget('home.popup_notice');
+                Cache::forget('home.marquee_notice');
+
                 Alert::success('Updated', 'marque activated');
                 return back();
             } else {
                 $notice->show_in = 'p';
                 $notice->update();
+                                Cache::forget('home.popup_notice');
+                Cache::forget('home.marquee_notice');
+
                 Alert::success('Updated', 'popup activated');
                 return back();
             }
@@ -102,6 +113,10 @@ class NoticeController extends Controller
         $save = $notice->update();
         if ($save == true) {
 
+                        Cache::forget('home.popup_notice');
+            Cache::forget('home.marquee_notice');
+
+
             Alert::success('Saved', 'notice update successfully');
             return redirect()->route('notice.table');
         } else {
@@ -113,6 +128,9 @@ class NoticeController extends Controller
     {
         $notice = Notice::find($id);
         $notice->delete();
+                Cache::forget('home.popup_notice');
+        Cache::forget('home.marquee_notice');
+
         Alert::success('Deleted', 'notice deleted');
         return redirect()->route('notice.table');
     }

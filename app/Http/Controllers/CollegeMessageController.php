@@ -6,6 +6,7 @@ use App\Models\CollegeMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 
 class CollegeMessageController extends Controller
 {
@@ -45,6 +46,8 @@ class CollegeMessageController extends Controller
         $saved = $msg->save();
 
         if ($saved) {
+                        Cache::forget('home.messages');
+
             Alert::success('Saved', 'Message saved successfully');
             return redirect()->route('college_message.table');
         }
@@ -83,6 +86,8 @@ class CollegeMessageController extends Controller
         $saved = $msg->update();
 
         if ($saved) {
+                        Cache::forget('home.messages');
+
             Alert::success('Updated', 'Message updated successfully');
             return redirect()->route('college_message.table');
         }
@@ -96,6 +101,8 @@ class CollegeMessageController extends Controller
         $msg         = CollegeMessage::findOrFail($id);
         $msg->status = $msg->status == 1 ? 0 : 1;
         $msg->update();
+                Cache::forget('home.messages');
+
         Alert::success('Updated', 'Status changed');
         return back();
     }
@@ -103,6 +110,8 @@ class CollegeMessageController extends Controller
     public function destroy($id)
     {
         CollegeMessage::findOrFail($id)->delete();
+                Cache::forget('home.messages');
+
         Alert::success('Deleted', 'Message deleted successfully');
         return redirect()->route('college_message.table');
     }

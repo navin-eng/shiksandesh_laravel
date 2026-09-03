@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 
 
 class TestimonialController extends Controller
@@ -44,6 +45,9 @@ class TestimonialController extends Controller
                 $testimonial->save();
             }
 
+                        Cache::forget('home.testimonials');
+
+
             Alert::success('Saved', 'Testimonials saved successfully');
             return back();
         }
@@ -63,6 +67,9 @@ class TestimonialController extends Controller
         }
         $save = $testimonial->save();
         if ($save == true) {
+
+                        Cache::forget('home.testimonials');
+
 
             Alert::success('Saved', 'testimonial saved successfully');
             return back();
@@ -92,11 +99,15 @@ class TestimonialController extends Controller
             if ($testimonial->status == 1) {
                 $testimonial->status = null;
                 $testimonial->update();
+                                Cache::forget('home.testimonials');
+
                 Alert::success('Updated', 'Status Deactivate');
                 return back();
             } else {
                 $testimonial->status = 1;
                 $testimonial->update();
+                                Cache::forget('home.testimonials');
+
                 Alert::success('Updated', 'Status Activate');
                 return back();
             }
@@ -120,6 +131,9 @@ class TestimonialController extends Controller
         $save = $testimonial->update();
         if ($save == true) {
 
+                        Cache::forget('home.testimonials');
+
+
             Alert::success('Saved', 'testimonial update successfully');
             return redirect()->route('testimonial.table');
         } else {
@@ -131,6 +145,8 @@ class TestimonialController extends Controller
     {
         $testimonial = Testimonial::find($id);
         $testimonial->delete();
+                Cache::forget('home.testimonials');
+
         Alert::success('Deleted', 'testimonial deleted');
         return redirect()->route('testimonial.table');
     }

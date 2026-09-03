@@ -7,6 +7,7 @@ use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Constraint\Count;
 
@@ -79,6 +80,9 @@ class CourseController extends Controller
         $save = $course->save();
         if ($save == true) {
 
+                        Cache::forget('home.courses');
+
+
             Alert::success('Saved', 'course saved successfully');
             return back();
         } else {
@@ -107,11 +111,15 @@ class CourseController extends Controller
             if ($course->status == 1) {
                 $course->status = null;
                 $course->update();
+                                Cache::forget('home.courses');
+
                 Alert::success('Updated', 'Status Deactivate');
                 return back();
             } else {
                 $course->status = 1;
                 $course->update();
+                                Cache::forget('home.courses');
+
                 Alert::success('Updated', 'Status Activate');
                 return back();
             }
@@ -160,6 +168,9 @@ class CourseController extends Controller
         $save = $course->update();
         if ($save == true) {
 
+                        Cache::forget('home.courses');
+
+
             Alert::success('Saved', 'course update successfully');
             return redirect()->route('course.table');
         } else {
@@ -171,6 +182,8 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         $course->delete();
+                Cache::forget('home.courses');
+
         Alert::success('Deleted', 'course deleted');
         return redirect()->route('course.table');
     }
@@ -186,6 +199,8 @@ class CourseController extends Controller
         $galleries = json_encode($images);
         $gallery->gallery = $galleries;
         $gallery->update();
+                Cache::forget('home.courses');
+
         Alert::success('Success','Image Deleted');
         return back();
     }

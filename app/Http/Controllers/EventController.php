@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class EventController extends Controller
@@ -56,6 +57,9 @@ class EventController extends Controller
         $save = $event->save();
         if ($save == true) {
 
+                        Cache::forget('home.events');
+
+
             Alert::success('Saved', 'event saved successfully');
             return back();
         } else {
@@ -84,11 +88,15 @@ class EventController extends Controller
             if ($event->status == 1) {
                 $event->status = null;
                 $event->update();
+                                Cache::forget('home.events');
+
                 Alert::success('Updated', 'Status Deactivate');
                 return back();
             } else {
                 $event->status = 1;
                 $event->update();
+                                Cache::forget('home.events');
+
                 Alert::success('Updated', 'Status Activate');
                 return back();
             }
@@ -132,6 +140,9 @@ class EventController extends Controller
         $save = $event->update();
         if ($save == true) {
 
+                        Cache::forget('home.events');
+
+
             Alert::success('Saved', 'event update successfully');
             return redirect()->route('event.table');
         } else {
@@ -143,6 +154,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         $event->delete();
+                Cache::forget('home.events');
+
         Alert::success('Deleted', 'event deleted');
         return redirect()->route('event.table');
     }
@@ -162,6 +175,8 @@ class EventController extends Controller
         unset($images[$index]);
         $gallery->gallery = array_values($images);
         $gallery->update();
+                Cache::forget('home.events');
+
         Alert::success('Success','Image Deleted');
         return back();
     }
