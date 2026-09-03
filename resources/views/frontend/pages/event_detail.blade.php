@@ -65,7 +65,7 @@
                                 <td style="padding:10px 0;color:#888;font-weight:600;">
                                     <i class="fas fa-map-marker-alt me-2" style="color:var(--green-dark);"></i>Venue
                                 </td>
-                                <td style="padding:10px 0;font-weight:700;">{{ $event->venue ?: 'GPLC Campus, Itahari' }}</td>
+                                <td style="padding:10px 0;font-weight:700;">{{ $event->venue ?: ($siteSettings->site_short_name ?? 'School') . ' Campus, Belbari' }}</td>
                             </tr>
                         </table>
                         @if($event->result_link)

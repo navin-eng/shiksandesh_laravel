@@ -5,8 +5,8 @@
   <a href="{{ url('admin/dashboard') }}" class="sb-logo">
     <img src="{{ $sidebarSettings->site_logo ? asset($sidebarSettings->site_logo) : asset('backend/images/logo.png') }}" alt="{{ $sidebarSettings->site_name ?? 'GPLC' }}">
     <div class="sb-logo-text">
-      <span class="sb-name">{{ $sidebarSettings->site_short_name ?? 'GPLC' }} Admin</span>
-      <span class="sb-sub">{{ $sidebarSettings->site_name ?? 'Green Peace Lincoln College' }}</span>
+      <span class="sb-name">{{ $sidebarSettings->site_short_name ?? 'SSES' }} Admin</span>
+      <span class="sb-sub">{{ $sidebarSettings->site_name ?? 'Shiksha Sandesh English School' }}</span>
     </div>
   </a>
 

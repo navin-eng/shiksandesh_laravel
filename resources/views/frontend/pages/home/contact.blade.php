@@ -13,35 +13,37 @@
                         <div class="ico"><i class="fas fa-map-marker-alt"></i></div>
                         <div class="info-text">
                             <div class="label">Address</div>
-                            Dipendra Chowk, Itahari-2, Sunsari, Nepal
+                            {{ $siteSettings->contact_address ?? 'Belbari-2, Lalbatti, Morang, Nepal' }}
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="ico"><i class="fas fa-phone-alt"></i></div>
                         <div class="info-text">
                             <div class="label">Phone</div>
-                            <a href="tel:025586701">025-586701</a>
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $siteSettings->contact_phone ?? '021546236') }}">{{ $siteSettings->contact_phone ?? '021-546236' }}</a>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="ico"><i class="fas fa-envelope"></i></div>
                         <div class="info-text">
                             <div class="label">Email</div>
-                            <a href="mailto:info@gplc.edu.np">info@gplc.edu.np</a>
+                            <a href="mailto:{{ $siteSettings->contact_email ?? 'info@shikshasandesh.edu.np' }}">{{ $siteSettings->contact_email ?? 'info@shikshasandesh.edu.np' }}</a>
                         </div>
                     </div>
+                    @if($siteSettings->whatsapp_number)
                     <div class="info-item">
                         <div class="ico"><i class="fab fa-whatsapp"></i></div>
                         <div class="info-text">
                             <div class="label">WhatsApp</div>
-                            <a href="https://wa.me/9812355717" target="_blank">+977 9812355717</a>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number) }}" target="_blank">{{ $siteSettings->whatsapp_number }}</a>
                         </div>
                     </div>
+                    @endif
                     <div class="social-row">
-                        <a href="https://www.facebook.com/GplcIth" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-                        <a href="https://wa.me/9812355717" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        @if($siteSettings->facebook_url)<a href="{{ $siteSettings->facebook_url }}" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>@endif
+                        @if($siteSettings->instagram_url)<a href="{{ $siteSettings->instagram_url }}" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>@endif
+                        @if($siteSettings->youtube_url)<a href="{{ $siteSettings->youtube_url }}" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>@endif
+                        @if($siteSettings->whatsapp_number)<a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number) }}" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>@endif
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 @push('b-title', 'Courses')
 @section('backend-content')
 <div class="admin-page-header">
-  <div><h1 class="aph-title">Courses</h1><p class="aph-sub">Manage all academic programmes offered by GPLC.</p></div>
+  <div><h1 class="aph-title">Courses & Programs</h1><p class="aph-sub">Manage all academic classes and programmes offered by the school.</p></div>
   <a href="{{ route('course.add') }}" class="btn-admin btn-admin-primary"><i class="bi bi-plus-lg"></i> Add Course</a>
 </div>
 <div class="admin-card">

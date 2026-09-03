@@ -8,13 +8,13 @@
                     <div class="gplc-hero-content">
                         <span class="tag-line">
                             <i class="fa-solid fa-graduation-cap"></i>
-                            Affiliated with Lincoln University Malaysia
+                            {{ $siteSettings->site_tagline ?? 'Excellence in Education Since 1993' }}
                         </span>
                         <h1>{{ $banner->title2 }}</h1>
-                        <p>Shaping Future Leaders with World-Class Education</p>
+                        <p>Nurturing Young Minds & Inspiring Tomorrow's Leaders</p>
                         <div class="gplc-hero-actions">
                             <a href="{{ route('about.us') }}" class="btn-gplc">
-                                <i class="fa-solid fa-compass"></i> Explore Programs
+                                <i class="fa-solid fa-compass"></i> Explore School
                             </a>
                             <a href="{{ route('contact') }}" class="btn-gplc-light">
                                 <i class="fa-solid fa-phone"></i> Contact Us
@@ -23,18 +23,18 @@
                     </div>
                 </div>
             @empty
-                <div class="swiper-slide gplc-hero-slide" style="background: linear-gradient(135deg, var(--dark) 0%, var(--green-dark) 100%);">
+                <div class="swiper-slide gplc-hero-slide" style="background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark, #0e2d54) 100%);">
                     <div class="gplc-hero-overlay"></div>
                     <div class="gplc-hero-content">
                         <span class="tag-line">
                             <i class="fa-solid fa-graduation-cap"></i>
-                            Affiliated with Lincoln University Malaysia
+                            {{ $siteSettings->site_tagline ?? 'Excellence in Education Since 1993' }}
                         </span>
-                        <h1>Green Peace Lincoln College</h1>
-                        <p>Shaping Future Leaders with World-Class Education</p>
+                        <h1>{{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }}</h1>
+                        <p>Nurturing Young Minds & Inspiring Tomorrow's Leaders</p>
                         <div class="gplc-hero-actions">
                             <a href="{{ route('about.us') }}" class="btn-gplc">
-                                <i class="fa-solid fa-compass"></i> Explore Programs
+                                <i class="fa-solid fa-compass"></i> Explore School
                             </a>
                             <a href="{{ route('contact') }}" class="btn-gplc-light">
                                 <i class="fa-solid fa-phone"></i> Contact Us

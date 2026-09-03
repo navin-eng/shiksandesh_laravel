@@ -1,4 +1,5 @@
 <footer class="admin-footer">
-  <span>&copy; {{ date('Y') }} Green Peace Lincoln College. All rights reserved.</span>
-  <span>Powered by <a href="https://brothersinstitute.com.np/" target="_blank">Brother's Institute</a></span>
+  @php($footerSettings = \App\Models\SiteSetting::current())
+  <span>&copy; {{ date('Y') }} {{ $footerSettings->site_name ?? 'Shiksha Sandesh English School' }}. All rights reserved.</span>
+  <span>Powered by <strong>nstudios</strong></span>
 </footer>

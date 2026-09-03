@@ -5,10 +5,9 @@
     @php($siteSettings = \App\Models\SiteSetting::current())
     @php($stickyNotices = ($siteSettings->show_sticky_notice ?? true) ? \App\Models\Notice::latest()->take($siteSettings->sticky_notice_limit ?? 5)->get() : collect())
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Green Peace Lincoln College — Affiliated with Lincoln University Malaysia. Quality higher education in Itahari, Nepal.">
-    <meta name="keywords" content="GPLC, Green Peace Lincoln College, Lincoln University, Itahari, Nepal, BBS, BCA, BBA">
-    <title>Green Peace Lincoln College | Affiliated with Lincoln University Malaysia</title>
+    <meta name="description" content="{{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }} — Quality education from Playgroup to Secondary in {{ $siteSettings->contact_address ?? 'Belbari-2, Morang, Nepal' }}.">
+    <meta name="keywords" content="{{ $siteSettings->site_short_name ?? 'SSES' }}, {{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }}, Belbari, Morang, Nepal, School in Belbari">
+    <title>{{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }} | {{ $siteSettings->site_tagline ?? 'Belbari, Morang' }}</title>
     <link rel="icon" type="image/x-icon" href="{{ $siteSettings->site_favicon ? asset($siteSettings->site_favicon) : asset('backend/images/favicon.ico') }}">
 
     <!-- Bootstrap 5 -->

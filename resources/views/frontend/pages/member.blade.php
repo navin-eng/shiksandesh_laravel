@@ -26,8 +26,8 @@
 <section class="section-block">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <span class="section-tag">The People Behind GPLC</span>
-            <h2 class="section-title mt-2">Meet Our Team</h2>
+            <span class="section-tag">The People Behind {{ $siteSettings->site_short_name ?? 'Shiksha Sandesh' }}</span>
+            <h2 class="section-title mt-2">Meet Our Faculty & Staff</h2>
             <div class="section-divider center"></div>
         </div>
 
