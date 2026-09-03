@@ -11,9 +11,9 @@ return new class extends Migration
     {
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('site_name')->default('Green Peace Lincoln College');
-            $table->string('site_short_name')->default('GPLC');
-            $table->string('site_tagline')->default('Affiliated with Lincoln University Malaysia');
+            $table->string('site_name')->default('Shiksha Sandesh English School');
+            $table->string('site_short_name')->default('Shiksha Sandesh');
+            $table->string('site_tagline')->default('Affiliated with NEB Nepal');
             $table->string('primary_color')->default('#2d6a4f');
             $table->string('primary_dark')->default('#1a472a');
             $table->string('primary_light')->default('#40916c');
@@ -30,9 +30,9 @@ return new class extends Migration
         });
 
         DB::table('site_settings')->insert([
-            'site_name' => 'Green Peace Lincoln College',
-            'site_short_name' => 'GPLC',
-            'site_tagline' => 'Affiliated with Lincoln University Malaysia',
+            'site_name' => 'Shiksha Sandesh English School',
+            'site_short_name' => 'Shiksha Sandesh',
+            'site_tagline' => 'Affiliated with NEB Nepal',
             'primary_color' => '#2d6a4f',
             'primary_dark' => '#1a472a',
             'primary_light' => '#40916c',

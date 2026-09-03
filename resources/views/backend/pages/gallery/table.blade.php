@@ -40,7 +40,7 @@
     <span class="badge-admin badge-green">{{ $total }} photos</span>
   </div>
   <div class="admin-card-body">
-    <div class="LincolnRow">
+    <div class="gallery-admin-row">
       @foreach($gallery as $data)
         @foreach(json_decode($data->gallery ?? '[]') as $key => $img)
         <div>

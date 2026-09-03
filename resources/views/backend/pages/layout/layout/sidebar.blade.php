@@ -5,7 +5,7 @@
     <img src="{{ asset('backend/images/logo.png') }}" alt="GPLC">
     <div class="sb-logo-text">
       <span class="sb-name">GPLC Admin</span>
-      <span class="sb-sub">Green Peace Lincoln College</span>
+      <span class="sb-sub">Shiksha Sandesh English School</span>
     </div>
   </a>
 

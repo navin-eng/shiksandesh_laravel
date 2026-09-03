@@ -1,5 +1,5 @@
 /* ============================================================
-   GREEN PEACE LINCOLN COLLEGE — Admin Dashboard CSS
+   SHIKSHA SANDESH ENGLISH SCHOOL — Admin Dashboard CSS
    Sidebar: #0f1923  |  Accent: #005f1a  |  Lime: #92cb6c
    ============================================================ */
 
@@ -464,17 +464,16 @@ body {
 .backend-content-wrapper { background: transparent; }
 
 /* Gallery legacy */
-.LincolnRow { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 12px; padding: 4px; }
-.LincolnRow > div { position: relative; border-radius: 8px; overflow: hidden; }
-.LincolnRow > div img { width: 100%; height: 110px; object-fit: cover; display: block; }
+.gallery-admin-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 12px; padding: 4px; }
+.gallery-admin-row > div { position: relative; border-radius: 8px; overflow: hidden; }
+.gallery-admin-row > div img { width: 100%; height: 110px; object-fit: cover; display: block; }
 .deleteImageBTN {
-  position: absolute; top: 5px; right: 5px;
-  background: rgba(220,38,38,.85); color: #fff; text-decoration: none;
-  width: 24px; height: 24px; border-radius: 50%; font-size: 11px; font-weight: 700;
+  position: absolute; top: 4px; right: 4px; width: 24px; height: 24px;
+  background: rgba(220,53,69,0.9); color: #fff; border-radius: 4px;
   display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity .2s;
+  font-size: 14px; text-decoration: none; opacity: 0; transition: .2s; z-index: 2;
 }
-.LincolnRow > div:hover .deleteImageBTN { opacity: 1; }
+.gallery-admin-row > div:hover .deleteImageBTN { opacity: 1; }
 
 /* ── Sidebar smooth transition ──────────────────────────────── */
 .admin-sidebar { transition: width .25s ease; }

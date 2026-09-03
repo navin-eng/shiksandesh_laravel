@@ -101,7 +101,7 @@
                         <div class="mt-4 text-center">
                             <div class="d-inline-flex align-items-center justify-content-center" style="background: #f3f4f6; padding: 8px 16px; border-radius: 50px;">
                                 <i class="fa-solid fa-shield-check text-success me-2"></i>
-                                <span style="font-size: 12px; font-weight: 600; color: #4b5563;">Affiliated with Lincoln University</span>
+                                <span style="font-size: 12px; font-weight: 600; color: #4b5563;">Affiliated with NEB Nepal</span>
                             </div>
                         </div>
                     </div>

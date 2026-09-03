@@ -111,7 +111,7 @@ class Admin extends Controller
             $mail_data = [
                 'sender' => 'donotreplygplc@gmail.com',
                 'reciever' => $request->email,
-                'from' => 'Green Peace Lincoln',
+                'from' => 'Shiksha Sandesh',
                 'subject' => 'Forgot Password',
                 'body' => $otp,
             ];

@@ -181,7 +181,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Question</label>
-                            <input type="text" name="question" class="form-control" placeholder="Example: Is GPLC affiliated with Lincoln University Malaysia?" required>
+                            <input type="text" name="question" class="form-control" placeholder="Example: Is Shiksha Sandesh affiliated with NEB Nepal?" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Answer</label>
