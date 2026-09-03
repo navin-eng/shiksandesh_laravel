@@ -1,5 +1,5 @@
 @if($events->count() > 0)
-    <section style="background: var(--green-bg); padding: 70px 0;">
+    <section class="section-block" style="background: var(--bg-surface);">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5" data-aos="fade-up">
                 <div>
