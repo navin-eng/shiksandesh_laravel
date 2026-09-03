@@ -142,7 +142,9 @@ a:hover { color: var(--primary-dark); }
 }
 .gplc-header.scrolled { box-shadow: var(--shadow-soft); }
 .header-inner { height: 80px; display: flex; align-items: center; justify-content: space-between; }
+.gplc-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .gplc-logo img { height: 64px; }
+.gplc-logo-text { display: flex; flex-direction: column; white-space: nowrap; line-height: 1.2; }
 .gplc-logo-text .college-name {
     font-family: var(--font-serif);
     color: var(--primary-dark);
