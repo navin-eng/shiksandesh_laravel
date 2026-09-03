@@ -1,6 +1,10 @@
 @php
     $siteSettings = \App\Models\SiteSetting::current();
-    $footerCourses = \App\Models\Course::where('status', 1)->get();
+    try {
+        $footerCourses = \App\Models\Course::where('status', 1)->get();
+    } catch (\Throwable $e) {
+        $footerCourses = collect();
+    }
 @endphp
 
 <footer class="gplc-footer">

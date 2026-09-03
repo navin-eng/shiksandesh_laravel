@@ -44,13 +44,45 @@ class SiteSetting extends Model
 
     public static function current()
     {
-        return Cache::rememberForever('site_settings.current', function () {
-            return static::first() ?? static::make([
+        try {
+            return Cache::rememberForever('site_settings.current', function () {
+                return static::first() ?? static::make([
+                    'site_name' => 'Shiksha Sandesh English School',
+                    'site_short_name' => 'SSES',
+                    'site_tagline' => 'Excellence in Education Since 1993',
+                    'site_logo' => null,
+                    'site_favicon' => null,
+                    'primary_color' => '#1a4d8c',
+                    'primary_dark' => '#0e2d54',
+                    'primary_light' => '#2e74c9',
+                    'accent_color' => '#f59e0b',
+                    'contact_phone' => '021-546236',
+                    'contact_email' => 'info@shikshasandesh.edu.np',
+                    'contact_address' => 'Belbari-2, Lalbatti, Morang, Nepal',
+                    'whatsapp_number' => '9842065002',
+                    'facebook_url' => 'https://www.facebook.com/shikshasandesh',
+                    'youtube_url' => '#',
+                    'instagram_url' => '#',
+                    'gallery_layout' => 'masonry',
+                    'header_button_text' => 'Enroll Now',
+                    'header_button_url' => '#',
+                    'student_portal_text' => 'Student Portal',
+                    'student_portal_url' => '#',
+                    'show_sticky_notice' => true,
+                    'sticky_notice_title' => 'Latest Notices',
+                    'sticky_notice_limit' => 5,
+                    'show_topbar' => true,
+                    'show_whatsapp_button' => true,
+                    'show_back_to_top' => true,
+                    'sticky_notice_desktop_collapsed' => false,
+                    'sticky_notice_mobile_collapsed' => true,
+                ]);
+            });
+        } catch (\Throwable $e) {
+            return static::make([
                 'site_name' => 'Shiksha Sandesh English School',
                 'site_short_name' => 'SSES',
                 'site_tagline' => 'Excellence in Education Since 1993',
-                'site_logo' => null,
-                'site_favicon' => null,
                 'primary_color' => '#1a4d8c',
                 'primary_dark' => '#0e2d54',
                 'primary_light' => '#2e74c9',
@@ -59,16 +91,7 @@ class SiteSetting extends Model
                 'contact_email' => 'info@shikshasandesh.edu.np',
                 'contact_address' => 'Belbari-2, Lalbatti, Morang, Nepal',
                 'whatsapp_number' => '9842065002',
-                'facebook_url' => 'https://www.facebook.com/shikshasandesh',
-                'youtube_url' => '#',
-                'instagram_url' => '#',
-                'gallery_layout' => 'masonry',
-                'header_button_text' => 'Enroll Now',
-                'header_button_url' => '#',
-                'student_portal_text' => 'Student Portal',
-                'student_portal_url' => '#',
                 'show_sticky_notice' => true,
-                'sticky_notice_title' => 'Latest Notices',
                 'sticky_notice_limit' => 5,
                 'show_topbar' => true,
                 'show_whatsapp_button' => true,
@@ -76,6 +99,6 @@ class SiteSetting extends Model
                 'sticky_notice_desktop_collapsed' => false,
                 'sticky_notice_mobile_collapsed' => true,
             ]);
-        });
+        }
     }
 }

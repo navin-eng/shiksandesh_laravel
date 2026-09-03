@@ -2,8 +2,14 @@
 <html lang="en">
 
 <head>
-    @php($siteSettings = \App\Models\SiteSetting::current())
-    @php($stickyNotices = ($siteSettings->show_sticky_notice ?? true) ? \App\Models\Notice::latest()->take($siteSettings->sticky_notice_limit ?? 5)->get() : collect())
+    @php
+        $siteSettings = \App\Models\SiteSetting::current();
+        try {
+            $stickyNotices = ($siteSettings->show_sticky_notice ?? true) ? \App\Models\Notice::latest()->take($siteSettings->sticky_notice_limit ?? 5)->get() : collect();
+        } catch (\Throwable $e) {
+            $stickyNotices = collect();
+        }
+    @endphp
     <meta charset="utf-8">
     <meta name="description" content="{{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }} — Quality education from Playgroup to Secondary in {{ $siteSettings->contact_address ?? 'Belbari-2, Morang, Nepal' }}.">
     <meta name="keywords" content="{{ $siteSettings->site_short_name ?? 'SSES' }}, {{ $siteSettings->site_name ?? 'Shiksha Sandesh English School' }}, Belbari, Morang, Nepal, School in Belbari">
