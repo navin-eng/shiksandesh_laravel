@@ -32,6 +32,12 @@ class Frontend extends Controller
         ]);
     }
 
+    public function coursesIndex()
+    {
+        $courses = Course::where('status', 1)->get();
+        return view('frontend.pages.courses', compact('courses'));
+    }
+
     public function courseDetail($slug)
     {
         $course = Course::where('slug', $slug)->first();

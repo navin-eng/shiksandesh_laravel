@@ -61,6 +61,7 @@ Route::get('/notices', [Frontend::class, 'noticeIndex'])->name('notices.index');
 Route::get('/calendar', [Frontend::class, 'calendar'])->name('calendar');
 Route::get('/events', [Frontend::class, 'eventsIndex'])->name('events.index');
 
+Route::get('/course', [Frontend::class, 'coursesIndex'])->name('courses.index');
 Route::get('/course/{slug}', [Frontend::class, 'courseDetail']);
 Route::get('/event/{slug}', [Frontend::class, 'eventDetail']);
 Route::get('/course/detail', function () {

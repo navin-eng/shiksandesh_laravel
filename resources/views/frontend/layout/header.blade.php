@@ -75,17 +75,17 @@
                                     <a href="#" class="nav-link dropdown-toggle {{ request()->segment(1)=='course' ? 'active' : '' }}" data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ $menu->name }} <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;"></i>
                                     </a>
-                                    <ul class="dropdown-menu-gplc dropdown-menu">
+                                    <ul class="dropdown-menu-gplc dropdown-menu border-0 shadow-sm" style="border-radius: 12px; padding: 12px 8px; min-width: 280px;">
                                         <li>
-                                            <a class="dropdown-item" href="{{ url('course') }}">
-                                                <i class="fas fa-list"></i> All {{ $menu->name }}
+                                            <a class="dropdown-item fw-bold" href="{{ url('course') }}" style="padding: 10px 16px; border-radius: 8px; font-size: 15px; color: var(--dark); display: flex; align-items: center; gap: 10px; transition: 0.3s;">
+                                                <i class="fas fa-list text-primary" style="width: 20px; text-align: center;"></i> All {{ $menu->name }}
                                             </a>
                                         </li>
-                                        <li><hr class="dropdown-divider" style="margin:4px 0;opacity:0.1;"></li>
+                                        <li><hr class="dropdown-divider" style="margin: 8px 0; opacity: 0.08;"></li>
                                         @foreach($navCourses as $nc)
                                             <li>
-                                                <a class="dropdown-item" href="{{ url('course/' . $nc->slug) }}">
-                                                    <i class="fas fa-graduation-cap"></i> {{ $nc->name }}
+                                                <a class="dropdown-item" href="{{ url('course/' . $nc->slug) }}" style="padding: 10px 16px; border-radius: 8px; font-size: 14.5px; color: #4b5563; display: flex; align-items: center; gap: 10px; transition: 0.3s;">
+                                                    <i class="fas fa-graduation-cap text-primary" style="width: 20px; text-align: center; opacity: 0.8;"></i> {{ $nc->name }}
                                                 </a>
                                             </li>
                                         @endforeach
