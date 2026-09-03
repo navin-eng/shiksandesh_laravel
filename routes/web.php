@@ -192,6 +192,7 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/navbar-menu/add', [NavbarMenuController::class, 'create'])->name('navbar_menu.add');
     Route::get('/admin/dashboard/navbar-menu/table', [NavbarMenuController::class, 'index'])->name('navbar_menu.table');
     Route::post('/admin/dashboard/navbar-menu/store', [NavbarMenuController::class, 'store'])->name('navbar_menu.store');
+    Route::post('/admin/dashboard/navbar-menu/reorder', [NavbarMenuController::class, 'reorder'])->name('navbar_menu.reorder');
     Route::get('/admin/dashboard/navbar-menu/delete/{id}', [NavbarMenuController::class, 'destroy'])->name('navbar_menu.destroy');
     Route::get('/admin/dashboard/navbar-menu/status/{id}', [NavbarMenuController::class, 'status'])->name('navbar_menu.status');
     Route::get('/admin/dashboard/navbar-menu/edit/{id}', [NavbarMenuController::class, 'edit'])->name('navbar_menu.edit');

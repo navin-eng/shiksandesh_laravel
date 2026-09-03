@@ -91,4 +91,18 @@ class NavbarMenuController extends Controller
         Alert::success('Deleted', 'Menu deleted successfully');
         return redirect()->route('navbar_menu.table');
     }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer|exists:navbar_menus,id',
+        ]);
+
+        foreach ($request->ids as $index => $id) {
+            NavbarMenu::where('id', $id)->update(['order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

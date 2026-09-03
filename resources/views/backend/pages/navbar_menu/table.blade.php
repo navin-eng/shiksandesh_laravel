@@ -21,10 +21,13 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="sortable-menus">
                 @forelse ($menus as $menu)
-                    <tr>
-                        <td>{{ $menu->order }}</td>
+                    <tr data-id="{{ $menu->id }}">
+                        <td>
+                            <i class="fas fa-grip-vertical handle" style="cursor: grab; color: #aaa; margin-right: 10px;" title="Drag to reorder"></i>
+                            <span class="menu-order">{{ $menu->order }}</span>
+                        </td>
                         <td><strong>{{ $menu->name }}</strong></td>
                         <td>
                             @if($menu->url)
@@ -64,3 +67,48 @@
         </table>
     </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sortableList = document.getElementById('sortable-menus');
+        if(sortableList && sortableList.querySelectorAll('tr[data-id]').length > 1) {
+            new Sortable(sortableList, {
+                handle: '.handle',
+                animation: 150,
+                ghostClass: 'bg-light',
+                onEnd: function(evt) {
+                    const rows = sortableList.querySelectorAll('tr[data-id]');
+                    let ids = [];
+                    rows.forEach((row, index) => {
+                        ids.push(row.getAttribute('data-id'));
+                        // Update visual order
+                        const orderSpan = row.querySelector('.menu-order');
+                        if (orderSpan) orderSpan.innerText = index + 1;
+                    });
+
+                    fetch('{{ route("navbar_menu.reorder") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ ids: ids })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.success) {
+                            console.log('Order updated successfully.');
+                        } else {
+                            console.error('Failed to update order');
+                        }
+                    })
+                    .catch(error => console.error('Error reordering:', error));
+                }
+            });
+        }
+    });
+</script>
+@endpush
