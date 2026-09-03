@@ -54,8 +54,13 @@
                         </td>
                         <td>
                             <a href="{{ route('navbar_menu.edit', $menu->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{{ route('navbar_menu.destroy', $menu->id) }}" class="btn btn-sm btn-danger deleteBtn"
-                               data-href="{{ route('navbar_menu.destroy', $menu->id) }}">Delete</a>
+                            @php
+                                $isDefault = in_array(strtolower(trim($menu->name)), ['home', 'about us', 'about', 'contact', 'contact us', 'gallery', 'calendar', 'faculties', 'academics']) || in_array(strtolower(trim($menu->url)), ['', '/', 'about/us', '/about/us', 'contact', '/contact', 'gallery', '/gallery', 'calendar', '/calendar', 'member', '/member', 'course', '/course']);
+                            @endphp
+                            @if(!$isDefault)
+                                <a href="{{ route('navbar_menu.destroy', $menu->id) }}" class="btn btn-sm btn-danger deleteBtn"
+                                   data-href="{{ route('navbar_menu.destroy', $menu->id) }}">Delete</a>
+                            @endif
                         </td>
                     </tr>
                 @empty

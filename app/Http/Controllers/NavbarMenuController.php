@@ -87,7 +87,17 @@ class NavbarMenuController extends Controller
 
     public function destroy($id)
     {
-        NavbarMenu::findOrFail($id)->delete();
+        $menu = NavbarMenu::findOrFail($id);
+
+        $defaultNames = ['home', 'about us', 'about', 'contact', 'contact us', 'gallery', 'calendar', 'faculties', 'academics'];
+        $defaultUrls = ['', '/', 'about/us', '/about/us', 'contact', '/contact', 'gallery', '/gallery', 'calendar', '/calendar', 'member', '/member', 'course', '/course'];
+
+        if (in_array(strtolower(trim($menu->name)), $defaultNames) || in_array(strtolower(trim($menu->url)), $defaultUrls)) {
+            Alert::error('Restricted', 'This is a default menu item and cannot be deleted.');
+            return redirect()->route('navbar_menu.table');
+        }
+
+        $menu->delete();
         Alert::success('Deleted', 'Menu deleted successfully');
         return redirect()->route('navbar_menu.table');
     }
