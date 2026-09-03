@@ -71,14 +71,20 @@
                     @forelse($navbarMenus as $menu)
                         @if($menu->type == 'course_dropdown')
                             @if($navCourses->count() > 0)
-                                <li class="dropdown">
-                                    <a href="{{ url('course') }}" class="{{ request()->segment(1)=='course' ? 'active' : '' }}">
+                                <li class="dropdown nav-item">
+                                    <a href="#" class="nav-link dropdown-toggle {{ request()->segment(1)=='course' ? 'active' : '' }}" data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ $menu->name }} <i class="fas fa-chevron-down" style="font-size:9px;margin-left:4px;"></i>
                                     </a>
-                                    <ul class="dropdown-menu-gplc">
+                                    <ul class="dropdown-menu-gplc dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ url('course') }}">
+                                                <i class="fas fa-list"></i> All {{ $menu->name }}
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider" style="margin:4px 0;opacity:0.1;"></li>
                                         @foreach($navCourses as $nc)
                                             <li>
-                                                <a href="{{ url('course/' . $nc->slug) }}">
+                                                <a class="dropdown-item" href="{{ url('course/' . $nc->slug) }}">
                                                     <i class="fas fa-graduation-cap"></i> {{ $nc->name }}
                                                 </a>
                                             </li>
