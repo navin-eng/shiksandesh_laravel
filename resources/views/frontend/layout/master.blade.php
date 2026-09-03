@@ -30,10 +30,10 @@
     
     <style>
         :root {
-            --primary: #1a4d8c;
-            --primary-dark: #0e2d54;
-            --primary-light: #2e74c9;
-            --accent: #f59e0b;
+            --primary: {{ $siteSettings->primary_color ?: '#1a4d8c' }};
+            --primary-dark: {{ $siteSettings->primary_dark ?: '#0e2d54' }};
+            --primary-light: {{ $siteSettings->primary_light ?: '#2e74c9' }};
+            --accent: {{ $siteSettings->accent_color ?: '#f59e0b' }};
         }
     </style>
 </head>
@@ -75,7 +75,7 @@
 
     <!-- WhatsApp Float -->
     @if($siteSettings->show_whatsapp_button ?? true)
-        <a href="https://wa.me/{{ $siteSettings->whatsapp_number }}" target="_blank" class="wa-float" title="Chat on WhatsApp">
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number) }}" target="_blank" class="wa-float" title="Chat on WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
     @endif
