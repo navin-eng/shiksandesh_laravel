@@ -2,7 +2,7 @@
 @push('b-title', 'Edit Banner')
 @section('backend-content')
     <div class="row">
-        <h5 class="h4" style="text-align: center; margin:10px 0;">Edti Banner</h5>
+        <h5 class="h4" style="text-align: center; margin:10px 0;">Edit Banner</h5>
     </div>
     <br>
     <form action="{{ route('banner.update',$banner->id) }}" enctype="multipart/form-data" method="POST" style="width: 100%;">
