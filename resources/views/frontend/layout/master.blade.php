@@ -177,8 +177,8 @@
         });
         /* Hamburger */
         document.getElementById('gplcHam')?.addEventListener('click', function() {
-            this.classList.toggle('open');
-            document.getElementById('gplcNav').classList.toggle('open');
+            this.classList.toggle('active');
+            document.getElementById('gplcNav').classList.toggle('active');
         });
         const stickyNoticeWidget = document.getElementById('stickyNoticeWidget');
         const stickyNoticeToggle = document.getElementById('stickyNoticeToggle');

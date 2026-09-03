@@ -145,7 +145,7 @@ a:hover { color: var(--primary-dark); }
 .gplc-hamburger { display: none; }
 .gplc-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .gplc-logo img { height: 64px; }
-.gplc-logo-text { display: flex; flex-direction: column; white-space: nowrap; line-height: 1.2; }
+.gplc-logo-text { display: flex; flex-direction: column; line-height: 1.2; }
 .gplc-logo-text .college-name {
     font-family: var(--font-serif);
     color: var(--primary-dark);
@@ -155,7 +155,7 @@ a:hover { color: var(--primary-dark); }
 }
 .gplc-logo-text .affiliation { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 
-.gplc-nav ul { list-style: none; display: flex; gap: 2rem; margin: 0; align-items: center; }
+.gplc-nav ul { list-style: none; display: flex; gap: 1.25rem; margin: 0; align-items: center; }
 .gplc-nav a {
     color: var(--text-main);
     font-weight: 500;
