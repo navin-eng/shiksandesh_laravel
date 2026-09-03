@@ -28,26 +28,47 @@
                 <div class="calendar-shell">
                     {{-- Calendar Header --}}
                     <div class="calendar-header d-flex justify-content-between align-items-center mb-4">
-                        <button id="prevMonthBtn" class="btn btn-outline-secondary rounded-circle" style="width: 45px; height: 45px;"><i class="fa-solid fa-chevron-left"></i></button>
+                        <a href="{{ url('calendar?year='.$prevYear.'&month='.$prevMonth) }}" class="btn btn-outline-secondary rounded-circle" style="width: 45px; height: 45px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chevron-left"></i></a>
                         <div class="text-center">
-                            <h3 id="currentMonthYearBS" style="font-family: var(--font-heading); font-weight: 800; color: var(--dark); margin: 0;"></h3>
-                            <span id="currentMonthYearAD" style="color: #6b7280; font-weight: 600; font-size: 14px;"></span>
+                            <h3 style="font-family: var(--font-heading); font-weight: 800; color: var(--dark); margin: 0;">{{ $monthName }}</h3>
+                            <span style="color: #6b7280; font-weight: 600; font-size: 14px;">{{ $monthNameEnglish }}</span>
                         </div>
-                        <button id="nextMonthBtn" class="btn btn-outline-secondary rounded-circle" style="width: 45px; height: 45px;"><i class="fa-solid fa-chevron-right"></i></button>
+                        <a href="{{ url('calendar?year='.$nextYear.'&month='.$nextMonth) }}" class="btn btn-outline-secondary rounded-circle" style="width: 45px; height: 45px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chevron-right"></i></a>
                     </div>
 
                     {{-- Calendar Grid --}}
                     <div class="calendar-grid">
-                        <div class="calendar-day-header text-danger">Sun</div>
-                        <div class="calendar-day-header">Mon</div>
-                        <div class="calendar-day-header">Tue</div>
-                        <div class="calendar-day-header">Wed</div>
-                        <div class="calendar-day-header">Thu</div>
-                        <div class="calendar-day-header">Fri</div>
-                        <div class="calendar-day-header text-danger">Sat</div>
+                        @foreach($weekdays as $index => $dayName)
+                            <div class="calendar-day-header {{ $index === 0 || $index === 6 ? 'text-danger' : '' }}">{{ $dayName }}</div>
+                        @endforeach
                         
-                        <!-- Cells will be injected here via JS -->
-                        <div id="calendarCells" class="calendar-cells-container"></div>
+                        <!-- Empty cells padding -->
+                        @for($i = 0; $i < $startDayOfWeek; $i++)
+                            <div class="calendar-cell empty"></div>
+                        @endfor
+                        
+                        <!-- Actual Days -->
+                        @for($day = 1; $day <= $daysInMonth; $day++)
+                            @php
+                                $dayOfWeek = ($startDayOfWeek + $day - 1) % 7;
+                                // In BS, Saturday is 6. In AD, Sunday is 0 and Saturday is 6.
+                                $isWeekend = $format === 'bs' ? ($dayOfWeek === 6) : ($dayOfWeek === 0 || $dayOfWeek === 6);
+                                $eventsToday = collect($monthlyEntries->get($day, []));
+                                
+                                $isHoliday = $isWeekend || $eventsToday->contains('entry_type', 'holiday');
+                            @endphp
+                            
+                            <div class="calendar-cell {{ $isHoliday ? 'holiday' : '' }} {{ $eventsToday->isNotEmpty() ? 'has-event' : '' }}">
+                                <div class="bs-date {{ $isHoliday ? 'text-danger' : '' }}">{{ $daysMapping[$day] ?? $day }}</div>
+                                <div class="ad-date">{{ $altDaysMapping[$day] ?? '' }}</div>
+                                
+                                <div class="cell-events">
+                                    @foreach($eventsToday as $ev)
+                                        <div class="event-pill" style="background-color: {{ $typeColors[$ev->entry_type] ?? '#10b981' }};" title="{{ $ev->title }}">{{ $ev->title }}</div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endfor
                     </div>
                 </div>
             </div>
@@ -106,10 +127,6 @@
             gap: 10px;
         }
 
-        .calendar-cells-container {
-            display: contents; /* Allows children to participate in the parent grid */
-        }
-
         .calendar-day-header {
             text-align: center;
             font-weight: 800;
@@ -142,11 +159,6 @@
             background: #f9fafb;
             border: 1px dashed #e5e7eb;
             pointer-events: none;
-        }
-
-        .calendar-cell.today {
-            background: rgba(13, 122, 62, 0.05);
-            border-color: var(--primary);
         }
 
         .calendar-cell.holiday {
@@ -251,136 +263,6 @@
             }
         }
     </style>
-@endpush
-
-@push('scripts')
-    <!-- Include Nepali Datepicker utility for AD/BS conversions -->
-    <script src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js" type="text/javascript"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Event Data from Backend (AD Dates)
-            const eventsData = [
-                @foreach($entries as $entry)
-                {
-                    title: @json($entry->title),
-                    start: @json($entry->start_date),
-                    end: @json($entry->end_date ?? $entry->start_date),
-                    type: @json($entry->entry_type),
-                    color: @json($typeColors[$entry->entry_type] ?? '#10b981'),
-                },
-                @endforeach
-            ];
-
-            const bsMonths = ['Baisakh', 'Jestha', 'Ashadh', 'Shrawan', 'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 'Poush', 'Magh', 'Falgun', 'Chaitra'];
-            const adMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            
-            // Get current BS Date
-            const currentBsDate = NepaliFunctions.GetCurrentBsDate();
-            let currentViewYear = currentBsDate.year;
-            let currentViewMonth = currentBsDate.month; // 1-12
-
-            const cellsContainer = document.getElementById('calendarCells');
-            const monthYearBsLabel = document.getElementById('currentMonthYearBS');
-            const monthYearAdLabel = document.getElementById('currentMonthYearAD');
-
-            function renderCalendar(bsYear, bsMonth) {
-                cellsContainer.innerHTML = '';
-                
-                // Set Header Labels
-                monthYearBsLabel.innerText = `${bsMonths[bsMonth - 1]} ${bsYear}`;
-                
-                // Get Total days in this BS month
-                const totalDays = NepaliFunctions.GetBsDaysInMonth(bsYear, bsMonth);
-                
-                // Find what day of the week the 1st of the month falls on
-                // Convert 1st day of BS month to AD
-                const firstDayAdObj = NepaliFunctions.BS2AD({year: bsYear, month: bsMonth, day: 1});
-                const firstDayAdDate = new Date(firstDayAdObj.year, firstDayAdObj.month - 1, firstDayAdObj.day);
-                const startingDayOfWeek = firstDayAdDate.getDay(); // 0 (Sun) to 6 (Sat)
-
-                // Get AD month range for the label
-                const lastDayAdObj = NepaliFunctions.BS2AD({year: bsYear, month: bsMonth, day: totalDays});
-                monthYearAdLabel.innerText = `${adMonths[firstDayAdObj.month - 1]} ${firstDayAdObj.year} - ${adMonths[lastDayAdObj.month - 1]} ${lastDayAdObj.year}`;
-
-                // Padding empty cells before the 1st of the month
-                for (let i = 0; i < startingDayOfWeek; i++) {
-                    const emptyCell = document.createElement('div');
-                    emptyCell.className = 'calendar-cell empty';
-                    cellsContainer.appendChild(emptyCell);
-                }
-
-                // Render the days
-                for (let day = 1; day <= totalDays; day++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'calendar-cell';
-                    
-                    // Convert this BS day to AD to match events and show AD date
-                    const adDateObj = NepaliFunctions.BS2AD({year: bsYear, month: bsMonth, day: day});
-                    
-                    // Format AD date as YYYY-MM-DD for easy event matching
-                    const adMonthStr = String(adDateObj.month).padStart(2, '0');
-                    const adDayStr = String(adDateObj.day).padStart(2, '0');
-                    const adDateString = `${adDateObj.year}-${adMonthStr}-${adDayStr}`;
-
-                    // Check if today
-                    if (bsYear === currentBsDate.year && bsMonth === currentBsDate.month && day === currentBsDate.day) {
-                        cell.classList.add('today');
-                    }
-
-                    // Determine if it's Saturday (index 6 in standard week starting Sunday)
-                    const currentDayOfWeek = (startingDayOfWeek + day - 1) % 7;
-                    if(currentDayOfWeek === 6) {
-                        cell.classList.add('holiday'); // Saturdays are holidays
-                    }
-
-                    let cellHTML = `
-                        <div class="bs-date ${currentDayOfWeek === 6 ? 'text-danger' : ''}">${day}</div>
-                        <div class="ad-date">${adDateObj.day} ${adMonths[adDateObj.month - 1]}</div>
-                        <div class="cell-events">
-                    `;
-
-                    // Find events for this AD date
-                    let hasEvent = false;
-                    eventsData.forEach(event => {
-                        if (adDateString >= event.start && adDateString <= event.end) {
-                            hasEvent = true;
-                            if(event.type === 'holiday') cell.classList.add('holiday');
-                            cellHTML += `<div class="event-pill" style="background-color: ${event.color};" title="${event.title}">${event.title}</div>`;
-                        }
-                    });
-
-                    if(hasEvent) {
-                        cell.classList.add('has-event');
-                    }
-
-                    cellHTML += `</div>`;
-                    cell.innerHTML = cellHTML;
-                    cellsContainer.appendChild(cell);
-                }
-            }
-
-            renderCalendar(currentViewYear, currentViewMonth);
-
-            document.getElementById('prevMonthBtn').addEventListener('click', () => {
-                currentViewMonth--;
-                if (currentViewMonth < 1) {
-                    currentViewMonth = 12;
-                    currentViewYear--;
-                }
-                renderCalendar(currentViewYear, currentViewMonth);
-            });
-
-            document.getElementById('nextMonthBtn').addEventListener('click', () => {
-                currentViewMonth++;
-                if (currentViewMonth > 12) {
-                    currentViewMonth = 1;
-                    currentViewYear++;
-                }
-                renderCalendar(currentViewYear, currentViewMonth);
-            });
-        });
-    </script>
 @endpush
 
 @include('frontend.layout.sections', ['page' => 'calendar'])

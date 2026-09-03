@@ -14,6 +14,11 @@ use App\Models\HomeSection;
 use App\Models\Notice;
 use App\Models\Page;
 use App\Models\Testimonial;
+use App\Models\SiteSetting;
+use Illuminate\Support\Carbon;
+use Pratiksh\Nepalidate\Services\NepaliDate;
+use Pratiksh\Nepalidate\Services\EnglishDate;
+use App\Helpers\NepaliCalendarHelper;
 
 class Frontend extends Controller
 {
@@ -66,11 +71,119 @@ class Frontend extends Controller
         return view('frontend.pages.notices', compact('notices'));
     }
 
-    public function calendar()
+    public function calendar(Request $request)
     {
+        $settings = SiteSetting::current();
+        $format = isset($settings->calendar_format) ? $settings->calendar_format : 'ad';
+
         $entries = CampusCalendarEntry::where('status', 1)->orderBy('start_date')->get();
 
-        return view('frontend.pages.calendar', compact('entries'));
+        if ($format === 'bs') {
+            try {
+                $today = NepaliDate::create(Carbon::now());
+                $currentYear = (int)$request->get('year', $today->year);
+                $currentMonth = (int)$request->get('month', $today->month);
+            } catch (\Throwable $e) {
+                // Fallback to AD bounds if it fails
+                $currentYear = 2081; 
+                $currentMonth = 1;
+            }
+
+            $helper = new NepaliCalendarHelper();
+            $daysInMonth = $helper->getDaysInMonth($currentYear, $currentMonth);
+
+            // Get first day of month in AD to find DayOfWeek
+            $firstDayBS = "{$currentYear}-{$currentMonth}-01";
+            try {
+                $firstDayAD = EnglishDate::fromBS($firstDayBS)->toCarbon();
+                $startDayOfWeek = $firstDayAD->dayOfWeek; // 0 (Sun) to 6 (Sat)
+            } catch (\Throwable $e) {
+                $startDayOfWeek = 0;
+            }
+
+            $monthName = $helper->getBSMonthInNepali($currentMonth) . ' ' . $helper->formattedNepaliNumber((string)$currentYear);
+            $monthNameEnglish = $helper->getBSMonthInEnglish($currentMonth) . ' ' . $currentYear;
+            
+            $daysMapping = [];
+            $altDaysMapping = [];
+            for ($i = 1; $i <= $daysInMonth; $i++) {
+                $daysMapping[$i] = $helper->formattedNepaliNumber((string)$i);
+                try {
+                    $ad = EnglishDate::fromBS("{$currentYear}-{$currentMonth}-{$i}")->toCarbon();
+                    $altDaysMapping[$i] = $ad->format('d M');
+                } catch (\Throwable $e) {
+                    $altDaysMapping[$i] = '';
+                }
+            }
+
+            $monthlyEntries = $entries->filter(function($entry) use ($currentYear, $currentMonth) {
+                try {
+                    $bs = NepaliDate::create(Carbon::parse($entry->start_date));
+                    return $bs->year == $currentYear && $bs->month == $currentMonth;
+                } catch (\Throwable $e) { return false; }
+            })->groupBy(function($entry) {
+                try {
+                    return NepaliDate::create(Carbon::parse($entry->start_date))->day;
+                } catch (\Throwable $e) { return 0; }
+            });
+            
+            $nextYear = $currentMonth == 12 ? $currentYear + 1 : $currentYear;
+            $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
+            
+            $prevYear = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+            $prevMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+
+        } else {
+            $currentYear = (int)$request->get('year', Carbon::now()->year);
+            $currentMonth = (int)$request->get('month', Carbon::now()->month);
+
+            $date = Carbon::createFromDate($currentYear, $currentMonth, 1);
+            $daysInMonth = $date->daysInMonth;
+            $startDayOfWeek = $date->dayOfWeek;
+
+            $monthName = $date->format('F Y');
+            $monthNameEnglish = $date->format('F Y');
+
+            $daysMapping = [];
+            $altDaysMapping = [];
+            $helper = new NepaliCalendarHelper();
+            for ($i = 1; $i <= $daysInMonth; $i++) {
+                $daysMapping[$i] = (string)$i;
+                try {
+                    $bs = NepaliDate::create(Carbon::create($currentYear, $currentMonth, $i));
+                    $altDaysMapping[$i] = $bs->day . ' ' . substr($helper->getBSMonthInEnglish($bs->month), 0, 3);
+                } catch (\Throwable $e) {
+                    $altDaysMapping[$i] = '';
+                }
+            }
+
+            $monthlyEntries = $entries->filter(function($entry) use ($currentYear, $currentMonth) {
+                try {
+                    $d = Carbon::parse($entry->start_date);
+                    return $d->year == $currentYear && $d->month == $currentMonth;
+                } catch (\Throwable $e) { return false; }
+            })->groupBy(function($entry) {
+                try {
+                    return Carbon::parse($entry->start_date)->day;
+                } catch (\Throwable $e) { return 0; }
+            });
+            
+            $nextYear = $currentMonth == 12 ? $currentYear + 1 : $currentYear;
+            $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
+            
+            $prevYear = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
+            $prevMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
+        }
+
+        $weekdays = $format === 'bs' 
+            ? ['आइत', 'सोम', 'मङ्गल', 'बुध', 'बिहि', 'शुक्र', 'शनि']
+            : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        return view('frontend.pages.calendar', compact(
+            'format', 'currentYear', 'currentMonth', 'daysInMonth', 'startDayOfWeek', 
+            'monthName', 'monthNameEnglish', 'daysMapping', 'altDaysMapping', 'monthlyEntries',
+            'nextYear', 'nextMonth', 'prevYear', 'prevMonth', 'weekdays', 'entries'
+        ));
     }
 
     public function eventsIndex()
