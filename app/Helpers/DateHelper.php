@@ -18,7 +18,7 @@ if (!function_exists('format_system_date')) {
 
         try {
             $parsedDate = Carbon::parse($date);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $date; // Not a valid date string
         }
 
@@ -42,7 +42,7 @@ if (!function_exists('format_system_date')) {
                 // "4 Jestha 2082, Sunday" -> "4 Jestha 2082"
                 $parts = explode(',', $formatted);
                 return trim($parts[0]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Fallback to AD if conversion fails
                 return $parsedDate->format($adFormat);
             }
@@ -65,7 +65,7 @@ if (!function_exists('get_today_nepali_date')) {
         try {
             $nepaliDateObj = NepaliDate::create(Carbon::now());
             return $nepaliDateObj->toFormattedNepaliBSDate();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return Carbon::now()->format('l, d M Y');
         }
     }
