@@ -3,7 +3,7 @@
     <title>Admin Login</title>
 @endpush
 @section('backend-auth-content')
-<div class="card-body p-4">
+<div class="card-body p-0">
 
     <div class="text-center w-100 m-auto">
         <h4 class="text-dark text-center pb-0 fw-bold">Admin Sign In</h4>
@@ -12,16 +12,16 @@
 
     <form action="{{ route('admin.check') }}" method="POST">
         @csrf
-        <div class="mb-3">
+        <div class="mb-3 text-start">
             <label for="emailaddress" class="form-label">Email address</label>
-            <input class="form-control" name="email" type="email" id="emailaddress" required="" placeholder="Enter your email">
+            <input class="form-control form-control-lg" name="email" type="email" id="emailaddress" required="" placeholder="Enter your email">
         </div>
 
-        <div class="mb-3">
+        <div class="mb-4 text-start">
             <a href="{{ route('forgot.password') }}" class="text-muted float-end"><small>Forgot your password?</small></a>
             <label for="password" class="form-label">Password</label>
             <div class="input-group input-group-merge">
-                <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password">
+                <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Enter your password">
                 <div class="input-group-text" data-password="false">
                     <span class="password-eye"></span>
                 </div>
@@ -29,10 +29,10 @@
         </div>
 
         <div class="mb-3 mb-0 text-center">
-            <button class="btn btn-primary w-100" type="submit"> Log In </button>
+            <button class="btn btn-primary btn-lg w-100 fw-bold" type="submit"> Log In </button>
         </div>
     </form>
-    <div class="row mt-3">
+    <div class="row mt-4">
         <div class="col-12 text-center">
             <p class="text-muted mb-0"><a href="{{ route('home') }}" class="text-decoration-none">Return to public website</a></p>
         </div>
