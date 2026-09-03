@@ -50,7 +50,7 @@
             <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="gplc-map">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3565.63095380432!2d87.27117921420957!3d26.66029607733071!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ef6c6f77f068db%3A0x5459ed0af4c0ffc2!2sGreen%20Peace%20Linclon%20College!5e0!3m2!1sen!2snp!4v1671550315569!5m2!1sen!2snp"
+                        src="https://maps.google.com/maps?q={{ urlencode($siteSettings->contact_address ?? 'Belbari, Morang, Nepal') }}&t=&z=13&ie=UTF8&iwloc=&output=embed"
                         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
