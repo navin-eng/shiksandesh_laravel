@@ -55,8 +55,8 @@
                     <i class="fas fa-sign-in-alt"></i> {{ $siteSettings->student_portal_text }}
                 </a>
             @endif
-            @if(!empty($siteSettings->header_button_text) && !empty($siteSettings->header_button_url))
-                <a href="{{ $siteSettings->header_button_url }}" class="portal-btn portal-btn-secondary" target="_blank">
+            @if(!empty($siteSettings->header_button_text))
+                <a href="{{ route('apply') }}" class="portal-btn portal-btn-secondary">
                     <i class="fas fa-arrow-up-right-from-square"></i> {{ $siteSettings->header_button_text }}
                 </a>
             @endif
@@ -95,8 +95,8 @@
                     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', (string) $siteSettings->whatsapp_number) }}" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 @endif
             </div>
-            @if(!empty($siteSettings->header_button_text) && !empty($siteSettings->header_button_url))
-                <a href="{{ $siteSettings->header_button_url }}" class="mob-cta-btn" target="_blank">
+            @if(!empty($siteSettings->header_button_text))
+                <a href="{{ route('apply') }}" class="mob-cta-btn">
                     <i class="fas fa-arrow-up-right-from-square"></i>
                     {{ $siteSettings->header_button_text }}
                 </a>
@@ -185,19 +185,6 @@
                         <li><a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a></li>
                         <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a></li>
                     @endforelse
-                    @if(isset($siteSettings) && $siteSettings->admissions_open)
-                        <li>
-                            <a href="{{ route('apply') }}" class="nav-apply">
-                                <i class="fas fa-paper-plane"></i> Apply Now
-                            </a>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ route('apply') }}" class="nav-apply" style="background: rgba(255,255,255,0.1); color: var(--light);">
-                                <i class="fas fa-info-circle"></i> Admissions Info
-                            </a>
-                        </li>
-                    @endif
                 </ul>
             </nav>
 
