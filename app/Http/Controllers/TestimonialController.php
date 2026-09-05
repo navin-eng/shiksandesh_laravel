@@ -41,17 +41,19 @@ class TestimonialController extends Controller
         if ($request->has('testimonials')) {
             $request->validate([
                 'testimonials' => 'required|array|min:1',
-                'testimonials.*.name' => 'required|string|min:2|max:30',
-                'testimonials.*.role' => 'required|string|max:255',
+                'testimonials.*.name' => 'required|string|min:2|max:60',
+                'testimonials.*.role' => 'required|string|max:100',
                 'testimonials.*.description' => 'required|string',
-                'testimonials.*.image' => 'required|image|mimes:jpeg,png,jpg',
+                'testimonials.*.image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
             ]);
 
+            $maxOrder = Testimonial::max('sort_order') ?? 0;
             foreach ($request->input('testimonials', []) as $index => $item) {
                 $testimonial = new Testimonial();
                 $testimonial->name = $item['name'];
                 $testimonial->role = $item['role'];
                 $testimonial->description = $item['description'];
+                $testimonial->sort_order = ++$maxOrder;
 
                 if ($request->hasFile("testimonials.$index.image")) {
                     $testimonial->image = $this->uploadTestimonialImage($request->file("testimonials.$index.image"));
@@ -60,109 +62,112 @@ class TestimonialController extends Controller
                 $testimonial->save();
             }
 
-                        Cache::forget('home.testimonials');
-
+            Cache::forget('home.testimonials');
 
             Alert::success('Saved', 'Testimonials saved successfully');
             return back();
         }
 
         $request->validate([
-            'name' => 'required|min:2|max:30',
+            'name' => 'required|min:2|max:60',
             'description' => 'required',
-            'role' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'role' => 'required|max:100',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
-        $testimonial = new testimonial();
+        $testimonial = new Testimonial();
         $testimonial->name = $request->name;
         $testimonial->role = $request->role;
         $testimonial->description = $request->description;
+        $testimonial->sort_order = (Testimonial::max('sort_order') ?? 0) + 1;
         if ($request->hasFile('image')) {
             $testimonial->image = $this->uploadTestimonialImage($request->file('image'));
         }
         $save = $testimonial->save();
-        if ($save == true) {
-
-                        Cache::forget('home.testimonials');
-
-
-            Alert::success('Saved', 'testimonial saved successfully');
+        if ($save) {
+            Cache::forget('home.testimonials');
+            Alert::success('Saved', 'Testimonial saved successfully');
             return back();
         } else {
-            Alert::error('oops', 'testimonial couldnot saved');
+            Alert::error('Oops', 'Testimonial could not be saved');
             return back();
         }
     }
-    public function edit(testimonial $testimonial,$id)
+    public function edit($id)
     {
         $testimonial = Testimonial::find($id);
-        if(is_null($testimonial))
-        {
-            Alert::error('oops','Something went wrong');
+        if (is_null($testimonial)) {
+            Alert::error('Oops', 'Testimonial not found');
+            return redirect()->route('testimonial.table');
         }
-        else
-        {
-            return view('backend.pages.testimonial.edit',compact('testimonial'));
-        }
+
+        return view('backend.pages.testimonial.edit', compact('testimonial'));
     }
+
     public function status($id)
     {
         $testimonial = Testimonial::find($id);
         if (is_null($testimonial)) {
-            Alert::error('oops', 'We Couldnot find testimonial');
+            Alert::error('Oops', 'Testimonial not found');
         } else {
-            if ($testimonial->status == 1) {
-                $testimonial->status = null;
-                $testimonial->update();
-                                Cache::forget('home.testimonials');
+            $testimonial->status = $testimonial->status == 1 ? null : 1;
+            $testimonial->save();
+            Cache::forget('home.testimonials');
 
-                Alert::success('Updated', 'Status Deactivate');
-                return back();
-            } else {
-                $testimonial->status = 1;
-                $testimonial->update();
-                                Cache::forget('home.testimonials');
-
-                Alert::success('Updated', 'Status Activate');
-                return back();
-            }
+            Alert::success('Updated', 'Status updated successfully');
         }
+        return back();
     }
-    public function update(Request $request, testimonial $testimonial,$id)
-    {
 
+    public function update(Request $request, $id)
+    {
         $request->validate([
-            'name' => 'required|min:2|max:30',
+            'name' => 'required|min:2|max:60',
             'description' => 'required',
-            'role' => 'required',
+            'role' => 'required|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
+
         $testimonial = Testimonial::find($id);
+        if (is_null($testimonial)) {
+            Alert::error('Oops', 'Testimonial not found');
+            return redirect()->route('testimonial.table');
+        }
+
         $testimonial->name = $request->name;
         $testimonial->role = $request->role;
         $testimonial->description = $request->description;
+
         if ($request->hasFile('image')) {
+            if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+                @unlink(public_path($testimonial->image));
+            }
             $testimonial->image = $this->uploadTestimonialImage($request->file('image'));
         }
-        $save = $testimonial->update();
-        if ($save == true) {
 
-                        Cache::forget('home.testimonials');
-
-
-            Alert::success('Saved', 'testimonial update successfully');
+        $save = $testimonial->save();
+        if ($save) {
+            Cache::forget('home.testimonials');
+            Alert::success('Saved', 'Testimonial updated successfully');
             return redirect()->route('testimonial.table');
         } else {
-            Alert::error('oops', 'testimonial couldnot update');
+            Alert::error('Oops', 'Testimonial could not update');
             return redirect()->route('testimonial.table');
         }
     }
-    public function destroy(testimonial $testimonial, $id)
+
+    public function destroy($id)
     {
         $testimonial = Testimonial::find($id);
-        $testimonial->delete();
-                Cache::forget('home.testimonials');
-
-        Alert::success('Deleted', 'testimonial deleted');
+        if ($testimonial) {
+            if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+                @unlink(public_path($testimonial->image));
+            }
+            $testimonial->delete();
+            Cache::forget('home.testimonials');
+            Alert::success('Deleted', 'Testimonial deleted successfully');
+        } else {
+            Alert::error('Oops', 'Testimonial not found');
+        }
         return redirect()->route('testimonial.table');
     }
 
@@ -170,7 +175,11 @@ class TestimonialController extends Controller
     {
         $extension = $image->getClientOriginalExtension();
         $imageName = Str::random(20) . time() . '.' . $extension;
-        $image->move('backend/images/testimonials/', $imageName);
+        $destinationPath = public_path('backend/images/testimonials');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+        $image->move($destinationPath, $imageName);
 
         return 'backend/images/testimonials/' . $imageName;
     }

@@ -82,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('frontend.pages.home.testimonials', function ($view) {
             $view->with('testimonials', Cache::remember('home.testimonials', 600, function () {
-                return \App\Models\Testimonial::all();
+                return \App\Models\Testimonial::orderBy('sort_order', 'asc')->get();
             }));
         });
     }

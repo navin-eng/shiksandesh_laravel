@@ -90,12 +90,13 @@ class CourseController extends Controller
             return back();
         }
     }
-    public function edit(Course $course,$id)
+    public function edit($id)
     {
         $course = Course::find($id);
         if(is_null($course))
         {
             Alert::error('oops','Something went wrong');
+            return redirect()->route('course.table');
         }
         else
         {
@@ -178,13 +179,16 @@ class CourseController extends Controller
             return redirect()->route('course.table');
         }
     }
-    public function destroy(Course $course, $id)
+    public function destroy($id)
     {
         $course = Course::find($id);
-        $course->delete();
-                Cache::forget('home.courses');
-
-        Alert::success('Deleted', 'course deleted');
+        if ($course) {
+            $course->delete();
+            Cache::forget('home.courses');
+            Alert::success('Deleted', 'course deleted');
+        } else {
+            Alert::error('oops', 'Course not found');
+        }
         return redirect()->route('course.table');
     }
 

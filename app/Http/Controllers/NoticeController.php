@@ -35,7 +35,11 @@ class NoticeController extends Controller
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/notices/', $imageName);
+            $destinationPath = public_path('backend/images/notices');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $image->move($destinationPath, $imageName);
             $notice->image = 'backend/images/notices/' . $imageName;
         } else {
             $notice->image = '';
@@ -56,12 +60,13 @@ class NoticeController extends Controller
             return back();
         }
     }
-    public function edit(notice $notice,$id)
+    public function edit($id)
     {
         $notice = Notice::find($id);
         if(is_null($notice))
         {
             Alert::error('oops','Something went wrong');
+            return redirect()->route('notice.table');
         }
         else
         {
@@ -107,7 +112,11 @@ class NoticeController extends Controller
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/notices/', $imageName);
+            $destinationPath = public_path('backend/images/notices');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $image->move($destinationPath, $imageName);
             $notice->image = 'backend/images/notices/' . $imageName;
         }
         $notice->description = $request->description;

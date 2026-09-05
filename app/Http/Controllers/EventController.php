@@ -45,8 +45,11 @@ class EventController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
-            $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/events/', $imageName);
+            $destinationPath = public_path('backend/images/events');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $image->move($destinationPath, $imageName);
             $event->image = 'backend/images/events/' . $imageName;
         }
 
@@ -127,8 +130,14 @@ class EventController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
-            $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/events/', $imageName);
+            $destinationPath = public_path('backend/images/events');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            if ($event->image && file_exists(public_path($event->image))) {
+                @unlink(public_path($event->image));
+            }
+            $image->move($destinationPath, $imageName);
             $event->image = 'backend/images/events/' . $imageName;
         }
 
@@ -185,10 +194,15 @@ class EventController extends Controller
     {
         $images = [];
 
+        $destinationPath = public_path('backend/images/events');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+
         foreach ($galleryFiles as $img) {
             $extension = $img->getClientOriginalExtension();
             $imageName = Str::random(20) . time() . '.' . $extension;
-            $img->move('backend/images/events/', $imageName);
+            $img->move($destinationPath, $imageName);
             $images[] = 'backend/images/events/' . $imageName;
         }
 

@@ -39,8 +39,11 @@ class TeacherController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
-            $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/teachers/', $imageName);
+            $destinationPath = public_path('backend/images/teachers');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $image->move($destinationPath, $imageName);
             $teacher->image = 'backend/images/teachers/' . $imageName;
         }
         $save = $teacher->save();
@@ -53,12 +56,13 @@ class TeacherController extends Controller
             return back();
         }
     }
-    public function edit(teacher $teacher,$id)
+    public function edit($id)
     {
         $teacher = Teacher::find($id);
         if(is_null($teacher))
         {
             Alert::error('oops','Something went wrong');
+            return redirect()->route('teacher.table');
         }
         else
         {
@@ -84,7 +88,7 @@ class TeacherController extends Controller
             }
         }
     }
-    public function update(Request $request, teacher $teacher,$id)
+    public function update(Request $request, $id)
     {
 
         $request->validate([
@@ -95,6 +99,10 @@ class TeacherController extends Controller
             'facebook_link' => 'nullable',
         ]);
         $teacher = Teacher::find($id);
+        if (!$teacher) {
+            Alert::error('oops', 'Teacher not found');
+            return redirect()->route('teacher.table');
+        }
         $teacher->name = $request->name;
         $teacher->role = $request->role;
         $teacher->staff_type = $request->staff_type;
@@ -104,7 +112,14 @@ class TeacherController extends Controller
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/teachers/', $imageName);
+            $destinationPath = public_path('backend/images/teachers');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            if ($teacher->image && file_exists(public_path($teacher->image))) {
+                @unlink(public_path($teacher->image));
+            }
+            $image->move($destinationPath, $imageName);
             $teacher->image = 'backend/images/teachers/' . $imageName;
         }
         $save = $teacher->update();
@@ -117,11 +132,18 @@ class TeacherController extends Controller
             return redirect()->route('teacher.table');
         }
     }
-    public function destroy(teacher $teacher, $id)
+    public function destroy($id)
     {
         $teacher = Teacher::find($id);
-        $teacher->delete();
-        Alert::success('Deleted', 'teacher deleted');
+        if ($teacher) {
+            if ($teacher->image && file_exists(public_path($teacher->image))) {
+                @unlink(public_path($teacher->image));
+            }
+            $teacher->delete();
+            Alert::success('Deleted', 'teacher deleted');
+        } else {
+            Alert::error('oops', 'Teacher not found');
+        }
         return redirect()->route('teacher.table');
     }
 
