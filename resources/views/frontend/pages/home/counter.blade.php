@@ -7,32 +7,13 @@
             ['title' => $counter->title4, 'value' => $counter->counter4, 'suffix' => $counter->suffix4, 'icon' => $counter->icon4],
         ];
     @endphp
-    <section class="gplc-stats position-relative {{ $siteSettings->parallax_background ?? false ? '' : '' }}" style="padding: 100px 0; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); {{ $siteSettings->parallax_background ?? false ? 'background: url('.asset($siteSettings->parallax_background).') no-repeat center center/cover; background-attachment: fixed;' : '' }}">
-        @if($siteSettings->parallax_background ?? false)
-            <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.85); z-index: 0;"></div>
-        @endif
-        
-        <!-- Top SVG Divider for design break -->
-        @if(!($siteSettings->parallax_background ?? false))
-        <div style="position: absolute; top: 0; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg);">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" style="position: relative; display: block; width: calc(100% + 1.3px); height: 50px;">
-                <path d="M1200,0H0V120H281.94C572.9,116.24,602.45,3.86,902.61,1.05,1033.43-.17,1130.64,12.78,1200,27.35Z" fill="#f8fafc"></path>
-            </svg>
-        </div>
-        <!-- Bottom SVG Divider for design break -->
-        <div style="position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0;">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" style="position: relative; display: block; width: calc(100% + 1.3px); height: 50px;">
-                <path d="M1200,0H0V120H281.94C572.9,116.24,602.45,3.86,902.61,1.05,1033.43-.17,1130.64,12.78,1200,27.35Z" fill="#ffffff"></path>
-            </svg>
-        </div>
-        @endif
-
+    <section class="gplc-stats sectionWorkdata">
         <div class="container content-relative">
             <div class="text-center mb-5 pb-3" data-aos="fade-up">
-                <span class="section-tag" style="background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(4px);">{{ $counter->section_tag ?? 'Our Impact' }}</span>
+                <span class="section-tag">{{ $counter->section_tag ?? 'Our Impact' }}</span>
                 @if($counter->section_title)
-                    <h2 class="section-title mt-2 text-white">{{ $counter->section_title }}</h2>
-                    <div class="section-divider center" style="background: rgba(255,255,255,0.3);"></div>
+                    <h2 class="section-title mt-2">{{ $counter->section_title }}</h2>
+                    <div class="section-divider center"></div>
                 @endif
             </div>
             

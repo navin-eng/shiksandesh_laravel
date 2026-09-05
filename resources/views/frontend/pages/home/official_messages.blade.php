@@ -1,15 +1,11 @@
 @if($messages->count() > 0)
-    <section class="section-block {{ $siteSettings->parallax_background ?? false ? '' : 'bg-mesh-primary' }}" style="padding: 100px 0; overflow: hidden; position: relative; {{ $siteSettings->parallax_background ?? false ? 'background: url('.asset($siteSettings->parallax_background).') no-repeat center center/cover; background-attachment: fixed;' : '' }}">
-        <!-- Overlay for parallax image if present -->
-        @if($siteSettings->parallax_background ?? false)
-            <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.7); z-index: 0;"></div>
-        @endif
+    <section class="section-block bg-light" style="padding: 100px 0; overflow: hidden; position: relative;">
         <div class="container content-relative">
             <div class="text-center mb-5" data-aos="fade-up">
-                <span class="section-tag" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px);">Leadership Voice</span>
-                <h2 class="section-title mt-2 text-white">Messages from Officials</h2>
-                <div class="section-divider center" style="background: rgba(255,255,255,0.5);"></div>
-                <p class="mt-3 text-white-50">Guiding our institution towards academic excellence and holistic development.</p>
+                <span class="section-tag" style="background: rgba(13, 122, 62, 0.1); color: var(--primary);">Leadership Voice</span>
+                <h2 class="section-title mt-2">Messages from Officials</h2>
+                <div class="section-divider center"></div>
+                <p class="mt-3 text-muted">Guiding our institution towards academic excellence and holistic development.</p>
             </div>
             
             <div class="row g-5 justify-content-center">

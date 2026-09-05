@@ -1,4 +1,4 @@
-<section class="section-block bg-soft-blobs">
+<section class="section-block bg-light">
     <div class="container content-relative">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="section-tag">What We Offer</span>
