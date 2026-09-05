@@ -118,9 +118,12 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/gallery/albums', [App\Http\Controllers\GalleryAlbumController::class, 'index'])->name('gallery.album.table');
     Route::post('/admin/dashboard/gallery/albums/store', [App\Http\Controllers\GalleryAlbumController::class, 'store'])->name('gallery.album.store');
     Route::get('/admin/dashboard/gallery/albums/delete/{id}', [App\Http\Controllers\GalleryAlbumController::class, 'delete'])->name('gallery.album.delete');
+    Route::post('/admin/dashboard/gallery/albums/update/{id}', [App\Http\Controllers\GalleryAlbumController::class, 'update'])->name('gallery.album.update');
 
     Route::get('/admin/dashboard/gallery/table', [GalleryController::class, 'index'])->name('gallery.table');
     Route::post('/admin/dashboard/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::post('/admin/dashboard/gallery/update/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::post('/admin/dashboard/gallery/crop/{id}', [GalleryController::class, 'cropImage'])->name('gallery.crop');
     Route::get('/admin/dashboard/gallery/delete/gallery/{id}', [GalleryController::class, 'galleryDelete'])->name('gallery.delete');
 
     // Event Routes

@@ -47,6 +47,38 @@ class GalleryAlbumController extends Controller
         return back();
     }
 
+    public function update(Request $request, $id)
+    {
+        $album = GalleryAlbum::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'status' => 'required|in:active,inactive'
+        ]);
+
+        $album->name = $request->name;
+        $album->status = $request->status;
+
+        if ($request->hasFile('cover_image')) {
+            $image = $request->file('cover_image');
+            $filename = time() . '_' . $image->getClientOriginalName();
+            
+            // Delete old if exists
+            if ($album->cover_image && file_exists(public_path('backend/images/gallery/' . $album->cover_image))) {
+                unlink(public_path('backend/images/gallery/' . $album->cover_image));
+            }
+
+            // Simple move without GD compression for cover (or could use GD if preferred, but standard move is fine here)
+            $image->move(public_path('backend/images/gallery/'), $filename);
+            $album->cover_image = $filename;
+        }
+
+        $album->save();
+
+        return redirect()->back()->with('success', 'Album updated successfully.');
+    }
+
     public function delete($id)
     {
         $album = GalleryAlbum::findOrFail($id);

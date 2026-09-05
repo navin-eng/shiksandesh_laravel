@@ -78,6 +78,72 @@ class GalleryController extends Controller
         return back();
     }
 
+    public function update(Request $request, $id)
+    {
+        $gallery = Gallery::findOrFail($id);
+        $gallery->caption = $request->caption;
+        $gallery->album_id = $request->album_id;
+        $gallery->save();
+
+        toastr()->success('Item updated successfully!');
+        return back();
+    }
+
+    public function cropImage(Request $request, $id)
+    {
+        $gallery = Gallery::findOrFail($id);
+        
+        $request->validate([
+            'cropped_image' => 'required|string',
+        ]);
+
+        if ($gallery->type !== 'image' || !$gallery->file_path) {
+            return back()->with('error', 'Only uploaded images can be cropped.');
+        }
+
+        // The cropped image comes as a base64 data URL
+        $base64Data = $request->cropped_image;
+        
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+            $base64Data = substr($base64Data, strpos($base64Data, ',') + 1);
+            $type = strtolower($type[1]); // jpg, png, gif
+
+            if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+                return back()->with('error', 'Invalid image type for cropping.');
+            }
+            
+            $base64Data = base64_decode($base64Data);
+            
+            if ($base64Data === false) {
+                return back()->with('error', 'Base64 decode failed.');
+            }
+        } else {
+            return back()->with('error', 'Invalid base64 string.');
+        }
+
+        // Save over the original file
+        $filePath = public_path('backend/images/gallery/' . $gallery->file_path);
+        
+        // Use GD to save the cropped image properly instead of raw file_put_contents
+        $image = imagecreatefromstring($base64Data);
+        if ($image !== false) {
+            if ($type == 'png') {
+                imagealphablending($image, false);
+                imagesavealpha($image, true);
+                imagepng($image, $filePath, 9);
+            } else {
+                imagejpeg($image, $filePath, 90);
+            }
+            imagedestroy($image);
+        } else {
+            // fallback
+            file_put_contents($filePath, $base64Data);
+        }
+
+        toastr()->success('Image cropped successfully!');
+        return back();
+    }
+
     public function galleryDelete($id)
     {
         $galleryItem = Gallery::findOrFail($id);
