@@ -130,6 +130,7 @@ class EventController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
+            $imageName = time() . uniqid() . '.' . $extension;
             $destinationPath = public_path('backend/images/events');
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
