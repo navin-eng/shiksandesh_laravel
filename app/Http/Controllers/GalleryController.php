@@ -85,7 +85,7 @@ class GalleryController extends Controller
         $gallery->album_id = $request->album_id;
         $gallery->save();
 
-        toastr()->success('Item updated successfully!');
+        Alert::success('Updated', 'Item updated successfully!');
         return back();
     }
 
@@ -140,7 +140,7 @@ class GalleryController extends Controller
             file_put_contents($filePath, $base64Data);
         }
 
-        toastr()->success('Image cropped successfully!');
+        Alert::success('Success', 'Image cropped successfully!');
         return back();
     }
 
