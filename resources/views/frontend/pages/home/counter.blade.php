@@ -10,9 +10,9 @@
     <section class="gplc-stats sectionWorkdata">
         <div class="container content-relative">
             <div class="text-center mb-5 pb-3" data-aos="fade-up">
-                <span class="section-tag">{{ $counter->section_tag ?? 'Our Impact' }}</span>
+                <span class="section-tag" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255,255,255,0.2);">{{ $counter->section_tag ?? 'Our Impact' }}</span>
                 @if($counter->section_title)
-                    <h2 class="section-title mt-2">{{ $counter->section_title }}</h2>
+                    <h2 class="section-title mt-2 text-white">{{ $counter->section_title }}</h2>
                     <div class="section-divider center"></div>
                 @endif
             </div>
