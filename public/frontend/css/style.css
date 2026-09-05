@@ -239,7 +239,21 @@ a:hover { color: var(--primary-dark); }
 }
 
 /* ── Hero Banner ───────────────────────────────────────── */
-.gplc-hero-slide { height: 75vh; min-height: 600px; position: relative; }
+.gplc-hero-slide { height: 75vh; min-height: 600px; position: relative; overflow: hidden; }
+
+/* FIX: Banner images must fill the entire slide regardless of their natural dimensions.
+   Without position:absolute + object-fit:cover the image renders at its natural height,
+   overflowing or leaving gaps, and is not responsive. */
+.gplc-hero-slide img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
+
 .gplc-hero-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(90deg, rgba(14,45,84,0.9) 0%, rgba(26,77,140,0.7) 50%, rgba(0,0,0,0.3) 100%);
@@ -803,6 +817,8 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
     .page-hero { padding: 40px 0; }
     .page-hero h1 { font-size: 2rem; }
     
+    /* Hero banner responsive height */
+    .gplc-hero-slide { min-height: 480px; }
     .gplc-hero-content h1 { font-size: 2.5rem; }
     .gplc-hero-content p { font-size: 1rem; }
     .gplc-hero-actions { flex-direction: column; gap: 10px; }
@@ -831,4 +847,12 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
         height: 48px;
         font-size: 24px;
     }
+}
+
+/* ── Hero Banner: Phone-specific overrides ──────────── */
+@media (max-width: 480px) {
+    .gplc-hero-slide { height: 60vh; min-height: 320px; }
+    .gplc-hero-content { padding: 0 5%; }
+    .gplc-hero-content h1 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .gplc-hero-content p { font-size: 0.9rem; margin-bottom: 1.5rem; }
 }
