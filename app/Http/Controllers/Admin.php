@@ -48,7 +48,7 @@ class Admin extends Controller
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'password' => ['required', Password::min(8)->mixedCase()->numbers()],
+            'password' => 'required|string|min:8',
         ]);
 
         $imageName = null;
@@ -64,7 +64,7 @@ class Admin extends Controller
         $admin->email    = $request->email;
         $admin->password = Hash::make($request->password);
         $admin->a_type   = ($count === 0) ? 'A' : 'E';
-        $admin->image    = $imageName ? 'backend/admin/images/' . $imageName : null;
+        $admin->image    = $imageName ? 'backend/admin/images/' . $imageName : 'backend/admin/images/default-avatar.png';
         $admin->save();
 
         if ($count === 0) {
@@ -143,7 +143,7 @@ class Admin extends Controller
     {
         $request->validate([
             'code'     => 'required',
-            'password' => ['required', Password::min(8)->mixedCase()->numbers(), 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $codeCheck = Token::where('code', $request->code)->first();

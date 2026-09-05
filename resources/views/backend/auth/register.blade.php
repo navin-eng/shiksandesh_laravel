@@ -10,6 +10,16 @@
         <p class="text-muted mb-4">Create your new email and password</p>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
