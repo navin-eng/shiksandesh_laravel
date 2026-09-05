@@ -1,6 +1,6 @@
 @if($events->count() > 0)
-    <section class="section-block" style="background: #f8f9fa; padding: 80px 0;">
-        <div class="container">
+    <section class="section-block bg-soft-blobs" style="padding: 100px 0;">
+        <div class="container content-relative">
             <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5" data-aos="fade-up">
                 <div>
                     <span class="section-tag" style="background: rgba(13, 122, 62, 0.1); color: var(--primary);">Campus Life</span>
@@ -19,7 +19,7 @@
             <div class="row g-4">
                 @foreach($events->take(6) as $event)
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                        <a href="{{ url('event/' . $event->slug) }}" class="event-card-animated h-100 text-decoration-none d-block">
+                        <a href="{{ url('event/' . $event->slug) }}" class="event-card-animated glass-panel h-100 text-decoration-none d-block">
                             <div class="event-image-wrapper">
                                 <img src="{{ $event->image ? asset($event->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $event->name }}" class="event-img">
                                 <div class="event-date-badge">

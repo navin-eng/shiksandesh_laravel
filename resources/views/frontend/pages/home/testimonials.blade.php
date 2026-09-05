@@ -1,21 +1,28 @@
 @if($testimonials->count() > 0)
-    <section class="section-block bg-light position-relative" style="padding: 100px 0; overflow: hidden;">
-        <!-- Background decorative elements -->
-        <div class="position-absolute" style="top: -50px; left: -50px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(13, 122, 62, 0.05) 0%, rgba(255,255,255,0) 70%);"></div>
-        <div class="position-absolute" style="bottom: -100px; right: -50px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(13, 122, 62, 0.05) 0%, rgba(255,255,255,0) 70%);"></div>
+    <section class="section-block position-relative {{ $siteSettings->parallax_background ?? false ? '' : 'bg-mesh-primary' }}" style="padding: 100px 0; overflow: hidden; {{ $siteSettings->parallax_background ?? false ? 'background: url('.asset($siteSettings->parallax_background).') no-repeat center center/cover; background-attachment: fixed;' : '' }}">
+        <!-- Overlay for parallax image if present -->
+        @if($siteSettings->parallax_background ?? false)
+            <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(15, 23, 42, 0.7); z-index: 0;"></div>
+        @endif
+        
+        <!-- Background decorative elements (only if no parallax) -->
+        @if(!($siteSettings->parallax_background ?? false))
+            <div class="position-absolute" style="top: -50px; left: -50px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255,255,255,0) 70%); z-index: 1;"></div>
+            <div class="position-absolute" style="bottom: -100px; right: -50px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255,255,255,0) 70%); z-index: 1;"></div>
+        @endif
 
         <div class="container position-relative" style="z-index: 2;">
             <div class="text-center mb-5 pb-2" data-aos="fade-up">
-                <span class="section-tag" style="background: rgba(13, 122, 62, 0.1); color: var(--primary);">Student Voice</span>
-                <h2 class="section-title mt-2 text-dark">What Our Students Say</h2>
-                <div class="section-divider center"></div>
+                <span class="section-tag" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px);">Student Voice</span>
+                <h2 class="section-title mt-2 text-white">What Our Students Say</h2>
+                <div class="section-divider center" style="background: rgba(255,255,255,0.5);"></div>
             </div>
             
             <div class="swiper testiSwiper-modern" data-aos="fade-up" data-aos-delay="100">
                 <div class="swiper-wrapper">
                     @foreach($testimonials as $testi)
                         <div class="swiper-slide h-auto">
-                            <div class="testi-card-modern h-100">
+                            <div class="testi-card-modern glass-panel h-100">
                                 <div class="quote-watermark">
                                     <i class="fa-solid fa-quote-right"></i>
                                 </div>

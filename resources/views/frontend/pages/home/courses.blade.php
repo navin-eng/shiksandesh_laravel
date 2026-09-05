@@ -1,5 +1,5 @@
-<section class="section-block">
-    <div class="container">
+<section class="section-block bg-soft-blobs">
+    <div class="container content-relative">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="section-tag">What We Offer</span>
             <h2 class="section-title mt-2">Our Academic Programs</h2>
