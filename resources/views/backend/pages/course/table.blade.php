@@ -3,7 +3,7 @@
 @section('backend-content')
 <div class="admin-page-header">
   <div><h1 class="aph-title">Courses & Programs</h1><p class="aph-sub">Manage all academic classes and programmes offered by the school.</p></div>
-  <a href="{{ route('course.add') }}" class="btn-admin btn-admin-primary"><i class="bi bi-plus-lg"></i> Add Course</a>
+  <button type="button" class="btn-admin btn-admin-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal"><i class="bi bi-plus-lg"></i> Add Course</button>
 </div>
 <div class="admin-card">
   <div class="admin-card-header">
@@ -65,4 +65,43 @@
     </div>
   </div>
 </div>
+
+<!-- Add Course Modal -->
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <div class="modal-header" style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; border-radius: 12px 12px 0 0;">
+        <h5 class="modal-title" id="addCourseModalLabel" style="font-weight: 600; color: #1e293b;">Add New Course</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4" style="background-color: #f8fafc; overflow-y: auto;">
+        <style>
+            #addCourseModal .admin-page-header { display: none !important; }
+            #addCourseModal .admin-card { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        </style>
+        @if ($errors->any())
+            <div class="alert alert-danger" style="border-radius: 8px;">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @include('backend.pages.course.form')
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('addCourseModal'));
+            myModal.show();
+        });
+    @endif
+</script>
+@endpush

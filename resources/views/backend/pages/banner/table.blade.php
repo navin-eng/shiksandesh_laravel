@@ -3,7 +3,7 @@
 @section('backend-content')
 <div class="admin-page-header">
   <div><h1 class="aph-title">Banners</h1><p class="aph-sub">Manage homepage hero slider banners.</p></div>
-  <a href="{{ route('banner.add') }}" class="btn-admin btn-admin-primary"><i class="bi bi-plus-lg"></i> Add Banner</a>
+  <button type="button" class="btn-admin btn-admin-primary" data-bs-toggle="modal" data-bs-target="#addBannerModal"><i class="bi bi-plus-lg"></i> Add Banner</button>
 </div>
 <div class="admin-card">
   <div class="admin-card-header"><span class="card-title"><i class="bi bi-image-fill"></i> All Banners</span></div>
@@ -34,4 +34,57 @@
     </div>
   </div>
 </div>
+
+<!-- Add Banner Modal -->
+<div class="modal fade" id="addBannerModal" tabindex="-1" aria-labelledby="addBannerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <div class="modal-header" style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; border-radius: 12px 12px 0 0;">
+        <h5 class="modal-title" id="addBannerModalLabel" style="font-weight: 600; color: #1e293b;">Add New Banner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ route('banner.store') }}" enctype="multipart/form-data" method="POST">
+        @csrf
+        <div class="modal-body p-4">
+          @if ($errors->any())
+            <div class="alert alert-danger" style="border-radius: 8px;">
+              <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+          <div class="mb-3">
+              <label class="admin-label">Title (One) <span style="color:#e53e3e">*</span></label>
+              <input type="text" name="title1" value="{{ old('title1') }}" class="admin-input" required>
+          </div>
+          <div class="mb-3">
+              <label class="admin-label">Title (Two) <span style="color:#e53e3e">*</span></label>
+              <input type="text" name="title2" value="{{ old('title2') }}" class="admin-input" required>
+          </div>
+          <div class="mb-3">
+              <label class="admin-label">Image <span style="color:#e53e3e">*</span></label>
+              <input type="file" name="image" class="admin-input" accept="image/*" required>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid #e2e8f0; background-color: #f8fafc; border-radius: 0 0 12px 12px;">
+          <button type="button" class="btn btn-secondary" style="border-radius: 8px;" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="border-radius: 8px; background-color: #1a4d8c; border: none;">Save Banner</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('addBannerModal'));
+            myModal.show();
+        });
+    @endif
+</script>
+@endpush

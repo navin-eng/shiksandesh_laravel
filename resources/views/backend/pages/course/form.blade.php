@@ -257,7 +257,7 @@
 const courseInitialHtml = @json($courseData['fulldescription']);
 $('#courseSummernote').summernote({
     placeholder: 'Course description will appear here after you click "Generate Full Description".',
-    tabsize: 2, height: 460,
+    tabsize: 2, height: 460, dialogsInBody: true,
     codeviewFilter: false, codeviewIframeFilter: false,
     toolbar: [
         ['style', ['style']],

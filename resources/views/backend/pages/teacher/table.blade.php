@@ -3,7 +3,7 @@
 @section('backend-content')
 <div class="admin-page-header">
   <div><h1 class="aph-title">Our Team</h1><p class="aph-sub">Manage administrative, teaching, and non-teaching staff.</p></div>
-  <a href="{{ route('teacher.add') }}" class="btn-admin btn-admin-primary"><i class="bi bi-plus-lg"></i> Add Member</a>
+  <button type="button" class="btn-admin btn-admin-primary" data-bs-toggle="modal" data-bs-target="#addTeacherModal"><i class="bi bi-plus-lg"></i> Add Member</button>
 </div>
 <div class="admin-card">
   <div class="admin-card-header">
@@ -56,6 +56,67 @@
     </div>
   </div>
 </div>
+
+<!-- Add Teacher Modal -->
+<div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <div class="modal-header" style="background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; border-radius: 12px 12px 0 0;">
+        <h5 class="modal-title" id="addTeacherModalLabel" style="font-weight: 600; color: #1e293b;">Add New Member</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ route('teacher.store') }}" enctype="multipart/form-data" method="POST">
+        @csrf
+        <div class="modal-body p-4">
+          @if ($errors->any())
+            <div class="alert alert-danger" style="border-radius: 8px;">
+              <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+          <div class="row g-3">
+            <div class="col-md-6">
+                <label class="admin-label">Full Name <span style="color:#e53e3e">*</span></label>
+                <input type="text" name="name" value="{{ old('name') }}" class="admin-input" placeholder="e.g. Ram Prasad Sharma" required>
+            </div>
+            <div class="col-md-6">
+                <label class="admin-label">Designation / Role <span style="color:#e53e3e">*</span></label>
+                <input type="text" name="role" value="{{ old('role') }}" class="admin-input" placeholder="e.g. Assistant Professor" required>
+            </div>
+            <div class="col-md-6">
+                <label class="admin-label">Staff Category <span style="color:#e53e3e">*</span></label>
+                <select name="staff_type" class="admin-select" required>
+                    <option value="">Select category</option>
+                    <option value="administrative" {{ old('staff_type') === 'administrative' ? 'selected' : '' }}>Administrative Staff</option>
+                    <option value="teaching" {{ old('staff_type') === 'teaching' ? 'selected' : '' }}>Teaching Staff</option>
+                    <option value="non_teaching" {{ old('staff_type') === 'non_teaching' ? 'selected' : '' }}>Non-Teaching Staff</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="admin-label">Photo <span style="color:#e53e3e">*</span></label>
+                <input type="file" name="image" class="admin-input" accept="image/*" required>
+            </div>
+            <div class="col-md-6">
+                <label class="admin-label">Sort Order</label>
+                <input type="number" name="sort_order" value="0" class="admin-input">
+            </div>
+            <div class="col-md-6">
+                <label class="admin-label">Facebook Profile Link</label>
+                <input type="text" name="facebook_link" value="{{ old('facebook_link') }}" class="admin-input" placeholder="https://facebook.com/... (optional)">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid #e2e8f0; background-color: #f8fafc; border-radius: 0 0 12px 12px;">
+          <button type="button" class="btn btn-secondary" style="border-radius: 8px;" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="border-radius: 8px; background-color: #1a4d8c; border: none;">Save Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -105,5 +166,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+@if($errors->any())
+    var myModal = new bootstrap.Modal(document.getElementById('addTeacherModal'));
+    myModal.show();
+@endif
 </script>
 @endpush
