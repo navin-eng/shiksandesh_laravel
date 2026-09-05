@@ -30,7 +30,7 @@
     <!-- LightGallery -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css">
     <!-- GPLC Brand CSS -->
-    <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}?v={{ time() }}">
 
     {{-- Page-level styles injected by child views --}}
     @stack('styles')

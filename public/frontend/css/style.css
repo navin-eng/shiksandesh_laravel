@@ -845,11 +845,11 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
     .mob-topbar-row1 {
         display: flex;
         align-items: center;
-        gap: 0;
-        background: rgba(0,0,0,0.25);
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        gap: 8px;
+        background: transparent;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        padding: 6px 12px;
         overflow: hidden;
-        min-height: 30px;
     }
     .mob-date-pill {
         display: flex;
@@ -858,42 +858,36 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
         white-space: nowrap;
         flex-shrink: 0;
         color: #fff;
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 5px 10px 5px 12px;
-        border-right: 1px solid rgba(255,255,255,0.2);
-        letter-spacing: 0.01em;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding-right: 8px;
+        border-right: 1px solid rgba(255,255,255,0.3);
     }
-    .mob-date-pill i { color: #fcd34d; font-size: 0.72rem; }
+    .mob-date-pill i { color: #fcd34d; font-size: 0.75rem; }
 
     .mob-marquee-wrap {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
         flex: 1;
         overflow: hidden;
         min-width: 0;
-        padding: 0 8px;
     }
     .mob-notice-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: var(--accent, #f59e0b);
-        color: var(--primary-dark, #0e2d54);
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        font-size: 0.6rem;
+        color: #fcd34d;
+        font-size: 0.8rem;
         flex-shrink: 0;
         animation: bellPulse 2s ease-in-out infinite;
     }
     @keyframes bellPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.15); }
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.1) rotate(10deg); }
     }
-    .mob-marquee-wrap marquee { flex: 1; font-size: 0.72rem; color: rgba(255,255,255,0.88); }
-    .mob-marquee-wrap marquee a { color: rgba(255,255,255,0.88); text-decoration: none; font-weight: 500; }
+    .mob-marquee-wrap marquee { flex: 1; font-size: 0.75rem; color: rgba(255,255,255,0.9); }
+    .mob-marquee-wrap marquee a { color: rgba(255,255,255,0.95); text-decoration: none; font-weight: 500; }
     .mob-marquee-wrap marquee a:hover { color: #fcd34d; }
 
     /* Row 2: Social icons + CTA button */
@@ -901,22 +895,19 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 6px 12px;
+        padding: 8px 12px;
     }
-    .mob-social { display: flex; gap: 6px; align-items: center; }
+    .mob-social { display: flex; gap: 10px; align-items: center; }
     .mob-social a {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 26px; height: 26px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.12);
-        color: #fff;
-        font-size: 0.72rem;
+        color: rgba(255,255,255,0.85);
+        font-size: 1rem;
         text-decoration: none;
-        transition: background 0.2s;
+        transition: color 0.2s;
     }
-    .mob-social a:hover { background: rgba(255,255,255,0.25); color: #fcd34d; }
+    .mob-social a:hover { color: #fcd34d; }
 
     .mob-cta-btn {
         display: inline-flex;
