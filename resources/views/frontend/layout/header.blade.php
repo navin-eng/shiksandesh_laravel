@@ -58,6 +58,34 @@
 {{-- ===== MAIN HEADER ===== --}}
 <header class="gplc-header" id="gplcHeader">
     <div class="container">
+
+        {{-- ===== MOBILE-ONLY INFO BAR (Nepali date + Marquee notice) ===== --}}
+        <div class="mobile-info-bar">
+            {{-- Nepali date on the left --}}
+            <div class="mob-nepali-date">
+                <i class="fas fa-calendar-day"></i>
+                <span>{{ get_today_nepali_date() }}</span>
+            </div>
+
+            {{-- Marquee notice on the right --}}
+            @if(!empty($marqueeNotice))
+            <div class="mob-notice-ticker">
+                <i class="fas fa-bell mob-bell"></i>
+                <marquee
+                    behavior="scroll"
+                    direction="left"
+                    scrollamount="5"
+                    onmouseover="this.stop();"
+                    onmouseout="this.start();"
+                    ontouchstart="this.stop();"
+                    ontouchend="this.start();"
+                >
+                    <a href="{{ url('notice/detail/' . $marqueeNotice->id) }}">{{ $marqueeNotice->title }}</a>
+                </marquee>
+            </div>
+            @endif
+        </div>
+
         <div class="header-inner">
 
             {{-- Logo --}}

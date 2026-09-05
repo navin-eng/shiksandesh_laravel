@@ -131,6 +131,12 @@ a:hover { color: var(--primary-dark); }
     opacity: 1 !important;
 }
 
+/* ── Mobile Info Bar (Nepali Date + Marquee Notice) ─── */
+/* Hidden on desktop — only shown on mobile via media query */
+.mobile-info-bar {
+    display: none;
+}
+
 .gplc-header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
@@ -820,6 +826,62 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
     /* Hero banner responsive height */
     .gplc-hero-slide { min-height: 480px; }
     .gplc-hero-content h1 { font-size: 2.5rem; }
+
+    /* ── Mobile Info Bar ── */
+    .mobile-info-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: var(--primary-dark, #0e2d54);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 6px 0;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .mob-nepali-date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        color: #fff;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 2px 10px 2px 4px;
+        border-right: 1px solid rgba(255,255,255,0.2);
+    }
+    .mob-nepali-date i {
+        color: #fcd34d;
+        font-size: 0.75rem;
+    }
+
+    .mob-notice-ticker {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+        overflow: hidden;
+        min-width: 0;
+    }
+    .mob-bell {
+        color: #fcd34d;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+    .mob-notice-ticker marquee {
+        flex: 1;
+        font-size: 0.78rem;
+    }
+    .mob-notice-ticker marquee a {
+        color: rgba(255,255,255,0.88);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .mob-notice-ticker marquee a:hover {
+        color: #fcd34d;
+    }
     .gplc-hero-content p { font-size: 1rem; }
     .gplc-hero-actions { flex-direction: column; gap: 10px; }
     .gplc-hero-actions .btn-gplc, .gplc-hero-actions .btn-gplc-light { width: 100%; justify-content: center; }
