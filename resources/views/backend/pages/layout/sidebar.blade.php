@@ -23,203 +23,181 @@
     <ul class="sb-menu">
 
       {{-- Overview --}}
-      <li class="sb-group-label"><span class="sb-text">Overview</span></li>
+      <li class="sb-group-label"><span class="sb-text">Dashboard</span></li>
       <li class="sb-item">
         <a href="{{ url('admin/dashboard') }}" class="sb-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" title="Dashboard">
           <i class="bi bi-grid-1x2-fill"></i><span class="sb-text">Dashboard</span>
         </a>
       </li>
 
-      {{-- Academic --}}
-      <li class="sb-group-label"><span class="sb-text">Academic</span></li>
-
+      {{-- Academics --}}
+      <li class="sb-group-label"><span class="sb-text">Academics</span></li>
+      <li class="sb-item">
+        <a class="sb-link {{ request()->is('admin/dashboard/course*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbCourse"
+           aria-expanded="{{ request()->is('admin/dashboard/course*') ? 'true' : 'false' }}" title="Courses">
+          <i class="bi bi-mortarboard-fill"></i><span class="sb-text">Courses</span><i class="bi bi-chevron-right sb-arrow"></i>
+        </a>
+        <div class="collapse {{ request()->is('admin/dashboard/course*') ? 'show' : '' }}" id="sbCourse">
+          <ul class="sb-submenu">
+            <li class="sb-item"><a href="{{ route('course.add') }}" class="sb-link {{ request()->routeIs('course.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Course</span></a></li>
+            <li class="sb-item"><a href="{{ route('course.table') }}" class="sb-link {{ request()->routeIs('course.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Courses</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="sb-item">
+        <a class="sb-link {{ request()->is('admin/dashboard/teacher*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbTeacher"
+           aria-expanded="{{ request()->is('admin/dashboard/teacher*') ? 'true' : 'false' }}" title="Faculty">
+          <i class="bi bi-people-fill"></i><span class="sb-text">Faculty</span><i class="bi bi-chevron-right sb-arrow"></i>
+        </a>
+        <div class="collapse {{ request()->is('admin/dashboard/teacher*') ? 'show' : '' }}" id="sbTeacher">
+          <ul class="sb-submenu">
+            <li class="sb-item"><a href="{{ route('teacher.add') }}" class="sb-link {{ request()->routeIs('teacher.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Member</span></a></li>
+            <li class="sb-item"><a href="{{ route('teacher.table') }}" class="sb-link {{ request()->routeIs('teacher.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Members</span></a></li>
+          </ul>
+        </div>
+      </li>
       <li class="sb-item">
         <a href="{{ route('admin.admissions.index') }}" class="sb-link {{ request()->routeIs('admin.admissions.*') ? 'active' : '' }}" title="Admissions">
           <i class="bi bi-inbox-fill"></i><span class="sb-text">Admissions</span>
         </a>
       </li>
-
-      <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/course*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbCourse"
-           aria-expanded="{{ request()->is('admin/dashboard/course*') ? 'true' : 'false' }}" title="Courses">
-          <i class="bi bi-mortarboard-fill"></i>
-          <span class="sb-text">Courses</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
-        </a>
-        <div class="collapse {{ request()->is('admin/dashboard/course*') ? 'show' : '' }}" id="sbCourse">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('course.add') }}"   class="sb-link {{ request()->routeIs('course.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Course</span></a></li>
-            <li class="sb-item"><a href="{{ route('course.table') }}" class="sb-link {{ request()->routeIs('course.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Courses</span></a></li>
-          </ul>
-        </div>
-      </li>
-
-      <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/teacher*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbTeacher"
-           aria-expanded="{{ request()->is('admin/dashboard/teacher*') ? 'true' : 'false' }}" title="Team">
-          <i class="bi bi-people-fill"></i>
-          <span class="sb-text">Team</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
-        </a>
-        <div class="collapse {{ request()->is('admin/dashboard/teacher*') ? 'show' : '' }}" id="sbTeacher">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('teacher.add') }}"   class="sb-link {{ request()->routeIs('teacher.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Member</span></a></li>
-            <li class="sb-item"><a href="{{ route('teacher.table') }}" class="sb-link {{ request()->routeIs('teacher.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Members</span></a></li>
-          </ul>
-        </div>
-      </li>
-
-      {{-- Website Content --}}
-      <li class="sb-group-label"><span class="sb-text">Website Content</span></li>
-
-      <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/banner*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbBanner"
-           aria-expanded="{{ request()->is('admin/dashboard/banner*') ? 'true' : 'false' }}" title="Banners">
-          <i class="bi bi-image-fill"></i>
-          <span class="sb-text">Banners</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
-        </a>
-        <div class="collapse {{ request()->is('admin/dashboard/banner*') ? 'show' : '' }}" id="sbBanner">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('banner.add') }}"   class="sb-link {{ request()->routeIs('banner.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Banner</span></a></li>
-            <li class="sb-item"><a href="{{ route('banner.table') }}" class="sb-link {{ request()->routeIs('banner.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Banners</span></a></li>
-          </ul>
-        </div>
-      </li>
-
-      <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/notice*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbNotice"
-           aria-expanded="{{ request()->is('admin/dashboard/notice*') ? 'true' : 'false' }}" title="Notices">
-          <i class="bi bi-bell-fill"></i>
-          <span class="sb-text">Notices</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
-        </a>
-        <div class="collapse {{ request()->is('admin/dashboard/notice*') ? 'show' : '' }}" id="sbNotice">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('notice.add') }}"   class="sb-link {{ request()->routeIs('notice.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Notice</span></a></li>
-            <li class="sb-item"><a href="{{ route('notice.table') }}" class="sb-link {{ request()->routeIs('notice.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Notices</span></a></li>
-          </ul>
-        </div>
-      </li>
-
-      <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/event*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbEvent"
-           aria-expanded="{{ request()->is('admin/dashboard/event*') ? 'true' : 'false' }}" title="Events">
-          <i class="bi bi-calendar2-event-fill"></i>
-          <span class="sb-text">Events</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
-        </a>
-        <div class="collapse {{ request()->is('admin/dashboard/event*') ? 'show' : '' }}" id="sbEvent">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('event.add') }}"   class="sb-link {{ request()->routeIs('event.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Event</span></a></li>
-            <li class="sb-item"><a href="{{ route('event.table') }}" class="sb-link {{ request()->routeIs('event.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Events</span></a></li>
-          </ul>
-        </div>
-      </li>
-
       <li class="sb-item">
         <a href="{{ route('campus.calendar.index') }}" class="sb-link {{ request()->routeIs('campus.calendar.*') ? 'active' : '' }}" title="Campus Calendar">
           <i class="bi bi-calendar3"></i><span class="sb-text">Campus Calendar</span>
         </a>
       </li>
 
+      {{-- Content Management --}}
+      <li class="sb-group-label"><span class="sb-text">Content Management</span></li>
       <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/testimonial*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbTesti"
-           aria-expanded="{{ request()->is('admin/dashboard/testimonial*') ? 'true' : 'false' }}" title="Testimonials">
-          <i class="bi bi-chat-quote-fill"></i>
-          <span class="sb-text">Testimonials</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
+        <a class="sb-link {{ request()->is('admin/dashboard/notice*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbNotice"
+           aria-expanded="{{ request()->is('admin/dashboard/notice*') ? 'true' : 'false' }}" title="Notices">
+          <i class="bi bi-bell-fill"></i><span class="sb-text">Notices</span><i class="bi bi-chevron-right sb-arrow"></i>
         </a>
-        <div class="collapse {{ request()->is('admin/dashboard/testimonial*') ? 'show' : '' }}" id="sbTesti">
+        <div class="collapse {{ request()->is('admin/dashboard/notice*') ? 'show' : '' }}" id="sbNotice">
           <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('testimonial.add') }}"   class="sb-link {{ request()->routeIs('testimonial.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Testimonial</span></a></li>
-            <li class="sb-item"><a href="{{ route('testimonial.table') }}" class="sb-link {{ request()->routeIs('testimonial.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Testimonials</span></a></li>
+            <li class="sb-item"><a href="{{ route('notice.add') }}" class="sb-link {{ request()->routeIs('notice.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Notice</span></a></li>
+            <li class="sb-item"><a href="{{ route('notice.table') }}" class="sb-link {{ request()->routeIs('notice.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Notices</span></a></li>
           </ul>
         </div>
       </li>
-
+      <li class="sb-item">
+        <a class="sb-link {{ request()->is('admin/dashboard/event*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbEvent"
+           aria-expanded="{{ request()->is('admin/dashboard/event*') ? 'true' : 'false' }}" title="Events">
+          <i class="bi bi-calendar2-event-fill"></i><span class="sb-text">Events</span><i class="bi bi-chevron-right sb-arrow"></i>
+        </a>
+        <div class="collapse {{ request()->is('admin/dashboard/event*') ? 'show' : '' }}" id="sbEvent">
+          <ul class="sb-submenu">
+            <li class="sb-item"><a href="{{ route('event.add') }}" class="sb-link {{ request()->routeIs('event.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Event</span></a></li>
+            <li class="sb-item"><a href="{{ route('event.table') }}" class="sb-link {{ request()->routeIs('event.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Events</span></a></li>
+          </ul>
+        </div>
+      </li>
       <li class="sb-item">
         <a href="{{ route('gallery.table') }}" class="sb-link {{ request()->routeIs('gallery.table') ? 'active' : '' }}" title="Gallery">
           <i class="bi bi-grid-3x3-gap-fill"></i><span class="sb-text">Gallery</span>
         </a>
       </li>
-
-      {{-- Pages & Messages --}}
-      <li class="sb-group-label"><span class="sb-text">Pages &amp; Messages</span></li>
-
       <li class="sb-item">
-        <a href="{{ route('aboutus.add') }}" class="sb-link {{ request()->routeIs('aboutus.add') ? 'active' : '' }}" title="About Us">
-          <i class="bi bi-building"></i><span class="sb-text">About Us</span>
+        <a class="sb-link {{ request()->is('admin/dashboard/testimonial*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbTesti"
+           aria-expanded="{{ request()->is('admin/dashboard/testimonial*') ? 'true' : 'false' }}" title="Testimonials">
+          <i class="bi bi-chat-quote-fill"></i><span class="sb-text">Testimonials</span><i class="bi bi-chevron-right sb-arrow"></i>
         </a>
+        <div class="collapse {{ request()->is('admin/dashboard/testimonial*') ? 'show' : '' }}" id="sbTesti">
+          <ul class="sb-submenu">
+            <li class="sb-item"><a href="{{ route('testimonial.add') }}" class="sb-link {{ request()->routeIs('testimonial.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Testimonial</span></a></li>
+            <li class="sb-item"><a href="{{ route('testimonial.table') }}" class="sb-link {{ request()->routeIs('testimonial.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Testimonials</span></a></li>
+          </ul>
+        </div>
       </li>
       <li class="sb-item">
-        <a href="{{ route('message.index') }}" class="sb-link {{ request()->routeIs('message.index') ? 'active' : '' }}" title="Visitor Messages">
-          <i class="bi bi-envelope-open-fill"></i><span class="sb-text">Our Message</span>
+        <a class="sb-link {{ request()->is('admin/dashboard/banner*') ? 'active' : '' }}"
+           data-bs-toggle="collapse" href="#sbBanner"
+           aria-expanded="{{ request()->is('admin/dashboard/banner*') ? 'true' : 'false' }}" title="Banners">
+          <i class="bi bi-image-fill"></i><span class="sb-text">Banners</span><i class="bi bi-chevron-right sb-arrow"></i>
         </a>
-      </li>
-      <li class="sb-item">
-        <a href="{{ route('privacy.add') }}" class="sb-link {{ request()->routeIs('privacy.add') ? 'active' : '' }}" title="Privacy &amp; Policy">
-          <i class="bi bi-shield-check"></i><span class="sb-text">Privacy &amp; Policy</span>
-        </a>
+        <div class="collapse {{ request()->is('admin/dashboard/banner*') ? 'show' : '' }}" id="sbBanner">
+          <ul class="sb-submenu">
+            <li class="sb-item"><a href="{{ route('banner.add') }}" class="sb-link {{ request()->routeIs('banner.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Banner</span></a></li>
+            <li class="sb-item"><a href="{{ route('banner.table') }}" class="sb-link {{ request()->routeIs('banner.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Banners</span></a></li>
+          </ul>
+        </div>
       </li>
 
+      {{-- Pages & Menus --}}
+      <li class="sb-group-label"><span class="sb-text">Pages & Menus</span></li>
       <li class="sb-item">
         <a class="sb-link {{ request()->is('admin/dashboard/page*') ? 'active' : '' }}"
            data-bs-toggle="collapse" href="#sbPages"
            aria-expanded="{{ request()->is('admin/dashboard/page*') ? 'true' : 'false' }}" title="HTML Pages">
-          <i class="bi bi-file-earmark-code-fill"></i>
-          <span class="sb-text">HTML Pages</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
+          <i class="bi bi-file-earmark-code-fill"></i><span class="sb-text">HTML Pages</span><i class="bi bi-chevron-right sb-arrow"></i>
         </a>
         <div class="collapse {{ request()->is('admin/dashboard/page*') ? 'show' : '' }}" id="sbPages">
           <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('page.add') }}"   class="sb-link {{ request()->routeIs('page.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Page</span></a></li>
+            <li class="sb-item"><a href="{{ route('page.add') }}" class="sb-link {{ request()->routeIs('page.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Page</span></a></li>
             <li class="sb-item"><a href="{{ route('page.table') }}" class="sb-link {{ request()->routeIs('page.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Pages</span></a></li>
           </ul>
         </div>
       </li>
-      
       <li class="sb-item">
         <a class="sb-link {{ request()->is('admin/dashboard/navbar-menu*') ? 'active' : '' }}"
            data-bs-toggle="collapse" href="#sbNavbarMenu"
            aria-expanded="{{ request()->is('admin/dashboard/navbar-menu*') ? 'true' : 'false' }}" title="Navbar Menu">
-          <i class="bi bi-menu-button-wide-fill"></i>
-          <span class="sb-text">Navbar Menu</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
+          <i class="bi bi-menu-button-wide-fill"></i><span class="sb-text">Navbar Menu</span><i class="bi bi-chevron-right sb-arrow"></i>
         </a>
         <div class="collapse {{ request()->is('admin/dashboard/navbar-menu*') ? 'show' : '' }}" id="sbNavbarMenu">
           <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('navbar_menu.add') }}"   class="sb-link {{ request()->routeIs('navbar_menu.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Link</span></a></li>
+            <li class="sb-item"><a href="{{ route('navbar_menu.add') }}" class="sb-link {{ request()->routeIs('navbar_menu.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Link</span></a></li>
             <li class="sb-item"><a href="{{ route('navbar_menu.table') }}" class="sb-link {{ request()->routeIs('navbar_menu.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Links</span></a></li>
           </ul>
         </div>
       </li>
-
       <li class="sb-item">
         <a class="sb-link {{ request()->is('admin/dashboard/college-message*') ? 'active' : '' }}"
            data-bs-toggle="collapse" href="#sbColMsg"
-           aria-expanded="{{ request()->is('admin/dashboard/college-message*') ? 'true' : 'false' }}" title="Messages">
-          <i class="bi bi-person-lines-fill"></i>
-          <span class="sb-text">Messages</span>
-          <i class="bi bi-chevron-right sb-arrow"></i>
+           aria-expanded="{{ request()->is('admin/dashboard/college-message*') ? 'true' : 'false' }}" title="College Messages">
+          <i class="bi bi-person-lines-fill"></i><span class="sb-text">College Messages</span><i class="bi bi-chevron-right sb-arrow"></i>
         </a>
         <div class="collapse {{ request()->is('admin/dashboard/college-message*') ? 'show' : '' }}" id="sbColMsg">
           <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('college_message.add') }}"   class="sb-link {{ request()->routeIs('college_message.add')   ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Message</span></a></li>
+            <li class="sb-item"><a href="{{ route('college_message.add') }}" class="sb-link {{ request()->routeIs('college_message.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Message</span></a></li>
             <li class="sb-item"><a href="{{ route('college_message.table') }}" class="sb-link {{ request()->routeIs('college_message.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Messages</span></a></li>
           </ul>
         </div>
       </li>
+      <li class="sb-item">
+        <a href="{{ route('message.index') }}" class="sb-link {{ request()->routeIs('message.index') ? 'active' : '' }}" title="Visitor Messages">
+          <i class="bi bi-envelope-open-fill"></i><span class="sb-text">Visitor Messages</span>
+        </a>
+      </li>
+      <li class="sb-item">
+        <a href="{{ route('aboutus.add') }}" class="sb-link {{ request()->routeIs('aboutus.add') ? 'active' : '' }}" title="About Us Page">
+          <i class="bi bi-building"></i><span class="sb-text">About Us Page</span>
+        </a>
+      </li>
+      <li class="sb-item">
+        <a href="{{ route('privacy.add') }}" class="sb-link {{ request()->routeIs('privacy.add') ? 'active' : '' }}" title="Privacy Policy Page">
+          <i class="bi bi-shield-check"></i><span class="sb-text">Privacy Policy Page</span>
+        </a>
+      </li>
 
-      {{-- System --}}
-      <li class="sb-group-label"><span class="sb-text">System</span></li>
-
+      {{-- System & Settings --}}
+      <li class="sb-group-label"><span class="sb-text">System & Settings</span></li>
+      <li class="sb-item">
+        <a href="{{ route('site.settings.edit') }}" class="sb-link {{ request()->routeIs('site.settings.edit') ? 'active' : '' }}" title="Site Settings">
+          <i class="bi bi-sliders2"></i><span class="sb-text">Site Settings</span>
+        </a>
+      </li>
+      <li class="sb-item">
+        <a href="{{ route('home.sections.index') }}" class="sb-link {{ request()->routeIs('home.sections.index') ? 'active' : '' }}" title="Homepage Layout">
+          <i class="bi bi-layout-text-window-reverse"></i><span class="sb-text">Homepage Layout</span>
+        </a>
+      </li>
       <li class="sb-item">
         <a href="{{ route('counter.table') }}" class="sb-link {{ request()->routeIs('counter.table') ? 'active' : '' }}" title="Stats Counter">
           <i class="bi bi-bar-chart-fill"></i><span class="sb-text">Stats Counter</span>
