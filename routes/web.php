@@ -105,6 +105,7 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/teacher/add', [TeacherController::class, 'create'])->name('teacher.add');
     Route::get('/admin/dashboard/teacher/table', [TeacherController::class, 'index'])->name('teacher.table');
     Route::post('/admin/dashboard/teacher/store', [TeacherController::class, 'store'])->name('teacher.store');
+    Route::post('/admin/dashboard/teacher/reorder', [TeacherController::class, 'reorder'])->name('teacher.reorder');
     Route::get('/admin/dashboard/teacher/delete/{id}', [TeacherController::class, 'destroy'])->name('teacher.destroy');
     Route::get('/admin/dashboard/teacher/status/{id}', [TeacherController::class, 'status'])->name('teacher.status');
     Route::get('/admin/dashboard/teacher/edit/{id}', [TeacherController::class, 'edit'])->name('teacher.edit');

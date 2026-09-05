@@ -10,6 +10,14 @@
     </div>
   </a>
 
+  {{-- Sidebar Search --}}
+  <div class="sb-search-wrap" style="padding: 10px 20px;">
+    <div style="position: relative;">
+      <i class="bi bi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px;"></i>
+      <input type="text" id="sbSearchInput" class="form-control" placeholder="Search menus..." style="padding-left: 35px; border-radius: 8px; font-size: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+    </div>
+  </div>
+
   {{-- Navigation --}}
   <nav class="sb-nav">
     <ul class="sb-menu">
@@ -242,3 +250,40 @@
   </div>
 
 </aside>
+
+<script>
+  // Sidebar Search Logic
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('sbSearchInput');
+    if(searchInput) {
+      searchInput.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const items = document.querySelectorAll('.sb-nav .sb-item');
+        const groups = document.querySelectorAll('.sb-nav .sb-group-label');
+
+        items.forEach(item => {
+          const text = item.textContent || item.innerText;
+          if (text.toLowerCase().indexOf(filter) > -1) {
+            item.style.display = '';
+            // If inside a collapse, ensure parent is visible
+            const collapseParent = item.closest('.collapse');
+            if(collapseParent && filter.length > 0) {
+              collapseParent.classList.add('show');
+              // Make sure the toggle button parent is also visible
+              const toggleParent = collapseParent.closest('.sb-item');
+              if(toggleParent) toggleParent.style.display = '';
+            }
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Optional: hide group labels if all items inside are hidden
+        // Simple approach: just keep labels visible, or hide if search active
+        groups.forEach(group => {
+            group.style.display = filter.length > 0 ? 'none' : '';
+        });
+      });
+    }
+  });
+</script>

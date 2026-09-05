@@ -124,4 +124,19 @@ class TeacherController extends Controller
         Alert::success('Deleted', 'teacher deleted');
         return redirect()->route('teacher.table');
     }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*.id' => 'required|integer|exists:teachers,id',
+            'order.*.position' => 'required|integer',
+        ]);
+
+        foreach ($request->order as $item) {
+            Teacher::where('id', $item['id'])->update(['sort_order' => $item['position']]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

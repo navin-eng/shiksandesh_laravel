@@ -12,11 +12,11 @@
   <div class="admin-card-body p-0">
     <div class="table-scroll">
       <table class="admin-table">
-        <thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Role</th><th>Staff Type</th><th>Order</th><th>Profile</th><th>Action</th></tr></thead>
-        <tbody>
+        <thead><tr><th><i class="bi bi-arrows-move text-muted"></i></th><th>Photo</th><th>Name</th><th>Role</th><th>Staff Type</th><th>Order</th><th>Profile</th><th>Action</th></tr></thead>
+        <tbody id="teacherList">
           @forelse($teacher as $data)
-          <tr>
-            <td><span class="sr-badge">{{ $loop->iteration }}</span></td>
+          <tr data-id="{{ $data->id }}" style="cursor: grab;">
+            <td><i class="bi bi-grip-vertical text-muted"></i></td>
             <td><img src="{{ asset($data->image) }}" class="table-img-round" alt="{{ $data->name }}"></td>
             <td style="font-weight:600;">{{ $data->name }}</td>
             <td>{{ $data->role }}</td>
@@ -57,3 +57,53 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('teacherList');
+    if (el) {
+        var sortable = Sortable.create(el, {
+            animation: 150,
+            ghostClass: 'bg-light',
+            handle: 'tr', // Whole row is draggable, but you can also restrict to the grip icon
+            onEnd: function (evt) {
+                var order = [];
+                el.querySelectorAll('tr[data-id]').forEach(function(row, index) {
+                    order.push({
+                        id: row.getAttribute('data-id'),
+                        position: index + 1
+                    });
+                });
+
+                // Update the UI order column badges immediately
+                el.querySelectorAll('tr[data-id]').forEach(function(row, index) {
+                    var orderBadge = row.querySelector('.badge-secondary');
+                    if(orderBadge) orderBadge.textContent = index + 1;
+                });
+
+                // Send ajax request to save order
+                fetch('{{ route('teacher.reorder') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ order: order })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(!data.success) {
+                        alert('Failed to save order.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    }
+});
+</script>
+@endpush
