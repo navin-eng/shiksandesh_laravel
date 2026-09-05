@@ -42,6 +42,7 @@
             background: transparent;
         }
     </style>
+    @stack('extra-styles')
 
 </head>
 
@@ -120,6 +121,8 @@
     <script src="{{ asset('backend/assets/js/vendor.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/app.min.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    @stack('extra-scripts')
 
 </body>
 
