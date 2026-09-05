@@ -21,7 +21,7 @@
                     <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         <a href="{{ url('event/' . $event->slug) }}" class="event-card-animated h-100 text-decoration-none d-block">
                             <div class="event-image-wrapper">
-                                <img src="{{ asset($event->image) }}" alt="{{ $event->name }}" class="event-img">
+                                <img src="{{ $event->image ? asset($event->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $event->name }}" class="event-img">
                                 <div class="event-date-badge">
                                     <span class="day">{{ format_system_date($event->visit_date, 'd') }}</span>
                                     <span class="month">{{ format_system_date($event->visit_date, 'M') }}</span>

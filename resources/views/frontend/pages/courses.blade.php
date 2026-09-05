@@ -28,7 +28,7 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}">
                     <div class="course-card h-100">
                         <div class="card-img">
-                            <img src="{{ asset($course->image) }}" alt="{{ $course->name }}">
+                            <img src="{{ $course->image ? asset($course->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $course->name }}">
                             <span class="card-badge">Program</span>
                         </div>
                         <div class="card-body">

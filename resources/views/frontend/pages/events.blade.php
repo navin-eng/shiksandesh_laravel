@@ -31,7 +31,7 @@
                 @foreach($events as $event)
                     <a href="{{ url('event/' . $event->slug) }}" class="event-stack-tile" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="event-stack-media">
-                            <img src="{{ asset($event->image) }}" alt="{{ $event->name }}">
+                            <img src="{{ $event->image ? asset($event->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $event->name }}">
                             <span class="event-stack-type">{{ $event->event_type_label ?? 'Event' }}</span>
                         </div>
                         <div class="event-stack-body">

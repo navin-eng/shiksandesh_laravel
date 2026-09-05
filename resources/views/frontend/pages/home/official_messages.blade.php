@@ -15,13 +15,7 @@
                             <div class="card-wave-bg"></div>
                             
                             <div class="official-avatar-wrapper">
-                                @if($msg->image)
-                                    <img src="{{ asset($msg->image) }}" alt="{{ $msg->name }}" class="official-avatar shadow-sm">
-                                @else
-                                    <div class="official-avatar-placeholder shadow-sm">
-                                        <i class="fa-solid fa-user-tie fa-2x text-white"></i>
-                                    </div>
-                                @endif
+                                <img src="{{ $msg->image ? asset($msg->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $msg->name }}" class="official-avatar shadow-sm">
                                 <div class="quote-icon-badge shadow">
                                     <i class="fa-solid fa-quote-right"></i>
                                 </div>
@@ -53,13 +47,7 @@
                     <div class="modal-header border-0 pb-0 position-relative" style="background: linear-gradient(135deg, var(--dark), var(--primary)); padding: 40px 30px;">
                         <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-4" data-bs-dismiss="modal" aria-label="Close"></button>
                         <div class="d-flex align-items-center gap-4 text-white">
-                            @if($msg->image)
-                                <img src="{{ asset($msg->image) }}" alt="{{ $msg->name }}" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.2); box-shadow: var(--shadow-sm);">
-                            @else
-                                <div style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border: 4px solid rgba(255,255,255,0.2);">
-                                    <i class="fa-solid fa-user-tie fa-2x text-white"></i>
-                                </div>
-                            @endif
+                                <img src="{{ $msg->image ? asset($msg->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $msg->name }}" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.2); box-shadow: var(--shadow-sm);">
                             <div>
                                 <h4 class="fw-bold mb-1" style="font-family: var(--font-heading);">{{ $msg->name }}</h4>
                                 <span style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8);">{{ $msg->designation }}</span>

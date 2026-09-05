@@ -50,7 +50,7 @@
                                 @foreach(($event->gallery ?? []) as $img)
                                     <a href="{{ asset($img) }}" data-lg-size="1400-900" class="gallery-item">
                                         <div class="gallery-img-wrapper">
-                                            <img src="{{ asset($img) }}" alt="{{ $event->name }}">
+                                            <img src="{{ $img ? asset($img) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $event->name }}">
                                             <div class="gallery-overlay"><i class="fa-solid fa-expand fa-2x text-white"></i></div>
                                         </div>
                                     </a>
@@ -111,7 +111,7 @@
                         <div class="d-flex flex-column gap-3">
                             @foreach($otherEvents as $oe)
                                 <a href="{{ url('event/' . $oe->slug) }}" class="other-event-card">
-                                    <img src="{{ asset($oe->image) }}" alt="{{ $oe->name }}">
+                                    <img src="{{ $oe->image ? asset($oe->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $oe->name }}">
                                     <div class="other-event-content">
                                         <h5>{{ Str::limit($oe->name, 45) }}</h5>
                                         <span><i class="fa-regular fa-calendar me-1"></i> {{ format_system_date($oe->visit_date) }}</span>

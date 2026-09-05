@@ -54,7 +54,7 @@
                                 <td>
                                     <div class="notice-table-title">
                                         @if($notice->image)
-                                            <img src="{{ asset($notice->image) }}" alt="{{ $notice->title }}">
+                                            <img src="{{ $notice->image ? asset($notice->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $notice->title }}">
                                         @endif
                                         <div>
                                             <strong>{{ $notice->title }}</strong>

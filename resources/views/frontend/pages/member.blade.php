@@ -205,13 +205,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="premium-faculty-card">
                             <div class="pfc-img-wrapper">
-                                @if($data->image)
-                                    <img src="{{ asset($data->image) }}" alt="{{ $data->name }}">
-                                @else
-                                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f1f5f9;color:#cbd5e1;">
-                                        <i class="bi bi-person-fill" style="font-size:80px;"></i>
-                                    </div>
-                                @endif
+                                <img src="{{ $data->image ? asset($data->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $data->name }}">
                                 <div class="pfc-social-overlay">
                                     @if($data->facebook_link)
                                         <a href="{{ $data->facebook_link }}" target="_blank" class="social-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
@@ -240,13 +234,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="premium-faculty-card">
                             <div class="pfc-img-wrapper">
-                                @if($data->image)
-                                    <img src="{{ asset($data->image) }}" alt="{{ $data->name }}">
-                                @else
-                                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f1f5f9;color:#cbd5e1;">
-                                        <i class="bi bi-person-fill" style="font-size:80px;"></i>
-                                    </div>
-                                @endif
+                                <img src="{{ $data->image ? asset($data->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $data->name }}">
                                 <div class="pfc-social-overlay">
                                     @if($data->facebook_link)
                                         <a href="{{ $data->facebook_link }}" target="_blank" class="social-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
@@ -275,13 +263,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="premium-faculty-card">
                             <div class="pfc-img-wrapper">
-                                @if($data->image)
-                                    <img src="{{ asset($data->image) }}" alt="{{ $data->name }}">
-                                @else
-                                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f1f5f9;color:#cbd5e1;">
-                                        <i class="bi bi-person-fill" style="font-size:80px;"></i>
-                                    </div>
-                                @endif
+                                <img src="{{ $data->image ? asset($data->image) : ($siteSettings->site_logo ? asset($siteSettings->site_logo) : asset('backend/images/logo.png')) }}" alt="{{ $data->name }}">
                                 <div class="pfc-social-overlay">
                                     @if($data->facebook_link)
                                         <a href="{{ $data->facebook_link }}" target="_blank" class="social-btn" title="Facebook"><i class="bi bi-facebook"></i></a>
