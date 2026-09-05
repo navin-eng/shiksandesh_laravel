@@ -38,9 +38,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', [Frontend::class, 'home'])->name('home');
-Route::get('/gallery', function () {
-    return view('frontend.pages.gallery');
-})->name('gallery');
+Route::get('/gallery', [Frontend::class, 'gallery'])->name('gallery');
 Route::get('/contact', function () {
     return view('frontend.pages.contact');
 })->name('contact');
@@ -117,9 +115,13 @@ Route::middleware('webGuard')->group(function () {
     Route::post('/admin/dashboard/testimonial/edit/update/{id}', [TestimonialController::class, 'update'])->name('testimonial.update');
 
     // Gallery Routes
+    Route::get('/admin/dashboard/gallery/albums', [App\Http\Controllers\GalleryAlbumController::class, 'index'])->name('gallery.album.table');
+    Route::post('/admin/dashboard/gallery/albums/store', [App\Http\Controllers\GalleryAlbumController::class, 'store'])->name('gallery.album.store');
+    Route::get('/admin/dashboard/gallery/albums/delete/{id}', [App\Http\Controllers\GalleryAlbumController::class, 'delete'])->name('gallery.album.delete');
+
     Route::get('/admin/dashboard/gallery/table', [GalleryController::class, 'index'])->name('gallery.table');
     Route::post('/admin/dashboard/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
-    Route::get('/admin/dashboard/gallery/delete/gallery/{id}/{index}', [GalleryController::class, 'galleryDelete'])->name('gallery.delete');
+    Route::get('/admin/dashboard/gallery/delete/gallery/{id}', [GalleryController::class, 'galleryDelete'])->name('gallery.delete');
 
     // Event Routes
     Route::get('/admin/dashboard/event/add', [EventController::class, 'create'])->name('event.add');

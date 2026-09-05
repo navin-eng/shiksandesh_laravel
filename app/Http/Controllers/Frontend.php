@@ -198,4 +198,13 @@ class Frontend extends Controller
         $page = Page::where('slug', $slug)->where('status', 1)->firstOrFail();
         return view('frontend.pages.custom_page', compact('page'));
     }
+
+    public function gallery()
+    {
+        $albums = \App\Models\GalleryAlbum::where('status', 'active')->latest()->get();
+        // For masonry/grid layout without albums, we can fetch all or paginate
+        $gallery = \App\Models\Gallery::latest()->get();
+        
+        return view('frontend.pages.gallery', compact('albums', 'gallery'));
+    }
 }

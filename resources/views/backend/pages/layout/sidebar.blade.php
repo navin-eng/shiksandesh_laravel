@@ -131,7 +131,12 @@
       </li>
 
       <li class="sb-item">
-        <a href="{{ route('gallery.table') }}" class="sb-link {{ request()->routeIs('gallery.table') ? 'active' : '' }}" title="Gallery">
+        <a href="{{ route('gallery.album.table') }}" class="sb-link {{ request()->routeIs('gallery.album.table') ? 'active' : '' }}" title="Gallery Albums">
+          <i class="bi bi-folder-fill"></i><span class="sb-text">Albums</span>
+        </a>
+      </li>
+      <li class="sb-item">
+        <a href="{{ route('gallery.table') }}" class="sb-link {{ request()->routeIs('gallery.table') ? 'active' : '' }}" title="Gallery Photos">
           <i class="bi bi-grid-3x3-gap-fill"></i><span class="sb-text">Gallery</span>
         </a>
       </li>

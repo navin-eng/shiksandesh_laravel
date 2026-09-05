@@ -11,52 +11,86 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $gallery = Gallery::all();
-        return view('backend.pages.gallery.table', compact('gallery'));
+        // Now fetching individually structured gallery rows.
+        $gallery = Gallery::latest()->get();
+        $albums = \App\Models\GalleryAlbum::all();
+        return view('backend.pages.gallery.table', compact('gallery', 'albums'));
     }
+
     public function store(Request $request)
     {
         $request->validate([
-            'gallery' => 'required|array|min:1',
-            'gallery.*' => 'required|image|mimes:jpeg,png,jpg,webp',
+            'album_id' => 'nullable|exists:gallery_albums,id',
+            'type' => 'required|in:image,image_url,video_url',
+            'caption' => 'nullable|string|max:255',
         ]);
-        $gallery = new Gallery();
-        $images = [];
-        if ($request->hasFile('gallery')) {
-            foreach ($request->file('gallery') as $img) {
-                $extension = $img->getClientOriginalExtension();
-                $imageName = Str::random(20) . time() . '.' . $extension;
-                $img->move('backend/images/gallery/', $imageName);
-                $images[] = $imageName;
+
+        if ($request->type === 'image') {
+            $request->validate([
+                'gallery' => 'required|array|min:1',
+                'gallery.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+            ]);
+
+            if ($request->hasFile('gallery')) {
+                foreach ($request->file('gallery') as $img) {
+                    $extension = $img->getClientOriginalExtension();
+                    $imageName = Str::random(20) . time() . '.' . $extension;
+                    
+                    // Basic native GD compression (if it's a JPEG or PNG)
+                    $tempPath = $img->getPathname();
+                    $destPath = public_path('backend/images/gallery/' . $imageName);
+                    
+                    if (in_array(strtolower($extension), ['jpg', 'jpeg'])) {
+                        $source = imagecreatefromjpeg($tempPath);
+                        imagejpeg($source, $destPath, 75); // 75% quality compression
+                        imagedestroy($source);
+                    } elseif (strtolower($extension) == 'png') {
+                        $source = imagecreatefrompng($tempPath);
+                        imagepng($source, $destPath, 8); // 8/9 compression
+                        imagedestroy($source);
+                    } else {
+                        $img->move('backend/images/gallery/', $imageName);
+                    }
+
+                    $galleryItem = new Gallery();
+                    $galleryItem->album_id = $request->album_id;
+                    $galleryItem->type = 'image';
+                    $galleryItem->file_path = $imageName;
+                    $galleryItem->caption = $request->caption;
+                    $galleryItem->save();
+                }
             }
-            $gallery->gallery = json_encode($images);
-        }
-        $save = $gallery->save();
-        if ($save == true) {
-
-            Alert::success('Saved', 'gallery saved successfully');
-            return back();
         } else {
-            Alert::error('oops', 'gallery couldnot saved');
-            return back();
+            // URL or Video
+            $request->validate([
+                'url' => 'required|url',
+            ]);
+            
+            $galleryItem = new Gallery();
+            $galleryItem->album_id = $request->album_id;
+            $galleryItem->type = $request->type;
+            $galleryItem->url = $request->url;
+            $galleryItem->caption = $request->caption;
+            $galleryItem->save();
         }
-    }
-    public function galleryDelete($id,$index)
-    {
-        $gallery = Gallery::findOrFail($id);
-        $images = json_decode($gallery->gallery, true) ?: [];
 
-        if (isset($images[$index])) {
-            $imagePath = public_path('backend/images/gallery/' . $images[$index]);
+        Alert::success('Saved', 'Gallery item(s) saved successfully');
+        return back();
+    }
+
+    public function galleryDelete($id)
+    {
+        $galleryItem = Gallery::findOrFail($id);
+        
+        if ($galleryItem->type === 'image' && $galleryItem->file_path) {
+            $imagePath = public_path('backend/images/gallery/' . $galleryItem->file_path);
             if (File::exists($imagePath)) {
                 File::delete($imagePath);
             }
         }
-
-        unset($images[$index]);
-        $gallery->gallery = json_encode(array_values($images));
-        $gallery->update();
-        Alert::success('Success','Image Deleted');
+        
+        $galleryItem->delete();
+        Alert::success('Success','Item Deleted');
         return back();
     }
 }
