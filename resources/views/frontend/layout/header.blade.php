@@ -185,11 +185,19 @@
                         <li><a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a></li>
                         <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a></li>
                     @endforelse
-                    <li>
-                        <a href="{{ route('contact') }}" class="nav-apply">
-                            <i class="fas fa-paper-plane"></i> Apply Now
-                        </a>
-                    </li>
+                    @if(isset($siteSettings) && $siteSettings->admissions_open)
+                        <li>
+                            <a href="{{ route('apply') }}" class="nav-apply">
+                                <i class="fas fa-paper-plane"></i> Apply Now
+                            </a>
+                        </li>
+                    @else
+                        <li>
+                            <a href="{{ route('apply') }}" class="nav-apply" style="background: rgba(255,255,255,0.1); color: var(--light);">
+                                <i class="fas fa-info-circle"></i> Admissions Info
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </nav>
 

@@ -41,6 +41,9 @@ class SiteSetting extends Model
         'sticky_notice_desktop_collapsed',
         'sticky_notice_mobile_collapsed',
         'calendar_format',
+        'admissions_open',
+        'admission_title',
+        'admission_description',
     ];
 
     public static function current()
@@ -78,6 +81,9 @@ class SiteSetting extends Model
                     'sticky_notice_desktop_collapsed' => false,
                     'sticky_notice_mobile_collapsed' => true,
                     'calendar_format' => 'ad',
+                    'admissions_open' => false,
+                    'admission_title' => 'Admissions are Closed',
+                    'admission_description' => 'Please check back later or contact us directly if you have any urgent inquiries.',
                 ]);
             });
         } catch (\Throwable $e) {
@@ -101,6 +107,7 @@ class SiteSetting extends Model
                 'sticky_notice_desktop_collapsed' => false,
                 'sticky_notice_mobile_collapsed' => true,
                 'calendar_format' => 'ad',
+                'admissions_open' => false,
             ]);
         }
     }
