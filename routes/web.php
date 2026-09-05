@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CollegeMessageController;
 use App\Http\Controllers\NavbarMenuController;
+use App\Http\Controllers\AdmissionEnquiryController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -48,6 +49,10 @@ Route::get('/member', function () {
 Route::get('/about/us', function () {
     return view('frontend.pages.aboutus');
 })->name('about.us');
+
+Route::get('/apply', [App\Http\Controllers\Frontend\AdmissionController::class, 'index'])->name('apply');
+Route::post('/apply', [App\Http\Controllers\Frontend\AdmissionController::class, 'store'])->name('apply.store');
+
 Route::get('/secure-login', [Admin::class, 'login'])->name('secure.login');
 
 
@@ -154,6 +159,11 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/site-settings', [SiteSettingController::class, 'edit'])->name('site.settings.edit');
     Route::post('/admin/dashboard/site-settings/update', [SiteSettingController::class, 'update'])->name('site.settings.update');
 
+    // Admission Enquiry Routes
+    Route::get('/admin/dashboard/admissions', [AdmissionEnquiryController::class, 'index'])->name('admin.admissions.index');
+    Route::get('/admin/dashboard/admissions/{id}', [AdmissionEnquiryController::class, 'show'])->name('admin.admissions.show');
+    Route::post('/admin/dashboard/admissions/{id}/update', [AdmissionEnquiryController::class, 'updateStatus'])->name('admin.admissions.update');
+    Route::get('/admin/dashboard/admissions/{id}/delete', [AdmissionEnquiryController::class, 'destroy'])->name('admin.admissions.delete');
 
     // About US  Routes
     Route::get('/admin/dashboard/aboutus/add', [AboutUsController::class, 'create'])->name('aboutus.add');

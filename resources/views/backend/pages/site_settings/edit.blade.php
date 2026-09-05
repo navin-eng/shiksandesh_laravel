@@ -33,6 +33,9 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link px-4 py-3 fw-semibold" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab">Activity Log</button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-3 fw-semibold" id="admissions-tab" data-bs-toggle="tab" data-bs-target="#admissions" type="button" role="tab"><i class="bi bi-door-open"></i> Admissions</button>
+                    </li>
                 </ul>
             </div>
             
@@ -300,6 +303,48 @@
                                         <div class="form-check form-switch mb-0">
                                             <input class="form-check-input" type="checkbox" role="switch" id="stickyMobileCollapsed" name="sticky_notice_mobile_collapsed" value="1" {{ old('sticky_notice_mobile_collapsed', $settings->sticky_notice_mobile_collapsed ?? true) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="stickyMobileCollapsed">Start collapsed on mobile</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {{-- Admissions Tab --}}
+                    <div class="tab-pane fade" id="admissions" role="tabpanel">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                        <h5 class="mb-0 fw-bold"><i class="bi bi-sliders text-primary me-2"></i> Admission Settings</h5>
+                                        <p class="text-muted small mt-1">Control whether students can apply online.</p>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="mb-4">
+                                            <div class="form-check form-switch custom-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="admissions_open" name="admissions_open" value="1" {{ old('admissions_open', $settings->admissions_open ?? false) ? 'checked' : '' }}>
+                                                <label class="form-check-label ms-2 fw-semibold" for="admissions_open">Open Admissions</label>
+                                            </div>
+                                            <div class="form-text mt-2"><i class="bi bi-info-circle me-1"></i> If enabled, the "Apply Now" button will show the application form. If disabled, it will show the closed message below.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                        <h5 class="mb-0 fw-bold"><i class="bi bi-card-text text-primary me-2"></i> Closed Notice Content</h5>
+                                        <p class="text-muted small mt-1">What to show when admissions are turned off.</p>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="mb-4">
+                                            <label class="form-label fw-medium">Notice Title</label>
+                                            <input type="text" class="form-control" name="admission_title" value="{{ old('admission_title', $settings->admission_title ?? 'Admissions are Closed') }}">
+                                            <div class="form-text">e.g., "Admissions for 2026 are Closed"</div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-medium">Notice Description</label>
+                                            <textarea class="form-control" name="admission_description" rows="4">{{ old('admission_description', $settings->admission_description ?? 'We are not currently accepting new applications. Please check back later for updates.') }}</textarea>
                                         </div>
                                     </div>
                                 </div>

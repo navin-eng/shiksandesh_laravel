@@ -53,6 +53,9 @@ class SiteSettingController extends Controller
             'sticky_notice_desktop_collapsed' => 'nullable|boolean',
             'sticky_notice_mobile_collapsed' => 'nullable|boolean',
             'calendar_format' => 'required|in:ad,bs',
+            'admissions_open' => 'nullable|boolean',
+            'admission_title' => 'nullable|string|max:255',
+            'admission_description' => 'nullable|string',
         ]);
 
         $settings = SiteSetting::first();
@@ -111,6 +114,7 @@ class SiteSettingController extends Controller
         $data['show_back_to_top'] = $request->boolean('show_back_to_top');
         $data['sticky_notice_desktop_collapsed'] = $request->boolean('sticky_notice_desktop_collapsed');
         $data['sticky_notice_mobile_collapsed'] = $request->boolean('sticky_notice_mobile_collapsed');
+        $data['admissions_open'] = $request->boolean('admissions_open');
 
         $original = $settings ? $settings->toArray() : [];
 

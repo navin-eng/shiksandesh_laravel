@@ -26,6 +26,12 @@
       <li class="sb-group-label"><span class="sb-text">Academic</span></li>
 
       <li class="sb-item">
+        <a href="{{ route('admin.admissions.index') }}" class="sb-link {{ request()->routeIs('admin.admissions.*') ? 'active' : '' }}" title="Admissions">
+          <i class="bi bi-inbox-fill"></i><span class="sb-text">Admissions</span>
+        </a>
+      </li>
+
+      <li class="sb-item">
         <a class="sb-link {{ request()->is('admin/dashboard/course*') ? 'active' : '' }}"
            data-bs-toggle="collapse" href="#sbCourse"
            aria-expanded="{{ request()->is('admin/dashboard/course*') ? 'true' : 'false' }}" title="Courses">
