@@ -4,33 +4,43 @@
     } catch (\Throwable $e) {
         $siteSettings = null;
     }
-    
+
     try {
         $navCourses = \App\Models\Course::where('status', 1)->get();
     } catch (\Throwable $e) {
         $navCourses = collect([]);
     }
-    
+
     try {
-        $navbarMenus = \Illuminate\Support\Facades\Schema::hasTable('navbar_menus') 
-            ? \App\Models\NavbarMenu::where('status', 1)->orderBy('order', 'asc')->get() 
+        $navbarMenus = \Illuminate\Support\Facades\Schema::hasTable('navbar_menus')
+            ? \App\Models\NavbarMenu::where('status', 1)->orderBy('order', 'asc')->get()
             : collect([]);
     } catch (\Throwable $e) {
         $navbarMenus = collect([]);
     }
+
+    // Fetch marquee notice directly in header so it's available on all pages
+    try {
+        $headerMarqueeNotice = \App\Models\Notice::where('show_in', 'm')->latest()->first();
+    } catch (\Throwable $e) {
+        $headerMarqueeNotice = null;
+    }
 @endphp
+
 {{-- ===== TOP BAR ===== --}}
 @if($siteSettings->show_topbar ?? true)
 <div class="gplc-topbar">
-    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+    {{-- DESKTOP topbar row (hidden on mobile) --}}
+    <div class="topbar-desktop container d-none d-md-flex align-items-center justify-content-between">
         <div class="topbar-info d-flex align-items-center gap-3">
-            <div class="nepali-date-widget" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 50px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);">
-                <i class="fas fa-calendar-day" style="color: #fcd34d;"></i>
-                <span class="text-white">{{ get_today_nepali_date() }}</span>
+            <div class="nepali-date-widget">
+                <i class="fas fa-calendar-day"></i>
+                <span>{{ get_today_nepali_date() }}</span>
             </div>
-            <span class="d-none d-md-flex"><i class="fas fa-phone-alt"></i> {{ $siteSettings->contact_phone }}</span>
-            <span class="d-none d-md-flex"><i class="fas fa-envelope"></i> {{ $siteSettings->contact_email }}</span>
-            <span class="d-none d-lg-flex"><i class="fas fa-map-marker-alt"></i> {{ $siteSettings->contact_address }}</span>
+            <span><i class="fas fa-phone-alt"></i> {{ $siteSettings->contact_phone }}</span>
+            <span class="d-none d-lg-flex"><i class="fas fa-envelope"></i> {{ $siteSettings->contact_email }}</span>
+            <span class="d-none d-xl-flex"><i class="fas fa-map-marker-alt"></i> {{ $siteSettings->contact_address }}</span>
         </div>
         <div class="topbar-actions d-flex align-items-center gap-2">
             <div class="topbar-social d-flex gap-1">
@@ -52,40 +62,61 @@
             @endif
         </div>
     </div>
+
+    {{-- MOBILE topbar — two rows —————————————————————————————— --}}
+    <div class="topbar-mobile d-md-none">
+
+        {{-- Row 1: Nepali Date (left) + Marquee Notice (right) --}}
+        <div class="mob-topbar-row1">
+            <div class="mob-date-pill">
+                <i class="fas fa-calendar-day"></i>
+                <span>{{ get_today_nepali_date() }}</span>
+            </div>
+            @if(!empty($headerMarqueeNotice))
+            <div class="mob-marquee-wrap">
+                <span class="mob-notice-badge"><i class="fas fa-bell"></i></span>
+                <marquee behavior="scroll" direction="left" scrollamount="4"
+                    onmouseover="this.stop();" onmouseout="this.start();"
+                    ontouchstart="this.stop();" ontouchend="this.start();">
+                    <a href="{{ url('notice/detail/' . $headerMarqueeNotice->id) }}">
+                        {{ $headerMarqueeNotice->title }}
+                    </a>
+                </marquee>
+            </div>
+            @endif
+        </div>
+
+        {{-- Row 2: Social icons (left) + CTA button (right) --}}
+        <div class="mob-topbar-row2">
+            <div class="mob-social">
+                <a href="{{ $siteSettings->facebook_url ?? '#' }}" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="{{ $siteSettings->youtube_url ?? '#' }}" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                @if(!empty($siteSettings->whatsapp_number))
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', (string) $siteSettings->whatsapp_number) }}" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                @endif
+            </div>
+            @if(!empty($siteSettings->header_button_text) && !empty($siteSettings->header_button_url))
+                <a href="{{ $siteSettings->header_button_url }}" class="mob-cta-btn" target="_blank">
+                    <i class="fas fa-arrow-up-right-from-square"></i>
+                    {{ $siteSettings->header_button_text }}
+                </a>
+            @elseif(!empty($siteSettings->student_portal_text) && !empty($siteSettings->student_portal_url))
+                <a href="{{ $siteSettings->student_portal_url }}" class="mob-cta-btn" target="_blank">
+                    <i class="fas fa-sign-in-alt"></i>
+                    {{ $siteSettings->student_portal_text }}
+                </a>
+            @endif
+        </div>
+
+    </div>
+    {{-- END MOBILE topbar --}}
+
 </div>
 @endif
 
 {{-- ===== MAIN HEADER ===== --}}
 <header class="gplc-header" id="gplcHeader">
     <div class="container">
-
-        {{-- ===== MOBILE-ONLY INFO BAR (Nepali date + Marquee notice) ===== --}}
-        <div class="mobile-info-bar">
-            {{-- Nepali date on the left --}}
-            <div class="mob-nepali-date">
-                <i class="fas fa-calendar-day"></i>
-                <span>{{ get_today_nepali_date() }}</span>
-            </div>
-
-            {{-- Marquee notice on the right --}}
-            @if(!empty($marqueeNotice))
-            <div class="mob-notice-ticker">
-                <i class="fas fa-bell mob-bell"></i>
-                <marquee
-                    behavior="scroll"
-                    direction="left"
-                    scrollamount="5"
-                    onmouseover="this.stop();"
-                    onmouseout="this.start();"
-                    ontouchstart="this.stop();"
-                    ontouchend="this.start();"
-                >
-                    <a href="{{ url('notice/detail/' . $marqueeNotice->id) }}">{{ $marqueeNotice->title }}</a>
-                </marquee>
-            </div>
-            @endif
-        </div>
-
         <div class="header-inner">
 
             {{-- Logo --}}
@@ -131,10 +162,10 @@
                                 </li>
                             @endif
                         @else
-                            @php 
+                            @php
                                 $rawUrl = (string) ($menu->url ?? '');
                                 $cleanPath = ltrim($rawUrl, '/');
-                                $isActive = ($cleanPath !== '' && (request()->is($cleanPath) || request()->is($cleanPath . '/*'))) 
+                                $isActive = ($cleanPath !== '' && (request()->is($cleanPath) || request()->is($cleanPath . '/*')))
                                             || ($rawUrl === '/' && request()->path() === '/');
                                 $linkHref = str_starts_with($rawUrl, 'http') ? $rawUrl : url($rawUrl);
                             @endphp
