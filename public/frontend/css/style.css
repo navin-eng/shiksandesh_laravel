@@ -827,18 +827,8 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
     
     .section-title { font-size: 2.2rem; }
     .section-block { padding: 3rem 0; }
-}
 
-@media (max-width: 767px) {
-    .gplc-logo img { height: 48px; }
-    .gplc-logo-text .college-name { font-size: 1.1rem; }
-    .gplc-logo-text .affiliation { font-size: 0.75rem; }
-    
-    .section-title { font-size: 1.8rem; }
-    .page-hero { padding: 40px 0; }
-    .page-hero h1 { font-size: 2rem; }
-    
-    /* ── Mobile Topbar 2-row design ── */
+    /* ── Mobile & Tablet Topbar 2-row design ── */
     .topbar-mobile { display: block !important; }
 
     /* Row 1: Nepali date + marquee notice */
@@ -925,6 +915,17 @@ textarea.gplc-input { min-height: 120px; resize: vertical; }
         white-space: nowrap;
     }
     .mob-cta-btn:hover { opacity: 0.9; transform: scale(1.03); }
+}
+
+@media (max-width: 767px) {
+    .gplc-logo img { height: 48px; }
+    .gplc-logo-text .college-name { font-size: 1.1rem; }
+    .gplc-logo-text .affiliation { font-size: 0.75rem; }
+    
+    .section-title { font-size: 1.8rem; }
+    .page-hero { padding: 40px 0; }
+    .page-hero h1 { font-size: 2rem; }
+    /* Mobile-only overrides */
 
     /* Hero banner responsive height */
     .gplc-hero-slide { min-height: 480px; }

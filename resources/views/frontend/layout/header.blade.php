@@ -31,8 +31,8 @@
 @if($siteSettings->show_topbar ?? true)
 <div class="gplc-topbar">
 
-    {{-- DESKTOP topbar row (hidden on mobile) --}}
-    <div class="topbar-desktop container d-none d-md-flex align-items-center justify-content-between">
+    {{-- DESKTOP topbar row (hidden on mobile and tablet) --}}
+    <div class="topbar-desktop container d-none d-xl-flex align-items-center justify-content-between">
         <div class="topbar-info d-flex align-items-center gap-3">
             <div class="nepali-date-widget">
                 <i class="fas fa-calendar-day"></i>
@@ -63,8 +63,8 @@
         </div>
     </div>
 
-    {{-- MOBILE topbar — two rows —————————————————————————————— --}}
-    <div class="topbar-mobile d-md-none">
+    {{-- MOBILE & TABLET topbar — two rows —————————————————————————————— --}}
+    <div class="topbar-mobile d-xl-none">
 
         {{-- Row 1: Nepali Date (left) + Marquee Notice (right) --}}
         <div class="mob-topbar-row1">
