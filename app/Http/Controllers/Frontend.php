@@ -78,11 +78,20 @@ class Frontend extends Controller
 
         $entries = CampusCalendarEntry::where('status', 1)->orderBy('start_date')->get();
 
+        $todayAD = Carbon::now();
+        $isCurrentMonth = false;
+        $todayDay = 0;
+
         if ($format === 'bs') {
             try {
-                $today = NepaliDate::create(Carbon::now());
+                $today = NepaliDate::create($todayAD);
                 $currentYear = (int)$request->get('year', $today->year);
                 $currentMonth = (int)$request->get('month', $today->month);
+                
+                if ($currentYear == $today->year && $currentMonth == $today->month) {
+                    $isCurrentMonth = true;
+                    $todayDay = $today->day;
+                }
             } catch (\Throwable $e) {
                 // Fallback to AD bounds if it fails
                 $currentYear = 2081; 
@@ -134,8 +143,13 @@ class Frontend extends Controller
             $prevMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
 
         } else {
-            $currentYear = (int)$request->get('year', Carbon::now()->year);
-            $currentMonth = (int)$request->get('month', Carbon::now()->month);
+            $currentYear = (int)$request->get('year', $todayAD->year);
+            $currentMonth = (int)$request->get('month', $todayAD->month);
+
+            if ($currentYear == $todayAD->year && $currentMonth == $todayAD->month) {
+                $isCurrentMonth = true;
+                $todayDay = $todayAD->day;
+            }
 
             $date = Carbon::createFromDate($currentYear, $currentMonth, 1);
             $daysInMonth = $date->daysInMonth;
@@ -182,7 +196,8 @@ class Frontend extends Controller
         return view('frontend.pages.calendar', compact(
             'format', 'currentYear', 'currentMonth', 'daysInMonth', 'startDayOfWeek', 
             'monthName', 'monthNameEnglish', 'daysMapping', 'altDaysMapping', 'monthlyEntries',
-            'nextYear', 'nextMonth', 'prevYear', 'prevMonth', 'weekdays', 'entries'
+            'nextYear', 'nextMonth', 'prevYear', 'prevMonth', 'weekdays', 'entries',
+            'isCurrentMonth', 'todayDay'
         ));
     }
 

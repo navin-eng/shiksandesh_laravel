@@ -56,9 +56,13 @@
                                 $eventsToday = collect($monthlyEntries->get($day, []));
                                 
                                 $isHoliday = $isWeekend || $eventsToday->contains('entry_type', 'holiday');
+                                $isToday = isset($isCurrentMonth) && isset($todayDay) && $isCurrentMonth && $todayDay == $day;
                             @endphp
                             
-                            <div class="calendar-cell {{ $isHoliday ? 'holiday' : '' }} {{ $eventsToday->isNotEmpty() ? 'has-event' : '' }}">
+                            <div class="calendar-cell {{ $isHoliday ? 'holiday' : '' }} {{ $eventsToday->isNotEmpty() ? 'has-event' : '' }} {{ $isToday ? 'today' : '' }}">
+                                @if($isToday)
+                                    <div class="today-badge">Today</div>
+                                @endif
                                 <div class="bs-date {{ $isHoliday ? 'text-danger' : '' }}">{{ $daysMapping[$day] ?? $day }}</div>
                                 <div class="ad-date">{{ $altDaysMapping[$day] ?? '' }}</div>
                                 
@@ -162,7 +166,27 @@
         }
 
         .calendar-cell.holiday {
-            background: rgba(239, 68, 68, 0.05);
+            background-color: #fef2f2;
+        }
+        .calendar-cell.today {
+            background-color: rgba(var(--bs-primary-rgb), 0.05);
+            border: 2px solid var(--bs-primary);
+            box-shadow: 0 4px 15px rgba(var(--bs-primary-rgb), 0.15);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+        .today-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--bs-primary);
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 11;
         }
 
         .bs-date {
@@ -247,6 +271,14 @@
             .bs-date { font-size: 18px; }
             .ad-date { font-size: 9px; top: 4px; right: 4px; }
             .event-pill { font-size: 9px; padding: 2px 4px; }
+        }
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .calendar-shell { padding: 15px; }
+            .calendar-cell { min-height: 80px; padding: 5px; }
+            .today-badge { top: -5px; right: -5px; font-size: 9px; padding: 1px 6px; }
+            .bs-date { font-size: 16px; }
+            .ad-date { font-size: 10px; }
         }
         @media (max-width: 576px) {
             .calendar-grid { gap: 5px; }

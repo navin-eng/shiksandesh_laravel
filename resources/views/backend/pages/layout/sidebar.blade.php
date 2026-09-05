@@ -48,8 +48,8 @@
         </a>
       </li>
       <li class="sb-item">
-        <a href="{{ route('campus.calendar.index') }}" class="sb-link {{ request()->routeIs('campus.calendar.*') ? 'active' : '' }}" title="Campus Calendar">
-          <i class="bi bi-calendar3"></i><span class="sb-text">Campus Calendar</span>
+        <a href="{{ route('campus.calendar.index') }}" class="sb-link {{ request()->routeIs('campus.calendar.*') ? 'active' : '' }}" title="Calendar">
+          <i class="bi bi-calendar3"></i><span class="sb-text">Calendar</span>
         </a>
       </li>
 

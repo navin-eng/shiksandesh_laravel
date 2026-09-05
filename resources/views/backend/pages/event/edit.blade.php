@@ -1,5 +1,10 @@
 @extends('backend.pages.layout.master')
 @push('b-title', 'Edit Event')
+
+@push('styles')
+<link href="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.1.min.css" rel="stylesheet" type="text/css"/>
+@endpush
+
 @section('backend-content')
 <div class="row">
     <div class="mb-3">
@@ -32,9 +37,16 @@
                 Choose a category to show the relevant fields for this item.
             </div>
             <div class="mb-3">
-                <label for="" class="form-label" id="eventDateLabel">Event Visit Date</label>
-                <input type="date" name="visit_date" value="{{ $event->getRawOriginal('visit_date') }}" id="" class="form-control" placeholder=""
-                    aria-describedby="helpId">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="" class="form-label mb-0" id="eventDateLabel">Event Visit Date</label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="useNepaliDateToggle">
+                        <label class="form-check-label" style="font-size: 13px;" for="useNepaliDateToggle">Use Nepali Calendar</label>
+                    </div>
+                </div>
+                <input type="date" name="visit_date" value="{{ $event->getRawOriginal('visit_date') }}" id="englishDateInput" class="form-control" placeholder="">
+                <input type="text" id="nepaliDateInput" class="form-control" placeholder="Select Nepali Date (YYYY-MM-DD)" style="display: none;" readonly>
+                <small class="text-muted" id="dateHelperText" style="display: none; margin-top:5px;">This automatically saves the standard English date behind the scenes.</small>
             </div>
             <div class="mb-3" data-event-field="venue">
                 <label for="" class="form-label">Venue / Notes</label>
@@ -124,7 +136,58 @@
 
         eventTypeSelector?.addEventListener('change', syncEventFields);
         syncEventFields();
+
+        // Nepali Date Picker Logic
+        const useNepaliDateToggle = document.getElementById('useNepaliDateToggle');
+        const englishDateInput = document.getElementById('englishDateInput');
+        const nepaliDateInput = document.getElementById('nepaliDateInput');
+        const dateHelperText = document.getElementById('dateHelperText');
+
+        if(typeof nepaliDatePicker !== 'undefined') {
+            var nepaliDatePickerEl = document.getElementById("nepaliDateInput");
+            nepaliDatePickerEl.nepaliDatePicker({
+                ndpYear: true,
+                ndpMonth: true,
+                ndpYearCount: 20,
+                onChange: function() {
+                    const nepaliDateStr = nepaliDateInput.value;
+                    if(nepaliDateStr) {
+                        const dateObj = window.NepaliFunctions.ConvertToDateObject(nepaliDateStr, "YYYY-MM-DD");
+                        const englishDateObj = window.NepaliFunctions.BS2AD(dateObj);
+                        if(englishDateObj) {
+                            const formattedDate = `${englishDateObj.year}-${String(englishDateObj.month).padStart(2, '0')}-${String(englishDateObj.day).padStart(2, '0')}`;
+                            englishDateInput.value = formattedDate;
+                        }
+                    }
+                }
+            });
+        }
+
+        useNepaliDateToggle?.addEventListener('change', function() {
+            if(this.checked) {
+                // Switch to Nepali
+                englishDateInput.style.display = 'none';
+                nepaliDateInput.style.display = 'block';
+                dateHelperText.style.display = 'block';
+                
+                // Convert AD to BS if AD has value
+                if(englishDateInput.value) {
+                    const adDate = new Date(englishDateInput.value);
+                    if(!isNaN(adDate.getTime())) {
+                        const adDateObj = { year: adDate.getFullYear(), month: adDate.getMonth() + 1, day: adDate.getDate() };
+                        const bsDateObj = window.NepaliFunctions.AD2BS(adDateObj);
+                        nepaliDateInput.value = window.NepaliFunctions.ConvertDateFormat(bsDateObj, "YYYY-MM-DD");
+                    }
+                }
+            } else {
+                // Switch back to English
+                englishDateInput.style.display = 'block';
+                nepaliDateInput.style.display = 'none';
+                dateHelperText.style.display = 'none';
+            }
+        });
     })();
 </script>
+<script src="https://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/js/nepali.datepicker.v4.0.1.min.js" type="text/javascript"></script>
 @endpush
 @endsection
