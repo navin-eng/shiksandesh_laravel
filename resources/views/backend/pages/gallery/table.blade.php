@@ -254,6 +254,11 @@
             <div class="gallery-item-card">
               
               <div class="gallery-item-actions">
+                  @if($item->album_id && $item->type === 'image')
+                    <a href="{{ route('gallery.album.setCover', ['album_id' => $item->album_id, 'gallery_id' => $item->id]) }}" class="btn-g-action" title="Set as Album Cover">
+                        <i class="bi bi-image"></i>
+                    </a>
+                  @endif
                   <button type="button" class="btn-g-action" title="Edit/Assign" onclick="editItem({{ $item->id }}, '{{ addslashes($item->caption ?? '') }}', '{{ $item->album_id ?? '' }}', '{{ $item->type }}', '{{ $item->type === 'image' ? asset('backend/images/gallery/'.$item->file_path) : '' }}')">
                       <i class="bi bi-pencil-fill"></i>
                   </button>
@@ -316,7 +321,14 @@
                         @if($album->cover_image)
                             <img src="{{ asset('backend/images/gallery/'.$album->cover_image) }}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
                         @else
-                            <div style="width:50px;height:50px;background:#f1f5f9;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#94a3b8;"><i class="bi bi-folder"></i></div>
+                            @php
+                                $latestImage = \App\Models\Gallery::where('album_id', $album->id)->where('type', 'image')->whereNotNull('file_path')->latest()->first();
+                            @endphp
+                            @if($latestImage)
+                                <img src="{{ asset('backend/images/gallery/'.$latestImage->file_path) }}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+                            @else
+                                <div style="width:50px;height:50px;background:#f1f5f9;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#94a3b8;"><i class="bi bi-folder"></i></div>
+                            @endif
                         @endif
                     </td>
                     <td style="font-weight:600;">{{ $album->name }}</td>

@@ -79,6 +79,20 @@ class GalleryAlbumController extends Controller
         return redirect()->back()->with('success', 'Album updated successfully.');
     }
 
+    public function setCover($album_id, $gallery_id)
+    {
+        $album = GalleryAlbum::findOrFail($album_id);
+        $gallery = \App\Models\Gallery::findOrFail($gallery_id);
+
+        if ($gallery->type === 'image' && $gallery->file_path) {
+            $album->cover_image = $gallery->file_path;
+            $album->save();
+            return back()->with('success', 'Album cover updated successfully.');
+        }
+
+        return back()->with('error', 'Selected item cannot be used as cover.');
+    }
+
     public function delete($id)
     {
         $album = GalleryAlbum::findOrFail($id);

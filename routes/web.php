@@ -119,6 +119,7 @@ Route::middleware('webGuard')->group(function () {
     Route::post('/admin/dashboard/gallery/albums/store', [App\Http\Controllers\GalleryAlbumController::class, 'store'])->name('gallery.album.store');
     Route::get('/admin/dashboard/gallery/albums/delete/{id}', [App\Http\Controllers\GalleryAlbumController::class, 'delete'])->name('gallery.album.delete');
     Route::post('/admin/dashboard/gallery/albums/update/{id}', [App\Http\Controllers\GalleryAlbumController::class, 'update'])->name('gallery.album.update');
+    Route::get('/admin/dashboard/gallery/albums/set-cover/{album_id}/{gallery_id}', [App\Http\Controllers\GalleryAlbumController::class, 'setCover'])->name('gallery.album.setCover');
 
     Route::get('/admin/dashboard/gallery/table', [GalleryController::class, 'index'])->name('gallery.table');
     Route::post('/admin/dashboard/gallery/store', [GalleryController::class, 'store'])->name('gallery.store');
