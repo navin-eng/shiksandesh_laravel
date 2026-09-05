@@ -1,10 +1,19 @@
 @extends('frontend.layout.master')
+@section('frontend-content')
 
-@section('content')
-
-@push('b-title') Gallery @endpush
-@push('b-name') Gallery @endpush
-@include('frontend.components.breadcrumb')
+{{-- ===== PAGE HERO ===== --}}
+<div class="page-hero">
+    <div class="container">
+        <div class="page-hero-content" data-aos="fade-up">
+            <h1>Gallery</h1>
+            <nav class="breadcrumb-nav">
+                <a href="{{ route('home') }}">Home</a>
+                <span>/</span>
+                Gallery
+            </nav>
+        </div>
+    </div>
+</div>
 
 <!-- LightGallery Video Plugin (Required for YouTube/Vimeo) -->
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/video/lg-video.min.js"></script>
