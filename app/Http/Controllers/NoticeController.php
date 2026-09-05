@@ -25,7 +25,7 @@ class NoticeController extends Controller
     {
         $request->validate([
             'title' => 'required|min:2',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
             'description' => 'required',
         ]);
         $notice = new Notice();
@@ -37,6 +37,8 @@ class NoticeController extends Controller
             $imageName = Str::random(20) . time() . '.' . $extension;
             $image->move('backend/images/notices/', $imageName);
             $notice->image = 'backend/images/notices/' . $imageName;
+        } else {
+            $notice->image = '';
         }
         $notice->description = $request->description;
         $notice->show_in = 'm';

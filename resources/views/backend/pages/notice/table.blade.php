@@ -16,7 +16,13 @@
           <tr>
             <td><span class="sr-badge">{{ $loop->iteration }}</span></td>
             <td style="font-weight:600;">{{ $data->title }}</td>
-            <td><img src="{{ asset($data->image) }}" class="table-img" alt="Notice"></td>
+            <td>
+              @if($data->image)
+                <img src="{{ asset($data->image) }}" class="table-img" alt="Notice">
+              @else
+                <span class="badge-admin badge-info">No Image</span>
+              @endif
+            </td>
             <td>
               <a href="{{ route('notice.status', $data->id) }}" class="badge-admin {{ $data->show_in == 'm' ? 'badge-green' : 'badge-info' }}">
                 {{ $data->show_in == 'm' ? 'Marquee' : 'Popup' }}
