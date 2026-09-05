@@ -239,6 +239,49 @@
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.1);
     }
+    
+    /* Grid Layout Alternate */
+    .grid-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .grid-layout .gallery-item {
+        margin-bottom: 0;
+        height: 250px;
+    }
+    
+    .grid-layout .gallery-item img {
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .layout-switcher {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+    
+    .layout-btn {
+        background: #e2e8f0;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        color: #475569;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    .layout-btn:hover {
+        background: #cbd5e1;
+    }
+    
+    .layout-btn.active {
+        background: var(--brand-color, #2563eb);
+        color: white;
+    }
 </style>
 
 <div class="gallery-header" data-aos="fade-up">
@@ -292,6 +335,11 @@
         <div id="album-header" style="display:none;">
             <button class="back-btn" onclick="showTab('albums')"><i class="bi bi-arrow-left"></i> Back to Albums</button>
             <h2 id="current-album-name" style="font-size: 32px; font-weight:800; margin-bottom: 20px;"></h2>
+        </div>
+        
+        <div class="layout-switcher">
+            <button class="layout-btn active" id="btn-masonry" onclick="switchLayout('masonry')" title="Masonry Layout"><i class="bi bi-columns-gap"></i></button>
+            <button class="layout-btn" id="btn-grid" onclick="switchLayout('grid')" title="Grid Layout"><i class="bi bi-grid-fill"></i></button>
         </div>
 
         <div id="gallery-wrapper" class="masonry-layout">
@@ -393,6 +441,24 @@
         });
         
         initLightGallery();
+    }
+    
+    function switchLayout(layout) {
+        const wrapper = document.getElementById('gallery-wrapper');
+        const btnMasonry = document.getElementById('btn-masonry');
+        const btnGrid = document.getElementById('btn-grid');
+        
+        if (layout === 'grid') {
+            wrapper.classList.remove('masonry-layout');
+            wrapper.classList.add('grid-layout');
+            btnGrid.classList.add('active');
+            btnMasonry.classList.remove('active');
+        } else {
+            wrapper.classList.remove('grid-layout');
+            wrapper.classList.add('masonry-layout');
+            btnMasonry.classList.add('active');
+            btnGrid.classList.remove('active');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {

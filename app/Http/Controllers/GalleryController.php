@@ -101,8 +101,8 @@ class GalleryController extends Controller
             return back()->with('error', 'Only uploaded images can be cropped.');
         }
 
-        // The cropped image comes as a base64 data URL
-        $base64Data = $request->cropped_image;
+        // The cropped image comes as a base64 data URL. Fix any spaces that were converted from '+' during POST.
+        $base64Data = str_replace(' ', '+', $request->cropped_image);
         
         if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
             $base64Data = substr($base64Data, strpos($base64Data, ',') + 1);
