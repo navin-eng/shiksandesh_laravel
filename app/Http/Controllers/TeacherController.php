@@ -13,7 +13,7 @@ class TeacherController extends Controller
 {
     public function index()
     {
-        $teacher = Teacher::all();
+        $teacher = Teacher::orderBy('sort_order', 'asc')->get();
         return view('backend.pages.teacher.table', compact('teacher'));
     }
     public function create()
@@ -27,6 +27,7 @@ class TeacherController extends Controller
             'role' => 'required',
             'staff_type' => 'required|in:teaching,non_teaching,administrative',
             'facebook_link' => 'nullable',
+            'sort_order' => 'nullable|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
         $teacher = new Teacher();
@@ -34,6 +35,7 @@ class TeacherController extends Controller
         $teacher->role = $request->role;
         $teacher->staff_type = $request->staff_type;
         $teacher->facebook_link = $request->facebook_link;
+        $teacher->sort_order = $request->sort_order ?? 0;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
@@ -89,6 +91,7 @@ class TeacherController extends Controller
             'name' => 'required|min:2|max:30',
             'role' => 'required',
             'staff_type' => 'required|in:teaching,non_teaching,administrative',
+            'sort_order' => 'nullable|integer',
             'facebook_link' => 'nullable',
         ]);
         $teacher = Teacher::find($id);
@@ -96,6 +99,7 @@ class TeacherController extends Controller
         $teacher->role = $request->role;
         $teacher->staff_type = $request->staff_type;
         $teacher->facebook_link = $request->facebook_link;
+        $teacher->sort_order = $request->sort_order ?? 0;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();

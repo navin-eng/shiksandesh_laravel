@@ -12,7 +12,7 @@
   <div class="admin-card-body p-0">
     <div class="table-scroll">
       <table class="admin-table">
-        <thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Role</th><th>Staff Type</th><th>Profile</th><th>Action</th></tr></thead>
+        <thead><tr><th>#</th><th>Photo</th><th>Name</th><th>Role</th><th>Staff Type</th><th>Order</th><th>Profile</th><th>Action</th></tr></thead>
         <tbody>
           @forelse($teacher as $data)
           <tr>
@@ -35,6 +35,7 @@
               @endphp
               <span class="badge-admin {{ $typeClass }}">{{ $typeLabel }}</span>
             </td>
+            <td><span class="badge-admin badge-secondary">{{ $data->sort_order ?? 0 }}</span></td>
             <td>
               @if($data->facebook_link)
                 <a href="{{ $data->facebook_link }}" target="_blank" class="btn-admin btn-admin-sm btn-admin-info"><i class="bi bi-facebook"></i> Profile</a>

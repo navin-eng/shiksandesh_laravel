@@ -44,6 +44,10 @@
                         <input type="file" name="image" class="admin-input" accept="image/*">
                         <span class="admin-input-hint">Leave empty to keep current photo.</span>
                     </div>
+                    <div class="admin-form-group">
+                        <label class="admin-label">Sort Order (lower appears first)</label>
+                        <input type="number" name="sort_order" value="{{ $teacher->sort_order }}" class="admin-input">
+                    </div>
                     <div class="admin-form-group mb-0">
                         <label class="admin-label">Facebook Profile Link</label>
                         <input type="text" name="facebook_link" value="{{ $teacher->facebook_link }}" class="admin-input" placeholder="https://facebook.com/... (optional)">

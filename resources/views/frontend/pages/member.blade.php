@@ -176,9 +176,9 @@
 </style>
 
 @php
-    $administrativeStaff = App\Models\Teacher::where('staff_type', 'administrative')->get();
-    $teachingStaff       = App\Models\Teacher::where('staff_type', 'teaching')->get();
-    $nonTeachingStaff    = App\Models\Teacher::where('staff_type', 'non_teaching')->get();
+    $administrativeStaff = App\Models\Teacher::where('staff_type', 'administrative')->orderBy('sort_order', 'asc')->get();
+    $teachingStaff       = App\Models\Teacher::where('staff_type', 'teaching')->orderBy('sort_order', 'asc')->get();
+    $nonTeachingStaff    = App\Models\Teacher::where('staff_type', 'non_teaching')->orderBy('sort_order', 'asc')->get();
     $hasAny = $administrativeStaff->count() || $teachingStaff->count() || $nonTeachingStaff->count();
 @endphp
 
@@ -197,10 +197,10 @@
             {{-- Administrative Staff --}}
             @if($administrativeStaff->count() > 0)
             <div class="mb-5 pb-3" data-aos="fade-up">
-                <h3 class="team-section-title">
+                <h3 class="team-section-title justify-content-center">
                     <i class="bi bi-building"></i> Administrative Leaders
                 </h3>
-                <div class="row g-4">
+                <div class="row g-4 justify-content-center">
                     @foreach($administrativeStaff as $data)
                     <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="premium-faculty-card">
@@ -232,10 +232,10 @@
             {{-- Teaching Staff --}}
             @if($teachingStaff->count() > 0)
             <div class="mb-5 pb-3" data-aos="fade-up">
-                <h3 class="team-section-title">
+                <h3 class="team-section-title justify-content-center">
                     <i class="bi bi-book-half"></i> Teaching Faculty
                 </h3>
-                <div class="row g-4">
+                <div class="row g-4 justify-content-center">
                     @foreach($teachingStaff as $data)
                     <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="premium-faculty-card">
@@ -267,10 +267,10 @@
             {{-- Non-Teaching Staff --}}
             @if($nonTeachingStaff->count() > 0)
             <div class="mb-5 pb-3" data-aos="fade-up">
-                <h3 class="team-section-title">
+                <h3 class="team-section-title justify-content-center">
                     <i class="bi bi-people-fill"></i> Support Staff
                 </h3>
-                <div class="row g-4">
+                <div class="row g-4 justify-content-center">
                     @foreach($nonTeachingStaff as $data)
                     <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                         <div class="premium-faculty-card">

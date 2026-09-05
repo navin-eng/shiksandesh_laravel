@@ -41,6 +41,10 @@
                         <input type="file" name="image" class="admin-input" accept="image/*" required>
                         <span class="admin-input-hint">JPG or PNG, recommended 400×400px</span>
                     </div>
+                    <div class="admin-form-group">
+                        <label class="admin-label">Sort Order (lower appears first)</label>
+                        <input type="number" name="sort_order" value="0" class="admin-input">
+                    </div>
                     <div class="admin-form-group mb-0">
                         <label class="admin-label">Facebook Profile Link</label>
                         <input type="text" name="facebook_link" value="{{ old('facebook_link') }}" class="admin-input" placeholder="https://facebook.com/... (optional)">
