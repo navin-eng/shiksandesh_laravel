@@ -148,9 +148,11 @@ class DemoDataSeeder extends Seeder
         // 8. Banners
         if (class_exists(\App\Models\Banner::class)) {
             \App\Models\Banner::firstOrCreate(
-                ['title' => 'Welcome to Shiksha Sandesh'],
+                ['title1' => 'Welcome to', 'title2' => 'Shiksha Sandesh'],
                 [
-                    'status' => 1
+                    'status' => 1,
+                    'image' => 'default.jpg',
+                    'sort_order' => 1
                 ]
             );
         }

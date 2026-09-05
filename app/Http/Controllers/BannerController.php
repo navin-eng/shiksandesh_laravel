@@ -162,3 +162,4 @@ class BannerController extends Controller
         }
         return redirect()->route('banner.table');
     }
+}
