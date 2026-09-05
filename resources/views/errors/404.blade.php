@@ -26,6 +26,7 @@
             justify-content: center;
             height: 100vh;
             text-align: center;
+            user-select: none; /* prevent text selection while clicking fast */
         }
 
         .stars {
@@ -52,12 +53,13 @@
 
         .content {
             z-index: 10;
-            position: relative;
-            margin-bottom: 40px;
+            position: absolute;
+            top: 10%;
+            pointer-events: none;
         }
 
         h1 {
-            font-size: 8rem;
+            font-size: 5rem;
             margin: 0;
             line-height: 1;
             background: linear-gradient(45deg, #fca311, #e94560);
@@ -67,8 +69,8 @@
         }
 
         p {
-            font-size: 1.5rem;
-            margin: 10px 0 30px;
+            font-size: 1.2rem;
+            margin: 10px 0 20px;
             color: #aeb4c0;
         }
 
@@ -76,17 +78,18 @@
             display: inline-block;
             background: var(--accent-color);
             color: white;
-            padding: 12px 30px;
+            padding: 10px 25px;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
             border: none;
             cursor: pointer;
-            z-index: 20;
+            pointer-events: auto;
             position: relative;
+            z-index: 100;
         }
 
         .btn-home:hover {
@@ -95,65 +98,73 @@
             background: #ff5773;
         }
 
-        /* --- Game Area --- */
-        .game-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 200px;
-            border-bottom: 4px solid #0f3460;
-            margin-top: 20px;
-            overflow: hidden;
+        /* --- Score & Game Area --- */
+        .score-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #fca311;
             z-index: 10;
         }
 
         .instruction {
             position: absolute;
-            top: 10px;
+            bottom: 20px;
             width: 100%;
             text-align: center;
             font-size: 1rem;
-            color: rgba(255,255,255,0.5);
-            animation: pulse 2s infinite;
+            color: rgba(255,255,255,0.7);
+            z-index: 10;
+            pointer-events: none;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
-        }
-
-        .cat {
+        /* --- The Sleeping Cat --- */
+        .cat-container {
             position: absolute;
-            bottom: 0;
-            left: 50px;
-            width: 80px;
-            height: 60px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .cat {
+            position: relative;
+            width: 120px;
+            height: 80px;
             background-color: var(--cat-color);
-            border-radius: 40px 40px 10px 10px;
-            transition: bottom 0.1s;
+            border-radius: 60px 60px 20px 20px;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2);
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.05); }
         }
 
         /* Ears */
         .cat::before, .cat::after {
             content: '';
             position: absolute;
-            top: -15px;
+            top: -20px;
             width: 0; 
             height: 0; 
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 25px solid var(--cat-color);
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid var(--cat-color);
         }
-        .cat::before { left: -5px; transform: rotate(-15deg); }
-        .cat::after { right: -5px; transform: rotate(15deg); }
+        .cat::before { left: -5px; transform: rotate(-20deg); }
+        .cat::after { right: -5px; transform: rotate(20deg); }
 
-        /* Zzz animation for sleeping cat */
+        /* Zzz animation */
         .zzz {
             position: absolute;
-            top: -20px;
-            right: 0px;
-            font-size: 1.5rem;
+            top: -30px;
+            right: -20px;
+            font-size: 2rem;
             font-weight: 900;
             color: white;
             opacity: 0;
@@ -163,56 +174,72 @@
         @keyframes sleep {
             0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
             50% { opacity: 1; }
-            100% { transform: translate(30px, -50px) scale(1.5); opacity: 0; }
+            100% { transform: translate(40px, -60px) scale(1.5); opacity: 0; }
         }
 
-        .obstacle {
+        /* --- Noise Makers (Targets) --- */
+        .game-area {
             position: absolute;
-            bottom: 0;
-            right: -50px;
-            width: 40px;
-            height: 40px;
-            background-color: #4ade80; /* Alarm clock color */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .noise-maker {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #fff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 30px;
+            cursor: crosshair;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        .obstacle::after {
-            content: '⏰';
+        @keyframes popIn {
+            to { transform: scale(1); }
+        }
+
+        /* The shrinking timer ring around the target */
+        .noise-maker::before {
+            content: '';
             position: absolute;
-            top: 5px;
-            font-size: 28px;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 4px solid var(--accent-color);
+            border-radius: 50%;
+            box-sizing: border-box;
+            pointer-events: none;
+            /* Animation applied via JS */
         }
 
-        .score-display {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #fca311;
+        .noise-maker.active {
+            animation: shake 0.5s infinite;
         }
 
-        /* Jumping class added via JS */
-        .jump {
-            animation: jumpAnim 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-        .jump .zzz {
-            display: none; /* Wake up when jumping */
-        }
-
-        @keyframes jumpAnim {
-            0% { bottom: 0; }
-            40% { bottom: 120px; }
-            50% { bottom: 130px; }
-            60% { bottom: 120px; }
-            100% { bottom: 0; }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
-        /* Screen flash on lose */
         .lose-flash {
             position: fixed;
             top: 0;
@@ -223,29 +250,32 @@
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s;
+            transition: opacity 0.3s;
         }
     </style>
 </head>
-<body onclick="jump()">
+<body>
 
     <div class="stars" id="stars"></div>
     <div class="lose-flash" id="loseFlash"></div>
 
     <div class="content">
         <h1>404</h1>
-        <p>Oops! You woke up the lazy cat.</p>
+        <p>Shh! Don't wake the lazy cat.</p>
         <a href="{{ route('home') }}" class="btn-home">Take Me Home</a>
     </div>
 
-    <div class="game-container" id="gameArea">
-        <div class="instruction">Tap / Click anywhere to JUMP! Don't let the alarm clock hit the cat.</div>
-        <div class="score-display">Score: <span id="score">0</span></div>
-        <div class="cat" id="cat">
+    <div class="score-display">Score: <span id="score">0</span></div>
+    
+    <div class="cat-container">
+        <div class="cat">
             <div class="zzz">z</div>
         </div>
-        <div class="obstacle" id="obstacle"></div>
     </div>
+    
+    <div class="instruction">Tap the noisy objects to silence them before their ring shrinks!</div>
+
+    <div class="game-area" id="gameArea"></div>
 
     <script>
         // Starry background generator
@@ -262,84 +292,142 @@
         }
 
         // Game Logic
-        const cat = document.getElementById('cat');
-        const obstacle = document.getElementById('obstacle');
+        const gameArea = document.getElementById('gameArea');
         const scoreElement = document.getElementById('score');
         
-        let isJumping = false;
+        const emojis = ['⏰', '🐕', '🔔', '🎺', '📱', '🐔'];
+        
         let score = 0;
-        let gameSpeed = 5;
-        let obstaclePosition = 600; // start off-screen right
         let isGameOver = false;
+        
+        // Difficulty parameters
+        let spawnIntervalTime = 2000; // Time between spawns (ms)
+        let shrinkTime = 4000; // How long user has to click before lose (ms)
+        
+        let spawnTimer;
 
-        // Start game loop
-        let gameLoop = setInterval(update, 20);
-
-        function jump() {
-            if (isJumping || isGameOver) return;
-            isJumping = true;
-            cat.classList.add('jump');
-            
-            setTimeout(() => {
-                cat.classList.remove('jump');
-                isJumping = false;
-            }, 600); // matches animation duration
+        // Start Game
+        function startGame() {
+            spawnTimer = setTimeout(spawnNoiseMaker, spawnIntervalTime);
         }
 
-        // Support Spacebar for jumping
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                jump();
-            }
-        });
-
-        function update() {
+        function spawnNoiseMaker() {
             if (isGameOver) return;
 
-            // Move obstacle
-            obstaclePosition -= gameSpeed;
-            obstacle.style.right = (600 - obstaclePosition) + 'px'; // Move from right to left
+            // Create element
+            const noise = document.createElement('div');
+            noise.className = 'noise-maker';
+            
+            // Random Emoji
+            noise.innerText = emojis[Math.floor(Math.random() * emojis.length)];
 
-            // Reset obstacle when it goes off screen left
-            if (obstaclePosition < -50) {
-                obstaclePosition = 600; // Reset to right
-                score += 10;
-                scoreElement.innerText = score;
-                // Increase speed slightly
-                if (gameSpeed < 15) {
-                    gameSpeed += 0.2;
+            // Random Position (avoiding the exact center where the cat is)
+            let x, y;
+            do {
+                x = Math.random() * (window.innerWidth - 100) + 20;
+                y = Math.random() * (window.innerHeight - 100) + 20;
+                
+                // Center coordinates approx (vw/2, vh/2)
+                let cx = window.innerWidth / 2;
+                let cy = window.innerHeight / 2;
+                let dist = Math.sqrt(Math.pow(x - cx, 2) + Math.pow(y - cy, 2));
+            } while(Math.sqrt(Math.pow(x - (window.innerWidth/2), 2) + Math.pow(y - (window.innerHeight/2), 2)) < 150); // Keep at least 150px away from center
+
+            noise.style.left = x + 'px';
+            noise.style.top = y + 'px';
+
+            // Animation for the shrinking ring
+            noise.style.setProperty('--shrink-duration', shrinkTime + 'ms');
+            
+            // Add custom style for the pseudo element via inline style trick
+            // Actually, we'll handle the visual shrinking via JS scale, or CSS animation
+            const style = document.createElement('style');
+            const animId = 'shrinkAnim_' + Math.random().toString(36).substr(2, 9);
+            style.innerHTML = `
+                @keyframes ${animId} {
+                    0% { transform: scale(2); opacity: 0; }
+                    10% { transform: scale(1.5); opacity: 1; }
+                    100% { transform: scale(0.9); opacity: 1; border-color: red; }
                 }
-            }
+                .noise-${animId}::before {
+                    animation: ${animId} ${shrinkTime}ms linear forwards;
+                }
+            `;
+            document.head.appendChild(style);
+            noise.classList.add(`noise-${animId}`);
 
-            // Collision Detection
-            // Cat x: 50 to 130
-            // Obstacle x: obstaclePosition to obstaclePosition + 40
-            
-            let catBottom = parseInt(window.getComputedStyle(cat).getPropertyValue('bottom'));
-            
-            // Cat occupies left: 50px, width: 80px (so 50 to 130 in game container)
-            // Obstacle is positioned by right offset. 
-            // obstacle.style.right = (600 - obstaclePosition)
-            // That means its left position is obstaclePosition - 40 (since its width is 40 and container is 600)
-            
-            // Wait, simpler way: getBoundingClientRect
-            let catRect = cat.getBoundingClientRect();
-            let obsRect = obstacle.getBoundingClientRect();
+            // Make it shake when time is almost up
+            setTimeout(() => {
+                if(!isGameOver && document.body.contains(noise)) {
+                    noise.classList.add('active');
+                }
+            }, shrinkTime * 0.7);
 
-            if (
-                catRect.right > obsRect.left + 10 && 
-                catRect.left < obsRect.right - 10 && 
-                catRect.bottom > obsRect.top + 10
-            ) {
-                // Collision!
-                gameOver();
-            }
+            // Click to silence
+            noise.onmousedown = (e) => {
+                if (isGameOver) return;
+                // Prevent multi-touch bugs
+                if (e.type === 'mousedown') {
+                    e.preventDefault();
+                }
+                
+                silence(noise, style);
+            };
+            noise.ontouchstart = (e) => {
+                if (isGameOver) return;
+                e.preventDefault();
+                silence(noise, style);
+            };
+
+            // Set Death Timer
+            noise.deathTimer = setTimeout(() => {
+                if(document.body.contains(noise)) {
+                    gameOver();
+                }
+            }, shrinkTime);
+
+            gameArea.appendChild(noise);
+
+            // Schedule next spawn with increasing difficulty
+            spawnIntervalTime = Math.max(400, spawnIntervalTime * 0.95); // Faster spawns (min 400ms)
+            shrinkTime = Math.max(1000, shrinkTime * 0.98); // Less time to click (min 1s)
+
+            spawnTimer = setTimeout(spawnNoiseMaker, spawnIntervalTime);
+        }
+
+        function silence(element, styleElement) {
+            clearTimeout(element.deathTimer);
+            element.remove();
+            if(styleElement) styleElement.remove();
+            
+            score += 10;
+            scoreElement.innerText = score;
+            
+            // Visual pop effect on click
+            const pop = document.createElement('div');
+            pop.innerText = '💥';
+            pop.style.position = 'absolute';
+            pop.style.left = element.style.left;
+            pop.style.top = element.style.top;
+            pop.style.fontSize = '30px';
+            pop.style.transition = 'all 0.3s';
+            pop.style.transform = 'scale(1)';
+            pop.style.opacity = '1';
+            gameArea.appendChild(pop);
+            
+            setTimeout(() => {
+                pop.style.transform = 'scale(2)';
+                pop.style.opacity = '0';
+            }, 10);
+            
+            setTimeout(() => {
+                pop.remove();
+            }, 300);
         }
 
         function gameOver() {
             isGameOver = true;
-            clearInterval(gameLoop);
+            clearTimeout(spawnTimer);
             
             // Flash screen red
             document.getElementById('loseFlash').style.opacity = '1';
@@ -349,6 +437,10 @@
                 window.location.href = '/';
             }, 1000);
         }
+
+        // Delay start slightly to let user read
+        setTimeout(startGame, 1500);
+
     </script>
 </body>
 </html>
