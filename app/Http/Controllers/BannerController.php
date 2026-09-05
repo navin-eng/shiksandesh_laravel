@@ -13,8 +13,23 @@ class BannerController extends Controller
 {
     public function index()
     {
-        $banner = Banner::all();
+        $banner = Banner::orderBy('sort_order', 'asc')->get();
         return view('backend.pages.banner.table', compact('banner'));
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'integer|exists:banners,id',
+        ]);
+
+        foreach ($request->order as $index => $id) {
+            Banner::where('id', $id)->update(['sort_order' => $index + 1]);
+        }
+
+        Cache::forget('home.banners');
+        return response()->json(['success' => true]);
     }
     public function create()
     {

@@ -115,6 +115,7 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/testimonial/add', [TestimonialController::class, 'create'])->name('testimonial.add');
     Route::get('/admin/dashboard/testimonial/table', [TestimonialController::class, 'index'])->name('testimonial.table');
     Route::post('/admin/dashboard/testimonial/store', [TestimonialController::class, 'store'])->name('testimonial.store');
+    Route::post('/admin/dashboard/testimonial/reorder', [TestimonialController::class, 'reorder'])->name('testimonial.reorder');
     Route::get('/admin/dashboard/testimonial/delete/{id}', [TestimonialController::class, 'destroy'])->name('testimonial.destroy');
     Route::get('/admin/dashboard/testimonial/status/{id}', [TestimonialController::class, 'status'])->name('testimonial.status');
     Route::get('/admin/dashboard/testimonial/edit/{id}', [TestimonialController::class, 'edit'])->name('testimonial.edit');
@@ -203,6 +204,7 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/banner/add', [BannerController::class, 'create'])->name('banner.add');
     Route::get('/admin/dashboard/banner/table', [BannerController::class, 'index'])->name('banner.table');
     Route::post('/admin/dashboard/banner/store', [BannerController::class, 'store'])->name('banner.store');
+    Route::post('/admin/dashboard/banner/reorder', [BannerController::class, 'reorder'])->name('banner.reorder');
     Route::get('/admin/dashboard/banner/delete/{id}', [BannerController::class, 'destroy'])->name('banner.destroy');
     Route::get('/admin/dashboard/banner/status/{id}', [BannerController::class, 'status'])->name('banner.status');
     Route::get('/admin/dashboard/banner/edit/{id}', [BannerController::class, 'edit'])->name('banner.edit');

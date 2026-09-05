@@ -7,19 +7,19 @@
 @endpush
 
 @php
-    $isEdit = isset($course) && $course;
+    $isEdit = isset($course) && $course instanceof \App\Models\Course;
     $formAction = $isEdit ? route('course.update', $course->id) : route('course.store');
     $heading = $isEdit ? 'Edit Course' : 'Add Course';
     $buttonText = $isEdit ? 'Update Course' : 'Save Course';
     $courseData = [
-        'name' => old('name', $course->name ?? ''),
-        'duration' => old('duration', $course->duration ?? ''),
-        'semester' => old('semester', $course->semester ?? ''),
-        'requirement' => old('requirement', $course->requirement ?? ''),
+        'name' => old('name', $isEdit ? $course->name : ''),
+        'duration' => old('duration', $isEdit ? $course->duration : ''),
+        'semester' => old('semester', $isEdit ? $course->semester : ''),
+        'requirement' => old('requirement', $isEdit ? $course->requirement : ''),
         'starting_time' => old('starting_time'),
         'closing_time' => old('closing_time'),
-        'description' => old('description', $course->description ?? ''),
-        'fulldescription' => old('fulldescription', $course->fulldescription ?? ''),
+        'description' => old('description', $isEdit ? $course->description : ''),
+        'fulldescription' => old('fulldescription', $isEdit ? $course->fulldescription : ''),
     ];
     if ($isEdit && !old('starting_time') && !empty($course->starting_time)) {
         try { $courseData['starting_time'] = \Illuminate\Support\Carbon::parse($course->starting_time)->format('H:i'); }

@@ -14,8 +14,23 @@ class TestimonialController extends Controller
 {
     public function index()
     {
-        $testimonial = Testimonial::all();
+        $testimonial = Testimonial::orderBy('sort_order', 'asc')->get();
         return view('backend.pages.testimonial.table', compact('testimonial'));
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'integer|exists:testimonials,id',
+        ]);
+
+        foreach ($request->order as $index => $id) {
+            Testimonial::where('id', $id)->update(['sort_order' => $index + 1]);
+        }
+
+        Cache::forget('home.testimonials');
+        return response()->json(['success' => true]);
     }
     public function create()
     {

@@ -10,10 +10,11 @@
   <div class="admin-card-body p-0">
     <div class="table-scroll">
       <table class="admin-table">
-        <thead><tr><th>#</th><th>Image</th><th>Title One</th><th>Title Two</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody>
+        <thead><tr><th><i class="bi bi-arrows-move text-muted"></i></th><th>#</th><th>Image</th><th>Title One</th><th>Title Two</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="sortable-table-body">
           @forelse($banner as $data)
-          <tr>
+          <tr data-id="{{ $data->id }}">
+            <td><i class="bi bi-grip-vertical text-muted drag-handle" style="cursor: grab; font-size: 1.2rem;"></i></td>
             <td><span class="sr-badge">{{ $loop->iteration }}</span></td>
             <td><img src="{{ asset($data->image) }}" class="table-img" alt="Banner"></td>
             <td style="font-weight:600;">{{ $data->title1 }}</td>
@@ -27,7 +28,7 @@
             </td>
           </tr>
           @empty
-          <tr><td colspan="6" style="text-align:center;padding:40px;color:#718096;">No banners added yet.</td></tr>
+          <tr><td colspan="7" style="text-align:center;padding:40px;color:#718096;">No banners added yet.</td></tr>
           @endforelse
         </tbody>
       </table>
@@ -86,5 +87,47 @@
             myModal.show();
         });
     @endif
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var el = document.getElementById('sortable-table-body');
+        if (el) {
+            var sortable = Sortable.create(el, {
+                handle: '.drag-handle',
+                animation: 150,
+                onEnd: function (evt) {
+                    var order = [];
+                    el.querySelectorAll('tr').forEach(function (row) {
+                        if (row.getAttribute('data-id')) {
+                            order.push(row.getAttribute('data-id'));
+                        }
+                    });
+
+                    fetch('{{ route('banner.reorder') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ order: order })
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (data.success) {
+                              const Toast = Swal.mixin({
+                                  toast: true, position: 'top-end', showConfirmButton: false, timer: 2000
+                              });
+                              Toast.fire({ icon: 'success', title: 'Order saved successfully' });
+                              // Update row numbers
+                              el.querySelectorAll('tr').forEach(function (row, index) {
+                                  let badge = row.querySelector('.sr-badge');
+                                  if (badge) badge.innerText = index + 1;
+                              });
+                          }
+                      });
+                }
+            });
+        }
+    });
 </script>
 @endpush
