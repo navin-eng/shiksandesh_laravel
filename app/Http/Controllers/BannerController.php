@@ -40,105 +40,125 @@ class BannerController extends Controller
         $request->validate([
             'title1' => 'required|min:2',
             'title2' => 'required|min:2',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
+
         $banner = new Banner();
         $banner->title1 = ucwords($request->title1);
         $banner->title2 = ucwords($request->title2);
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/banners/', $imageName);
+            
+            $destinationPath = public_path('backend/images/banners');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $image->move($destinationPath, $imageName);
             $banner->image = 'backend/images/banners/' . $imageName;
         }
+
         $banner->status = 1;
+        $banner->sort_order = (Banner::max('sort_order') ?? 0) + 1;
         $save = $banner->save();
-        if ($save == true) {
 
-                        Cache::forget('home.banners');
-
-
-            Alert::success('Saved', 'banner saved successfully');
+        if ($save) {
+            Cache::forget('home.banners');
+            Alert::success('Saved', 'Banner added successfully');
             return back();
         } else {
-            Alert::error('oops', 'banner couldnot saved');
+            Alert::error('Oops', 'Banner could not be saved');
             return back();
         }
     }
-    public function edit(banner $banner,$id)
+
+    public function edit($id)
     {
         $banner = Banner::find($id);
-        if(is_null($banner))
-        {
-            Alert::error('oops','Something went wrong');
+        if (is_null($banner)) {
+            Alert::error('Oops', 'Banner not found');
+            return redirect()->route('banner.table');
         }
-        else
-        {
-            return view('backend.pages.banner.edit',compact('banner'));
-        }
+
+        return view('backend.pages.banner.edit', compact('banner'));
     }
+
     public function status($id)
     {
         $banner = Banner::find($id);
         if (is_null($banner)) {
-            Alert::error('oops', 'We Couldnot find banner');
+            Alert::error('Oops', 'Banner not found');
         } else {
-            if ($banner->status == 0) {
-                $banner->status = 1;
-                $banner->update();
-                                Cache::forget('home.banners');
+            $banner->status = $banner->status == 1 ? 0 : 1;
+            $banner->save();
+            Cache::forget('home.banners');
 
-                Alert::success('Updated', 'status activated');
-                return back();
-            } else {
-                $banner->status = 0;
-                $banner->update();
-                                Cache::forget('home.banners');
-
-                Alert::success('Updated', 'status deactivated');
-                return back();
-            }
+            Alert::success('Updated', 'Banner status ' . ($banner->status ? 'activated' : 'deactivated'));
         }
+        return back();
     }
-    public function update(Request $request, banner $banner,$id)
-    {
 
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'title1' => 'required|min:2',
             'title2' => 'required|min:2',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
+
         $banner = Banner::find($id);
+        if (is_null($banner)) {
+            Alert::error('Oops', 'Banner not found');
+            return redirect()->route('banner.table');
+        }
+
         $banner->title1 = ucwords($request->title1);
         $banner->title2 = ucwords($request->title2);
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = Str::random(20) . time() . '.' . $extension;
-            $image->move('backend/images/banners/', $imageName);
+
+            $destinationPath = public_path('backend/images/banners');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            if ($banner->image && file_exists(public_path($banner->image))) {
+                @unlink(public_path($banner->image));
+            }
+
+            $image->move($destinationPath, $imageName);
             $banner->image = 'backend/images/banners/' . $imageName;
         }
-        $banner->status = 1;
-        $save = $banner->update();
-        if ($save == true) {
 
-                        Cache::forget('home.banners');
+        $save = $banner->save();
 
-
-            Alert::success('Saved', 'banner update successfully');
+        if ($save) {
+            Cache::forget('home.banners');
+            Alert::success('Saved', 'Banner updated successfully');
             return redirect()->route('banner.table');
         } else {
-            Alert::error('oops', 'banner couldnot update');
+            Alert::error('Oops', 'Banner could not be updated');
             return redirect()->route('banner.table');
         }
     }
+
     public function destroy($id)
     {
         $banner = Banner::find($id);
-        $banner->delete();
-                Cache::forget('home.banners');
-
-        Alert::success('Deleted', 'banner deleted');
+        if ($banner) {
+            if ($banner->image && file_exists(public_path($banner->image))) {
+                @unlink(public_path($banner->image));
+            }
+            $banner->delete();
+            Cache::forget('home.banners');
+            Alert::success('Deleted', 'Banner deleted successfully');
+        } else {
+            Alert::error('Oops', 'Banner not found');
+        }
         return redirect()->route('banner.table');
     }
-}

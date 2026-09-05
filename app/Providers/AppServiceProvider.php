@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('frontend.pages.home.hero_banner', function ($view) {
             $view->with('banners', Cache::remember('home.banners', 600, function () {
-                return \App\Models\Banner::where('status', 1)->get();
+                return \App\Models\Banner::where('status', 1)->orderBy('sort_order', 'asc')->get();
             }));
         });
 
