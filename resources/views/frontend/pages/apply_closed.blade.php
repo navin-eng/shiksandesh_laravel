@@ -1,6 +1,6 @@
 @extends('frontend.layout.master')
 
-@section('content')
+@section('frontend-content')
 
 <!-- Page Banner Section -->
 <section class="page-banner" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('frontend/images/banner2.jpg') }}') center/cover; padding: 100px 0; text-align: center; color: white;">
