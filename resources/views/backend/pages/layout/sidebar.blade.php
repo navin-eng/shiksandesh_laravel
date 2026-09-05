@@ -72,17 +72,9 @@
       {{-- Content Management --}}
       <li class="sb-group-label"><span class="sb-text">Content Management</span></li>
       <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/notice*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbNotice"
-           aria-expanded="{{ request()->is('admin/dashboard/notice*') ? 'true' : 'false' }}" title="Notices">
-          <i class="bi bi-bell-fill"></i><span class="sb-text">Notices</span><i class="bi bi-chevron-right sb-arrow"></i>
+        <a href="{{ route('notice.table') }}" class="sb-link {{ request()->routeIs('notice.*') ? 'active' : '' }}" title="Notices">
+          <i class="bi bi-bell-fill"></i><span class="sb-text">Notices</span>
         </a>
-        <div class="collapse {{ request()->is('admin/dashboard/notice*') ? 'show' : '' }}" id="sbNotice">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('notice.add') }}" class="sb-link {{ request()->routeIs('notice.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Notice</span></a></li>
-            <li class="sb-item"><a href="{{ route('notice.table') }}" class="sb-link {{ request()->routeIs('notice.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Notices</span></a></li>
-          </ul>
-        </div>
       </li>
       <li class="sb-item">
         <a class="sb-link {{ request()->is('admin/dashboard/event*') ? 'active' : '' }}"
