@@ -6,7 +6,7 @@
             <h5 class="h4">Navbar Menu Items</h5>
         </div>
         <div class="col-6 text-end">
-            <a href="{{ route('navbar_menu.add') }}" class="btn btn-primary">+ Add New Link</a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNavbarModal">+ Add New Link</button>
         </div>
     </div>
     <div class="table-responsive">
@@ -71,6 +71,60 @@
             </tbody>
         </table>
     </div>
+    </div>
+
+    <!-- Add Navbar Modal -->
+    <div class="modal fade" id="addNavbarModal" tabindex="-1" aria-labelledby="addNavbarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNavbarModalLabel">Add Navbar Menu Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('navbar_menu.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body p-4">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Menu Name *</label>
+                                <input type="text" name="name" class="form-control" placeholder="e.g. About Us" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">URL / Link</label>
+                                <input type="text" name="url" class="form-control" placeholder="e.g. /about-us or https://google.com">
+                                <small class="text-muted">Leave empty if this is a dropdown.</small>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Item Type *</label>
+                                <select name="type" class="form-control" required>
+                                    <option value="standard">Standard Link</option>
+                                    <option value="course_dropdown">Courses Dropdown (Auto-generates course list)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Order Position *</label>
+                                <input type="number" name="order" class="form-control" value="0" required>
+                                <small class="text-muted">Lower numbers appear first (e.g. 1, 2, 3).</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save Menu Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -114,6 +168,11 @@
                 }
             });
         }
+        
+        @if($errors->any())
+            var myModal = new bootstrap.Modal(document.getElementById('addNavbarModal'));
+            myModal.show();
+        @endif
     });
 </script>
 @endpush

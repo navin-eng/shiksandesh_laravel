@@ -84,43 +84,19 @@
       {{-- Pages & Menus --}}
       <li class="sb-group-label"><span class="sb-text">Pages & Menus</span></li>
       <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/page*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbPages"
-           aria-expanded="{{ request()->is('admin/dashboard/page*') ? 'true' : 'false' }}" title="HTML Pages">
-          <i class="bi bi-file-earmark-code-fill"></i><span class="sb-text">HTML Pages</span><i class="bi bi-chevron-right sb-arrow"></i>
+        <a href="{{ route('page.table') }}" class="sb-link {{ request()->is('admin/dashboard/page*') ? 'active' : '' }}" title="HTML Pages">
+          <i class="bi bi-file-earmark-code-fill"></i><span class="sb-text">HTML Pages</span>
         </a>
-        <div class="collapse {{ request()->is('admin/dashboard/page*') ? 'show' : '' }}" id="sbPages">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('page.add') }}" class="sb-link {{ request()->routeIs('page.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Page</span></a></li>
-            <li class="sb-item"><a href="{{ route('page.table') }}" class="sb-link {{ request()->routeIs('page.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Pages</span></a></li>
-          </ul>
-        </div>
       </li>
       <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/navbar-menu*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbNavbarMenu"
-           aria-expanded="{{ request()->is('admin/dashboard/navbar-menu*') ? 'true' : 'false' }}" title="Navbar Menu">
-          <i class="bi bi-menu-button-wide-fill"></i><span class="sb-text">Navbar Menu</span><i class="bi bi-chevron-right sb-arrow"></i>
+        <a href="{{ route('navbar_menu.table') }}" class="sb-link {{ request()->is('admin/dashboard/navbar-menu*') ? 'active' : '' }}" title="Navbar Menu">
+          <i class="bi bi-menu-button-wide-fill"></i><span class="sb-text">Navbar Menu</span>
         </a>
-        <div class="collapse {{ request()->is('admin/dashboard/navbar-menu*') ? 'show' : '' }}" id="sbNavbarMenu">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('navbar_menu.add') }}" class="sb-link {{ request()->routeIs('navbar_menu.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Link</span></a></li>
-            <li class="sb-item"><a href="{{ route('navbar_menu.table') }}" class="sb-link {{ request()->routeIs('navbar_menu.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Links</span></a></li>
-          </ul>
-        </div>
       </li>
       <li class="sb-item">
-        <a class="sb-link {{ request()->is('admin/dashboard/college-message*') ? 'active' : '' }}"
-           data-bs-toggle="collapse" href="#sbColMsg"
-           aria-expanded="{{ request()->is('admin/dashboard/college-message*') ? 'true' : 'false' }}" title="College Messages">
-          <i class="bi bi-person-lines-fill"></i><span class="sb-text">College Messages</span><i class="bi bi-chevron-right sb-arrow"></i>
+        <a href="{{ route('college_message.table') }}" class="sb-link {{ request()->is('admin/dashboard/college-message*') ? 'active' : '' }}" title="College Messages">
+          <i class="bi bi-person-lines-fill"></i><span class="sb-text">College Messages</span>
         </a>
-        <div class="collapse {{ request()->is('admin/dashboard/college-message*') ? 'show' : '' }}" id="sbColMsg">
-          <ul class="sb-submenu">
-            <li class="sb-item"><a href="{{ route('college_message.add') }}" class="sb-link {{ request()->routeIs('college_message.add') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">Add Message</span></a></li>
-            <li class="sb-item"><a href="{{ route('college_message.table') }}" class="sb-link {{ request()->routeIs('college_message.table') ? 'active' : '' }}"><i class="bi bi-dot"></i><span class="sb-text">All Messages</span></a></li>
-          </ul>
-        </div>
       </li>
       <li class="sb-item">
         <a href="{{ route('message.index') }}" class="sb-link {{ request()->routeIs('message.index') ? 'active' : '' }}" title="Visitor Messages">
