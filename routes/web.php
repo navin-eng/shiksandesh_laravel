@@ -167,6 +167,7 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/editor/table', [EditorController::class, 'index'])->name('editor.table');
     Route::get('/admin/dashboard/editor/edit/{id}', [EditorController::class, 'edit'])->name('editor.edit');
     Route::get('/admin/dashboard/editor/delete/{id}', [EditorController::class, 'delete'])->name('editor.delete');
+    Route::post('/admin/dashboard/editor/store', [EditorController::class, 'store'])->name('editor.store');
     Route::post('/admin/dashboard/editor/edit/update/{id}', [EditorController::class, 'update'])->name('editor.update');
 
     // Profile
@@ -217,9 +218,8 @@ Route::middleware('webGuard')->group(function () {
     Route::get('/admin/dashboard/college-message/status/{id}', [CollegeMessageController::class, 'status'])->name('college_message.status');
     Route::get('/admin/dashboard/college-message/edit/{id}', [CollegeMessageController::class, 'edit'])->name('college_message.edit');
     Route::post('/admin/dashboard/college-message/edit/update/{id}', [CollegeMessageController::class, 'update'])->name('college_message.update');
-    // SECURITY FIX: Register routes moved inside webGuard so only a logged-in super admin can create new users.
-    Route::get('/admin/dashboard/register', [Admin::class, 'register'])->name('admin.register');
-    Route::post('/admin/dashboard/admin/register', [Admin::class, 'registerAdmin'])->name('admin.store');
+    // NOTE: User creation is handled exclusively via the Editor Table modal
+    // at /admin/dashboard/editor/table — the old /register page has been removed.
 
     // SECURITY FIX: Logout is now POST to prevent CSRF-based forced logout attacks.
     Route::post('/admin/dashboard/logout', function () {
@@ -249,3 +249,12 @@ Route::get('/admin/dashboard/reset/password', function () {
     return view('backend.auth.resetpassword');
 });
 Route::post('/admin/dashboard/reset/password', [Admin::class, 'resetPassword'])->name('resetPassword');
+
+// SECURITY: Hard-block the old register URL. It no longer exists.
+// Any GET or POST to /admin/dashboard/register or /admin/dashboard/admin/register returns 404.
+Route::match(['get', 'post'], '/admin/dashboard/register', function () {
+    abort(404);
+});
+Route::match(['get', 'post'], '/admin/dashboard/admin/register', function () {
+    abort(404);
+});

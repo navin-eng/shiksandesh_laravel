@@ -18,27 +18,28 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('editor.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                          <label for="exampleInputEmail1" class="form-label">Name</label>
-                          <input type="text" class="form-control" name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
+                          <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control" name="name" required placeholder="Enter full name">
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email</label>
-                            <input type="text" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
-                          </div>
-                          <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Image</label>
-                            <input type="file" class="form-control" name="image" id="exampleInputEmail1" aria-describedby="emailHelp">
-                          </div>
-                          <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Password</label>
-                            <input type="text" class="form-control" name="password" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" required placeholder="name@example.com">
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        <div class="mb-3">
+                            <label class="form-label">Password <span class="text-danger">*</span></label>
+                            {{-- type="password" — the original had type="text" which exposed passwords on screen --}}
+                            <input type="password" class="form-control" name="password" required placeholder="Min. 8 characters">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Profile Photo <span class="text-muted">(optional)</span></label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                        </div>
+                        <div class="modal-footer px-0 pb-0">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary"><i class="bi bi-person-plus-fill me-1"></i>Create Editor</button>
                         </div>
                     </form>
                 </div>
