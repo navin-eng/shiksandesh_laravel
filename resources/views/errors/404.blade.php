@@ -278,6 +278,68 @@
     <div class="game-area" id="gameArea"></div>
 
     <script>
+        // --- Web Audio API Sound Effects ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            // Resume context if suspended (browser autoplay policies)
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            const now = audioCtx.currentTime;
+            
+            if (type === 'pop') {
+                // Happy pop sound for clicking targets
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(600, now);
+                oscillator.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.5, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                
+                oscillator.start(now);
+                oscillator.stop(now + 0.1);
+                
+            } else if (type === 'lose') {
+                // Harsh angry buzzer sound for Game Over
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(150, now);
+                oscillator.frequency.linearRampToValueAtTime(100, now + 0.5);
+                
+                gainNode.gain.setValueAtTime(0.8, now);
+                gainNode.gain.linearRampToValueAtTime(0.01, now + 0.5);
+                
+                // Add a second oscillator for dissonance
+                const osc2 = audioCtx.createOscillator();
+                osc2.type = 'square';
+                osc2.frequency.setValueAtTime(140, now);
+                osc2.frequency.linearRampToValueAtTime(90, now + 0.5);
+                osc2.connect(gainNode);
+                osc2.start(now);
+                osc2.stop(now + 0.5);
+                
+                oscillator.start(now);
+                oscillator.stop(now + 0.5);
+            } else if (type === 'spawn') {
+                // Very subtle blip when an object spawns
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(300, now);
+                
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                
+                oscillator.start(now);
+                oscillator.stop(now + 0.05);
+            }
+        }
+
         // Starry background generator
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 50; i++) {
@@ -313,6 +375,9 @@
 
         function spawnNoiseMaker() {
             if (isGameOver) return;
+            
+            // Play spawn sound
+            playSound('spawn');
 
             // Create element
             const noise = document.createElement('div');
@@ -400,6 +465,8 @@
             element.remove();
             if(styleElement) styleElement.remove();
             
+            playSound('pop');
+            
             score += 10;
             scoreElement.innerText = score;
             
@@ -428,6 +495,8 @@
         function gameOver() {
             isGameOver = true;
             clearTimeout(spawnTimer);
+            
+            playSound('lose');
             
             // Flash screen red
             document.getElementById('loseFlash').style.opacity = '1';
