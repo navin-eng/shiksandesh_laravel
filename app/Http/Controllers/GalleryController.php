@@ -140,6 +140,9 @@ class GalleryController extends Controller
             file_put_contents($filePath, $base64Data);
         }
 
+        // Touch the model to update the updated_at timestamp (used for cache busting)
+        $gallery->touch();
+
         Alert::success('Success', 'Image cropped successfully!');
         return back();
     }

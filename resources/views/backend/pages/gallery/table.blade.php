@@ -259,7 +259,7 @@
                         <i class="bi bi-image"></i>
                     </a>
                   @endif
-                  <button type="button" class="btn-g-action" title="Edit/Assign" onclick="editItem({{ $item->id }}, '{{ addslashes($item->caption ?? '') }}', '{{ $item->album_id ?? '' }}', '{{ $item->type }}', '{{ $item->type === 'image' ? asset('backend/images/gallery/'.$item->file_path) : '' }}')">
+                  <button type="button" class="btn-g-action" title="Edit/Assign" onclick="editItem({{ $item->id }}, '{{ addslashes($item->caption ?? '') }}', '{{ $item->album_id ?? '' }}', '{{ $item->type }}', '{{ $item->type === 'image' ? asset('backend/images/gallery/'.$item->file_path).'?v='.$item->updated_at->timestamp : '' }}')">
                       <i class="bi bi-pencil-fill"></i>
                   </button>
                   <a class="btn-g-action btn-g-danger" href="{{ route('gallery.delete', $item->id) }}" onclick="return confirm('Delete this item?')" title="Delete">
@@ -278,7 +278,7 @@
                     <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.7);color:#fff;padding:2px 8px;border-radius:4px;font-size:12px;z-index:2;"><i class="bi bi-link"></i> URL</div>
                     <img src="{{ $item->url }}" alt="Gallery URL" style="width:100%;height:150px;object-fit:cover;">
                   @else
-                    <img src="{{ asset('backend/images/gallery/'.$item->file_path) }}" alt="Gallery Photo" style="width:100%;height:150px;object-fit:cover;">
+                    <img src="{{ asset('backend/images/gallery/'.$item->file_path) }}?v={{ $item->updated_at->timestamp }}" alt="Gallery Photo" style="width:100%;height:150px;object-fit:cover;">
                   @endif
               </div>
               
@@ -325,7 +325,7 @@
                                 $latestImage = \App\Models\Gallery::where('album_id', $album->id)->where('type', 'image')->whereNotNull('file_path')->latest()->first();
                             @endphp
                             @if($latestImage)
-                                <img src="{{ asset('backend/images/gallery/'.$latestImage->file_path) }}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+                                <img src="{{ asset('backend/images/gallery/'.$latestImage->file_path) }}?v={{ $latestImage->updated_at->timestamp }}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
                             @else
                                 <div style="width:50px;height:50px;background:#f1f5f9;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#94a3b8;"><i class="bi bi-folder"></i></div>
                             @endif

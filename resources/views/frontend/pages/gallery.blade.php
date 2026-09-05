@@ -313,7 +313,7 @@
                                     $latestImage = \App\Models\Gallery::where('album_id', $album->id)->where('type', 'image')->whereNotNull('file_path')->latest()->first();
                                 @endphp
                                 @if($latestImage)
-                                    <img src="{{ asset('backend/images/gallery/'.$latestImage->file_path) }}" alt="{{ $album->name }}">
+                                    <img src="{{ asset('backend/images/gallery/'.$latestImage->file_path) }}?v={{ $latestImage->updated_at->timestamp }}" alt="{{ $album->name }}">
                                 @else
                                     <div style="width:100%;height:100%;background:#cbd5e1;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:60px;"><i class="bi bi-images"></i></div>
                                 @endif
@@ -346,7 +346,7 @@
             @foreach($gallery as $item)
                 @php
                     if($item->type === 'image') {
-                        $src = asset('backend/images/gallery/'.$item->file_path);
+                        $src = asset('backend/images/gallery/'.$item->file_path) . '?v=' . $item->updated_at->timestamp;
                         $thumb = $src;
                     } elseif($item->type === 'image_url') {
                         $src = $item->url;
