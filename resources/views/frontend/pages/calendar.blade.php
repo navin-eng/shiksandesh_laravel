@@ -12,11 +12,11 @@
     ];
 @endphp
 
-<div class="page-hero" style="background: linear-gradient(135deg, var(--dark), var(--primary)); padding: 80px 0;">
+<div class="page-hero" style="background: linear-gradient(135deg, #1e1b4b, #312e81); padding: 80px 0;">
     <div class="container">
         <div class="page-hero-content text-center text-white" data-aos="fade-up">
             <h1 style="font-family: var(--font-heading); font-weight: 900; font-size: 3rem;">Academic Calendar</h1>
-            <p class="mt-3 opacity-75" style="font-size: 1.1rem;">Explore holidays, exams, and events throughout the academic year.</p>
+            <p class="mt-3 opacity-75" style="font-size: 1.1rem; color: #e0e7ff;">Explore holidays, exams, and events throughout the academic year.</p>
         </div>
     </div>
 </div>
