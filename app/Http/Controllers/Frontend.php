@@ -88,7 +88,8 @@ class Frontend extends Controller
                 'entry_type' => $event->event_type ?? 'event',
                 'entry_type_label' => ucfirst($event->event_type ?? 'Event'),
                 'is_event' => true,
-                'event_id' => $event->id
+                'event_id' => $event->id,
+                'event_slug' => $event->slug
             ];
         });
 

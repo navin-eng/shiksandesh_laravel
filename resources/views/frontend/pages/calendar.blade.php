@@ -69,7 +69,7 @@
                                 <div class="cell-events">
                                     @foreach($eventsToday as $ev)
                                         @if(isset($ev->is_event) && $ev->is_event)
-                                            <a href="{{ route('event.detail', $ev->event_id) }}" class="event-pill" style="background-color: {{ $typeColors[$ev->entry_type] ?? '#10b981' }}; text-decoration: none; color: white; display: block;" title="{{ $ev->title }}">
+                                            <a href="{{ route('event.detail', $ev->event_slug) }}" class="event-pill" style="background-color: {{ $typeColors[$ev->entry_type] ?? '#10b981' }}; text-decoration: none; color: white; display: block;" title="{{ $ev->title }}">
                                                 {{ $ev->title }}
                                             </a>
                                         @else
@@ -104,7 +104,7 @@
                                 </div>
                                 <h6 style="font-weight: 700; color: var(--dark); margin: 5px 0;">
                                     @if(isset($entry->is_event) && $entry->is_event)
-                                        <a href="{{ route('event.detail', $entry->event_id) }}" style="color: var(--dark); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--dark)'">{{ $entry->title }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 2px;"></i></a>
+                                        <a href="{{ route('event.detail', $entry->event_slug) }}" style="color: var(--dark); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--dark)'">{{ $entry->title }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 2px;"></i></a>
                                     @else
                                         {{ $entry->title }}
                                     @endif

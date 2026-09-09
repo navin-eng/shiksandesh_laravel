@@ -66,12 +66,12 @@ Route::get('/calendar', [Frontend::class, 'calendar'])->name('calendar');
 Route::get('/events', [Frontend::class, 'eventsIndex'])->name('events.index');
 
 Route::get('/course', [Frontend::class, 'coursesIndex'])->name('courses.index');
-Route::get('/course/{slug}', [Frontend::class, 'courseDetail']);
-Route::get('/event/{slug}', [Frontend::class, 'eventDetail']);
+Route::get('/course/{slug}', [Frontend::class, 'courseDetail'])->name('course.detail');
+Route::get('/event/{slug}', [Frontend::class, 'eventDetail'])->name('event.detail');
 Route::get('/course/detail', function () {
     return view('frontend.pages.course_detail');
 });
-Route::get('/notice/detail/{id}', [Frontend::class, 'noticeDetail']);
+Route::get('/notice/detail/{id}', [Frontend::class, 'noticeDetail'])->name('notice.detail');
 
 Route::post('/send/form/data', [MessageController::class, 'store'])->name('message.send');
 Route::get('/close', function () {
