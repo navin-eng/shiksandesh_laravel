@@ -81,20 +81,25 @@
 </div>
 
 {{-- Google Analytics Widget --}}
-@if(isset($analyticsData) || isset($analyticsError))
 <div class="row g-3 mb-4">
     <div class="col-12">
         <div class="admin-card">
             <div class="admin-card-header d-flex justify-content-between align-items-center">
                 <span class="card-title"><i class="bi bi-google"></i> Google Analytics (Last 30 Days)</span>
-                <a href="https://analytics.google.com" target="_blank" class="btn btn-sm btn-outline-primary">Open GA4 <i class="bi bi-box-arrow-up-right"></i></a>
+                <a href="{{ route('site.settings.edit') }}#analytics" class="btn btn-sm btn-outline-secondary">Configure <i class="bi bi-gear"></i></a>
             </div>
             <div class="admin-card-body p-4">
-                @if(isset($analyticsError))
+                @if(empty(\App\Models\SiteSetting::current()->analytics_property_id))
+                    <div class="text-center text-muted py-3">
+                        <i class="bi bi-bar-chart ms-2 fs-1 text-light"></i>
+                        <h6 class="mt-2 mb-1">Analytics Not Configured</h6>
+                        <p class="small mb-0">Please set your Google Analytics Property ID in the <a href="{{ route('site.settings.edit') }}">Site Settings</a> to view live data.</p>
+                    </div>
+                @elseif(isset($analyticsError) && $analyticsError)
                     <div class="alert alert-warning mb-0">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>Analytics API Error:</strong> {{ $analyticsError }}
                     </div>
-                @elseif(isset($analyticsData))
+                @elseif(isset($analyticsData) && $analyticsData)
                     <div class="row text-center">
                         <div class="col-6 border-end">
                             <h2 class="fw-bold text-primary mb-1">{{ number_format($analyticsData['activeUsers']) }}</h2>
@@ -110,7 +115,6 @@
         </div>
     </div>
 </div>
-@endif
 
 <div class="row g-3">
   {{-- Insights Graph --}}
