@@ -68,7 +68,13 @@
                                 
                                 <div class="cell-events">
                                     @foreach($eventsToday as $ev)
-                                        <div class="event-pill" style="background-color: {{ $typeColors[$ev->entry_type] ?? '#10b981' }};" title="{{ $ev->title }}">{{ $ev->title }}</div>
+                                        @if(isset($ev->is_event) && $ev->is_event)
+                                            <a href="{{ route('event.detail', $ev->event_id) }}" class="event-pill" style="background-color: {{ $typeColors[$ev->entry_type] ?? '#10b981' }}; text-decoration: none; color: white; display: block;" title="{{ $ev->title }}">
+                                                {{ $ev->title }}
+                                            </a>
+                                        @else
+                                            <div class="event-pill" style="background-color: {{ $typeColors[$ev->entry_type] ?? '#10b981' }};" title="{{ $ev->title }}">{{ $ev->title }}</div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -96,7 +102,13 @@
                                 <div class="calendar-item-badge" style="background: {{ $typeColors[$entry->entry_type] ?? '#10b981' }};">
                                     {{ $entry->entry_type_label }}
                                 </div>
-                                <h6 style="font-weight: 700; color: var(--dark); margin: 5px 0;">{{ $entry->title }}</h6>
+                                <h6 style="font-weight: 700; color: var(--dark); margin: 5px 0;">
+                                    @if(isset($entry->is_event) && $entry->is_event)
+                                        <a href="{{ route('event.detail', $entry->event_id) }}" style="color: var(--dark); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--dark)'">{{ $entry->title }} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 2px;"></i></a>
+                                    @else
+                                        {{ $entry->title }}
+                                    @endif
+                                </h6>
                                 <p class="mb-0" style="font-size: 13px; color: #6b7280; font-weight: 600;">
                                     <i class="fa-regular fa-calendar me-1"></i>
                                     {{ format_system_date($entry->start_date) }}

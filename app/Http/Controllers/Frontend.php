@@ -26,7 +26,7 @@ class Frontend extends Controller
     {
         $homeSections = HomeSection::orderBy('sort_order')->get()->keyBy('key');
         $orderedSectionKeys = $homeSections
-            ->filter(fn ($section) => $section->is_visible)
+            ->filter(fn($section) => $section->is_visible)
             ->sortBy('sort_order')
             ->keys()
             ->values();
@@ -54,14 +54,14 @@ class Frontend extends Controller
 
     public function eventDetail($slug)
     {
-        $event = Event::where('slug','=',$slug)->first();
-        return view('frontend.pages.event_detail',compact('event'));
+        $event = Event::where('slug', '=', $slug)->first();
+        return view('frontend.pages.event_detail', compact('event'));
     }
 
     public function noticeDetail($id)
     {
-        $notice = Notice::where('id','=',$id)->first();
-        return view('frontend.pages.noticeDetail',compact('notice'));
+        $notice = Notice::where('id', '=', $id)->first();
+        return view('frontend.pages.noticeDetail', compact('notice'));
     }
 
     public function noticeIndex()
@@ -76,7 +76,23 @@ class Frontend extends Controller
         $settings = SiteSetting::current();
         $format = isset($settings->calendar_format) ? $settings->calendar_format : 'ad';
 
-        $entries = CampusCalendarEntry::where('status', 1)->orderBy('start_date')->get();
+        $calendarEntries = CampusCalendarEntry::where('status', 1)->orderBy('start_date')->get();
+        $publicEvents = Event::where('status', 1)->orderBy('visit_date')->get();
+
+        $eventsAsEntries = $publicEvents->map(function ($event) {
+            return (object) [
+                'id' => 'evt_' . $event->id,
+                'title' => $event->name,
+                'start_date' => $event->visit_date,
+                'end_date' => $event->visit_date,
+                'entry_type' => $event->event_type ?? 'event',
+                'entry_type_label' => ucfirst($event->event_type ?? 'Event'),
+                'is_event' => true,
+                'event_id' => $event->id
+            ];
+        });
+
+        $entries = $calendarEntries->concat($eventsAsEntries)->sortBy('start_date')->values();
 
         $todayAD = Carbon::now();
         $isCurrentMonth = false;
@@ -85,16 +101,16 @@ class Frontend extends Controller
         if ($format === 'bs') {
             try {
                 $today = NepaliDate::create($todayAD);
-                $currentYear = (int)$request->get('year', $today->year);
-                $currentMonth = (int)$request->get('month', $today->month);
-                
+                $currentYear = (int) $request->get('year', $today->year);
+                $currentMonth = (int) $request->get('month', $today->month);
+
                 if ($currentYear == $today->year && $currentMonth == $today->month) {
                     $isCurrentMonth = true;
                     $todayDay = $today->day;
                 }
             } catch (\Throwable $e) {
                 // Fallback to AD bounds if it fails
-                $currentYear = 2081; 
+                $currentYear = 2081;
                 $currentMonth = 1;
             }
 
@@ -110,13 +126,13 @@ class Frontend extends Controller
                 $startDayOfWeek = 0;
             }
 
-            $monthName = $helper->getBSMonthInNepali($currentMonth) . ' ' . $helper->formattedNepaliNumber((string)$currentYear);
+            $monthName = $helper->getBSMonthInNepali($currentMonth) . ' ' . $helper->formattedNepaliNumber((string) $currentYear);
             $monthNameEnglish = $helper->getBSMonthInEnglish($currentMonth) . ' ' . $currentYear;
-            
+
             $daysMapping = [];
             $altDaysMapping = [];
             for ($i = 1; $i <= $daysInMonth; $i++) {
-                $daysMapping[$i] = $helper->formattedNepaliNumber((string)$i);
+                $daysMapping[$i] = $helper->formattedNepaliNumber((string) $i);
                 try {
                     $ad = EnglishDate::fromBS("{$currentYear}-{$currentMonth}-{$i}")->toCarbon();
                     $altDaysMapping[$i] = $ad->format('d M');
@@ -125,26 +141,30 @@ class Frontend extends Controller
                 }
             }
 
-            $monthlyEntries = $entries->filter(function($entry) use ($currentYear, $currentMonth) {
+            $monthlyEntries = $entries->filter(function ($entry) use ($currentYear, $currentMonth) {
                 try {
                     $bs = NepaliDate::create(Carbon::parse($entry->start_date));
                     return $bs->year == $currentYear && $bs->month == $currentMonth;
-                } catch (\Throwable $e) { return false; }
-            })->groupBy(function($entry) {
+                } catch (\Throwable $e) {
+                    return false;
+                }
+            })->groupBy(function ($entry) {
                 try {
                     return NepaliDate::create(Carbon::parse($entry->start_date))->day;
-                } catch (\Throwable $e) { return 0; }
+                } catch (\Throwable $e) {
+                    return 0;
+                }
             });
-            
+
             $nextYear = $currentMonth == 12 ? $currentYear + 1 : $currentYear;
             $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
-            
+
             $prevYear = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
             $prevMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
 
         } else {
-            $currentYear = (int)$request->get('year', $todayAD->year);
-            $currentMonth = (int)$request->get('month', $todayAD->month);
+            $currentYear = (int) $request->get('year', $todayAD->year);
+            $currentMonth = (int) $request->get('month', $todayAD->month);
 
             if ($currentYear == $todayAD->year && $currentMonth == $todayAD->month) {
                 $isCurrentMonth = true;
@@ -162,7 +182,7 @@ class Frontend extends Controller
             $altDaysMapping = [];
             $helper = new NepaliCalendarHelper();
             for ($i = 1; $i <= $daysInMonth; $i++) {
-                $daysMapping[$i] = (string)$i;
+                $daysMapping[$i] = (string) $i;
                 try {
                     $bs = NepaliDate::create(Carbon::create($currentYear, $currentMonth, $i));
                     $altDaysMapping[$i] = $bs->day . ' ' . substr($helper->getBSMonthInEnglish($bs->month), 0, 3);
@@ -171,33 +191,51 @@ class Frontend extends Controller
                 }
             }
 
-            $monthlyEntries = $entries->filter(function($entry) use ($currentYear, $currentMonth) {
+            $monthlyEntries = $entries->filter(function ($entry) use ($currentYear, $currentMonth) {
                 try {
                     $d = Carbon::parse($entry->start_date);
                     return $d->year == $currentYear && $d->month == $currentMonth;
-                } catch (\Throwable $e) { return false; }
-            })->groupBy(function($entry) {
+                } catch (\Throwable $e) {
+                    return false;
+                }
+            })->groupBy(function ($entry) {
                 try {
                     return Carbon::parse($entry->start_date)->day;
-                } catch (\Throwable $e) { return 0; }
+                } catch (\Throwable $e) {
+                    return 0;
+                }
             });
-            
+
             $nextYear = $currentMonth == 12 ? $currentYear + 1 : $currentYear;
             $nextMonth = $currentMonth == 12 ? 1 : $currentMonth + 1;
-            
+
             $prevYear = $currentMonth == 1 ? $currentYear - 1 : $currentYear;
             $prevMonth = $currentMonth == 1 ? 12 : $currentMonth - 1;
         }
 
-        $weekdays = $format === 'bs' 
+        $weekdays = $format === 'bs'
             ? ['आइत', 'सोम', 'मङ्गल', 'बुध', 'बिहि', 'शुक्र', 'शनि']
             : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         return view('frontend.pages.calendar', compact(
-            'format', 'currentYear', 'currentMonth', 'daysInMonth', 'startDayOfWeek', 
-            'monthName', 'monthNameEnglish', 'daysMapping', 'altDaysMapping', 'monthlyEntries',
-            'nextYear', 'nextMonth', 'prevYear', 'prevMonth', 'weekdays', 'entries',
-            'isCurrentMonth', 'todayDay'
+            'format',
+            'currentYear',
+            'currentMonth',
+            'daysInMonth',
+            'startDayOfWeek',
+            'monthName',
+            'monthNameEnglish',
+            'daysMapping',
+            'altDaysMapping',
+            'monthlyEntries',
+            'nextYear',
+            'nextMonth',
+            'prevYear',
+            'prevMonth',
+            'weekdays',
+            'entries',
+            'isCurrentMonth',
+            'todayDay'
         ));
     }
 
@@ -219,7 +257,7 @@ class Frontend extends Controller
         $albums = \App\Models\GalleryAlbum::where('status', 'active')->latest()->get();
         // For masonry/grid layout without albums, we can fetch all or paginate
         $gallery = \App\Models\Gallery::latest()->get();
-        
+
         return view('frontend.pages.gallery', compact('albums', 'gallery'));
     }
 }
