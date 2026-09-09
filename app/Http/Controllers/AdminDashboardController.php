@@ -37,6 +37,8 @@ class AdminDashboardController extends Controller
                         ->setMetrics([
                             new Metric(['name' => 'activeUsers']),
                             new Metric(['name' => 'screenPageViews']),
+                            new Metric(['name' => 'sessions']),
+                            new Metric(['name' => 'newUsers']),
                         ]);
 
                     $response = $client->runReport($request);
@@ -46,9 +48,11 @@ class AdminDashboardController extends Controller
                         $analyticsData = [
                             'activeUsers' => $row->getMetricValues()[0]->getValue(),
                             'screenPageViews' => $row->getMetricValues()[1]->getValue(),
+                            'sessions' => $row->getMetricValues()[2]->getValue(),
+                            'newUsers' => $row->getMetricValues()[3]->getValue(),
                         ];
                     } else {
-                        $analyticsData = ['activeUsers' => 0, 'screenPageViews' => 0];
+                        $analyticsData = ['activeUsers' => 0, 'screenPageViews' => 0, 'sessions' => 0, 'newUsers' => 0];
                     }
                 } catch (\Exception $e) {
                     $analyticsError = $e->getMessage();

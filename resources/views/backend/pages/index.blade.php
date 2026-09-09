@@ -101,13 +101,21 @@
                     </div>
                 @elseif(isset($analyticsData) && $analyticsData)
                     <div class="row text-center">
-                        <div class="col-6 border-end">
+                        <div class="col-6 col-md-3 border-end">
                             <h2 class="fw-bold text-primary mb-1">{{ number_format($analyticsData['activeUsers']) }}</h2>
                             <p class="text-muted mb-0 text-uppercase small fw-bold tracking-wide">Active Users</p>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 col-md-3 border-end">
                             <h2 class="fw-bold text-success mb-1">{{ number_format($analyticsData['screenPageViews']) }}</h2>
                             <p class="text-muted mb-0 text-uppercase small fw-bold tracking-wide">Page Views</p>
+                        </div>
+                        <div class="col-6 col-md-3 border-end">
+                            <h2 class="fw-bold text-warning mb-1">{{ number_format($analyticsData['sessions']) }}</h2>
+                            <p class="text-muted mb-0 text-uppercase small fw-bold tracking-wide">Sessions</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <h2 class="fw-bold text-info mb-1">{{ number_format($analyticsData['newUsers']) }}</h2>
+                            <p class="text-muted mb-0 text-uppercase small fw-bold tracking-wide">New Users</p>
                         </div>
                     </div>
                 @endif
