@@ -261,4 +261,18 @@ class Frontend extends Controller
 
         return view('frontend.pages.gallery', compact('albums', 'gallery'));
     }
+
+    public function contact()
+    {
+        $num1 = rand(1, 9);
+        $num2 = rand(1, 9);
+        $operator = rand(0, 1) ? '+' : '*';
+        $answer = $operator === '+' ? ($num1 + $num2) : ($num1 * $num2);
+
+        session(['captcha_answer' => $answer]);
+
+        $captchaQuestion = "What is $num1 $operator $num2?";
+
+        return view('frontend.pages.contact', compact('captchaQuestion'));
+    }
 }

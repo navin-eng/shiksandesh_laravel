@@ -84,11 +84,27 @@
                     <h4>Send Message</h4>
                     <form action="{{ route('message.send') }}" method="POST">
                         @csrf
+                        
+                        {{-- Honeypot field - Invisible to users --}}
+                        <div style="display:none;" aria-hidden="true">
+                            <label for="website_url">Website URL</label>
+                            <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <input type="text" name="name" placeholder="Your Full Name" class="gplc-input" required>
                         <input type="email" name="email" placeholder="Email Address" class="gplc-input" required>
                         <input type="tel" name="phone" placeholder="Phone Number" class="gplc-input">
                         <input type="text" name="address" placeholder="Your Address" class="gplc-input">
-                        <textarea name="desc" placeholder="Write your message here..." class="gplc-input"></textarea>
+                        <textarea name="desc" placeholder="Write your message here..." class="gplc-input" required></textarea>
+                        
+                        {{-- Math Captcha --}}
+                        <div style="margin-bottom: 18px; padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            <label style="font-weight: 700; font-size: 14px; color: var(--dark); display: block; margin-bottom: 8px;">
+                                Security Check: <span style="color: var(--primary);">{{ $captchaQuestion ?? 'What is 5 + 3?' }}</span>
+                            </label>
+                            <input type="number" name="captcha" placeholder="Enter your answer" class="gplc-input" style="margin-bottom: 0;" required>
+                        </div>
+
                         <button type="submit" class="btn-gplc w-100 justify-content-center">
                             <i class="fas fa-paper-plane me-2"></i> Send Message
                         </button>

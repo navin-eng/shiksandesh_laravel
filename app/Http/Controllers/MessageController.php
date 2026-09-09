@@ -22,12 +22,23 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
+        // 1. Honeypot check: If bot fills the hidden field, silently reject
+        if ($request->filled('website_url')) {
+            return redirect()->back()->with('success', 'Your message has been sent successfully!'); // Lie to the bot
+        }
+
+        // 2. Validate standard fields + Captcha
         $validated = $request->validate([
             'name' => 'required|string|min:2|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:255',
             'desc' => 'required|string|max:2000',
+            'captcha' => ['required', 'numeric', function ($attribute, $value, $fail) {
+                if ((int)$value !== session('captcha_answer')) {
+                    $fail('The math answer is incorrect. Please try again.');
+                }
+            }],
         ]);
 
         Message::create([

@@ -40,9 +40,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [Frontend::class, 'home'])->name('home');
 Route::get('/gallery', [Frontend::class, 'gallery'])->name('gallery');
-Route::get('/contact', function () {
-    return view('frontend.pages.contact');
-})->name('contact');
+Route::get('/contact', [Frontend::class, 'contact'])->name('contact');
 Route::get('/member', function () {
     return view('frontend.pages.member');
 })->name('member');
