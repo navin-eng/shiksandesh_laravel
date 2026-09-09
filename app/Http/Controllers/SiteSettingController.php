@@ -56,6 +56,9 @@ class SiteSettingController extends Controller
             'admissions_open' => 'nullable|boolean',
             'admission_title' => 'nullable|string|max:255',
             'admission_description' => 'nullable|string',
+            'google_analytics_id' => 'nullable|string|max:100',
+            'microsoft_clarity_id' => 'nullable|string|max:100',
+            'analytics_property_id' => 'nullable|string|max:100',
         ]);
 
         $settings = SiteSetting::first();
