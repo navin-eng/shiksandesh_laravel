@@ -366,6 +366,13 @@
                                     </div>
                                     <div class="card-body p-4">
                                         <div class="mb-4">
+                                            <div class="form-check form-switch custom-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="enable_analytics" name="enable_analytics" value="1" {{ old('enable_analytics', $settings->enable_analytics ?? true) ? 'checked' : '' }}>
+                                                <label class="form-check-label ms-2 fw-semibold" for="enable_analytics">Enable Analytics</label>
+                                            </div>
+                                            <div class="form-text mt-2"><i class="bi bi-info-circle me-1"></i> If disabled, tracking scripts will be removed and the dashboard widget will be hidden.</div>
+                                        </div>
+                                        <div class="mb-4">
                                             <label class="form-label fw-medium">Measurement ID</label>
                                             <input type="text" class="form-control" name="google_analytics_id" value="{{ old('google_analytics_id', $settings->google_analytics_id) }}" placeholder="G-XXXXXXXXXX">
                                             <div class="form-text">Used to inject the tracking script into the website.</div>

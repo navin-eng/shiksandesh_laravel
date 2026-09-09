@@ -44,7 +44,7 @@
         }
     </style>
 
-    @if(!empty($siteSettings->google_analytics_id))
+    @if($siteSettings->enable_analytics && !empty($siteSettings->google_analytics_id))
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings->google_analytics_id }}"></script>
     <script>
@@ -55,7 +55,7 @@
     </script>
     @endif
 
-    @if(!empty($siteSettings->microsoft_clarity_id))
+    @if($siteSettings->enable_analytics && !empty($siteSettings->microsoft_clarity_id))
     <!-- Microsoft Clarity -->
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){

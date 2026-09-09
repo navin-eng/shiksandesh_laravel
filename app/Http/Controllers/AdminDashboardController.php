@@ -14,6 +14,16 @@ class AdminDashboardController extends Controller
     public function index()
     {
         $settings = SiteSetting::current();
+        
+        // Hide dashboard widget completely if disabled
+        if (!$settings->enable_analytics) {
+            return view('backend.pages.index', [
+                'analyticsData' => null,
+                'analyticsError' => null,
+                'analyticsDisabled' => true,
+            ]);
+        }
+
         $analyticsData = null;
         $analyticsError = null;
 

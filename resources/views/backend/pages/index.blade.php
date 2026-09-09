@@ -81,6 +81,7 @@
 </div>
 
 {{-- Google Analytics Widget --}}
+@if(!isset($analyticsDisabled))
 <div class="row g-3 mb-4">
     <div class="col-12">
         <div class="admin-card">
@@ -123,6 +124,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <div class="row g-3">
   {{-- Insights Graph --}}

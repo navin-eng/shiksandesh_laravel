@@ -44,6 +44,7 @@ class SiteSetting extends Model
         'admissions_open',
         'admission_title',
         'admission_description',
+        'enable_analytics',
         'google_analytics_id',
         'microsoft_clarity_id',
         'analytics_property_id',
