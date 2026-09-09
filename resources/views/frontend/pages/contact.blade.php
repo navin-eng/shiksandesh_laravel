@@ -82,6 +82,25 @@
             <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="contact-form-card">
                     <h4>Send Message</h4>
+                    
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0" style="padding-left: 20px;">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <form action="{{ route('message.send') }}" method="POST">
                         @csrf
                         
