@@ -80,6 +80,38 @@
   </div>
 </div>
 
+{{-- Google Analytics Widget --}}
+@if(isset($analyticsData) || isset($analyticsError))
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <div class="admin-card">
+            <div class="admin-card-header d-flex justify-content-between align-items-center">
+                <span class="card-title"><i class="bi bi-google"></i> Google Analytics (Last 30 Days)</span>
+                <a href="https://analytics.google.com" target="_blank" class="btn btn-sm btn-outline-primary">Open GA4 <i class="bi bi-box-arrow-up-right"></i></a>
+            </div>
+            <div class="admin-card-body p-4">
+                @if(isset($analyticsError))
+                    <div class="alert alert-warning mb-0">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>Analytics API Error:</strong> {{ $analyticsError }}
+                    </div>
+                @elseif(isset($analyticsData))
+                    <div class="row text-center">
+                        <div class="col-6 border-end">
+                            <h2 class="fw-bold text-primary mb-1">{{ number_format($analyticsData['activeUsers']) }}</h2>
+                            <p class="text-muted mb-0 text-uppercase small fw-bold tracking-wide">Active Users</p>
+                        </div>
+                        <div class="col-6">
+                            <h2 class="fw-bold text-success mb-1">{{ number_format($analyticsData['screenPageViews']) }}</h2>
+                            <p class="text-muted mb-0 text-uppercase small fw-bold tracking-wide">Page Views</p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row g-3">
   {{-- Insights Graph --}}
   <div class="col-lg-7">

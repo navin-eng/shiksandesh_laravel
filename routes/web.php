@@ -85,9 +85,7 @@ Route::middleware('webGuard')->group(function () {
     Route::post('/admin/dashboard/message/bulk-delete', [MessageController::class, 'bulkDestroy'])->name('message.bulk-destroy');
 
     // Backend Routes
-    Route::get('/admin/dashboard', function () {
-        return view('backend.pages.index');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     // Course Routes
     Route::get('/admin/dashboard/course/add', [CourseController::class, 'create'])->name('course.add');

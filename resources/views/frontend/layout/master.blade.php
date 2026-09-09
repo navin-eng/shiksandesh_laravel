@@ -43,6 +43,28 @@
             --accent: {{ $siteSettings->accent_color ?? '#f59e0b' }};
         }
     </style>
+
+    @if(!empty($siteSettings->google_analytics_id))
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings->google_analytics_id }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ $siteSettings->google_analytics_id }}');
+    </script>
+    @endif
+
+    @if(!empty($siteSettings->microsoft_clarity_id))
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "{{ $siteSettings->microsoft_clarity_id }}");
+    </script>
+    @endif
 </head>
 
 <body>

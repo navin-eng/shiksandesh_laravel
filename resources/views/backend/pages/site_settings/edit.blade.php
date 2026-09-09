@@ -31,6 +31,9 @@
                         <button class="nav-link px-4 py-3 fw-semibold" id="widgets-tab" data-bs-toggle="tab" data-bs-target="#widgets" type="button" role="tab">Widgets & Buttons</button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-3 fw-semibold" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button" role="tab"><i class="bi bi-graph-up-arrow"></i> Analytics</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link px-4 py-3 fw-semibold" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab">Activity Log</button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -345,6 +348,47 @@
                                         <div class="mb-4">
                                             <label class="form-label fw-medium">Notice Description</label>
                                             <textarea class="form-control" name="admission_description" rows="4">{{ old('admission_description', $settings->admission_description ?? 'We are not currently accepting new applications. Please check back later for updates.') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Analytics Tab --}}
+                    <div class="tab-pane fade" id="analytics" role="tabpanel">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                        <h5 class="mb-0 fw-bold"><i class="bi bi-google text-primary me-2"></i> Google Analytics 4</h5>
+                                        <p class="text-muted small mt-1">Configure GA4 tracking and dashboard data.</p>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="mb-4">
+                                            <label class="form-label fw-medium">Measurement ID</label>
+                                            <input type="text" class="form-control" name="google_analytics_id" value="{{ old('google_analytics_id', $settings->google_analytics_id) }}" placeholder="G-XXXXXXXXXX">
+                                            <div class="form-text">Used to inject the tracking script into the website.</div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-medium">Property ID (For Dashboard)</label>
+                                            <input type="text" class="form-control" name="analytics_property_id" value="{{ old('analytics_property_id', $settings->analytics_property_id) }}" placeholder="123456789">
+                                            <div class="form-text">Used to pull data into the Admin Dashboard. See Walkthrough for setup details.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                        <h5 class="mb-0 fw-bold"><i class="bi bi-microsoft text-primary me-2"></i> Microsoft Clarity</h5>
+                                        <p class="text-muted small mt-1">Configure heatmaps and session recordings.</p>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <div class="mb-4">
+                                            <label class="form-label fw-medium">Clarity Project ID</label>
+                                            <input type="text" class="form-control" name="microsoft_clarity_id" value="{{ old('microsoft_clarity_id', $settings->microsoft_clarity_id) }}" placeholder="e.g. 5xkzj3u7w2">
+                                            <div class="form-text">Used to inject the Clarity tracking script.</div>
                                         </div>
                                     </div>
                                 </div>
